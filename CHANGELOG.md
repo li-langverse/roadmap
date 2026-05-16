@@ -5,6 +5,7 @@
 ### Added
 
 - Agent-oriented release notes policy, template, skill, rule, and stop hook (agent-kit 1.1.0).
+- `scripts/apply-org-agent-kit.sh`; root `.cursor/` sync; org-wide rollout to sibling repos.
 
 ## [1.1.0] - 2026-05-16
 

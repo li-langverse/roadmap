@@ -50,6 +50,8 @@ TARGET="$(resolve_target "$TARGET_ARG")"
 REPO_ID="$TARGET_ARG"
 if [[ "$TARGET" == *"/li" ]]; then
   REPO_ID="lic"
+elif [[ "$TARGET_ARG" == */* ]]; then
+  REPO_ID="$(basename "$TARGET")"
 fi
 
 CURSOR_DST="$TARGET/.cursor"
@@ -120,7 +122,6 @@ PY
 fi
 
 echo "$STAMP" > "$CURSOR_DST/agent-kit-version"
-if [[ "$REPO_ID" == "lic" || "$TARGET" == *"/li" ]]; then
-  echo "$STAMP" > "$TARGET/scripts/expected-agent-kit-version" 2>/dev/null || true
-fi
+mkdir -p "$TARGET/scripts"
+echo "$STAMP" > "$TARGET/scripts/expected-agent-kit-version"
 echo "Done."
