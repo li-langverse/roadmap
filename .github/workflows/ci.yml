@@ -1,0 +1,28 @@
+name: Roadmap CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  verify-kit:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify agent-kit scripts
+        run: |
+          chmod +x scripts/*.sh agent-kit/.cursor/hooks/*.sh
+          ./scripts/verify-agent-kit.sh lic || true
+      - name: Dry-run manifest
+        run: test -f agent-kit/manifest.toml
+
+  markdown:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check required docs exist
+        run: |
+          test -f docs/ecosystem/engineering-standards.md
+          test -f docs/roadmap/milestones.md
+          test -f agent-kit/.cursor/rules/li-pr-only.mdc

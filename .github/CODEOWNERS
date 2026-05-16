@@ -1,0 +1,10 @@
+# Governance — human review required
+/docs/ @li-langverse/maintainers
+/proposals/ @li-langverse/maintainers
+/README.md @li-langverse/maintainers
+/CHANGELOG.md @li-langverse/maintainers
+/SECURITY.md @li-langverse/maintainers
+/LICENSE @li-langverse/maintainers
+
+# Guard hooks — human review if weakened
+/agent-kit/.cursor/hooks/guard-*.sh @li-langverse/maintainers

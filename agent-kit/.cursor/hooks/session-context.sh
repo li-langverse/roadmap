@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# Cursor sessionStart — remind agents of mandatory gates.
+set -euo pipefail
+cat <<'EOF'
+Li session: read ../roadmap/docs/ecosystem/engineering-standards.md and vision-and-roadmap.md first.
+Strict gates: functionality, security, performance. std/** = 100% coverage; lip publish >= 80%.
+Perf status: https://li-langverse.github.io/benchmarks/
+PR-only: feature branch + PR; never push to main/dev; do not self-merge.
+EOF
+exit 0

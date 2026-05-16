@@ -1,0 +1,29 @@
+# Agent-kit manifest — bump version when shared .cursor files change.
+version = "1.0.0"
+
+[preserve]
+# Never delete these paths in target repos during install (repo-specific).
+paths = [
+  "rules/li-project.mdc",
+  "rules/compiler-cpp.mdc",
+  "rules/li-tests.mdc",
+  "rules/li-stdlib.mdc",
+  "rules/li-language.mdc",
+  "rules/benchmarks.mdc",
+  "rules/documentation-style.mdc",
+  "hooks/remind-stdlib-coverage.sh",
+  "hooks/session-audit.sh",
+  "hooks/open-pr-github.sh",
+  "skills/build-li-master-plan",
+  "skills/create-li-package",
+  "skills/push-li-github",
+]
+
+[repos.lic]
+overlay = "overlays/lic"
+
+[repos.lip]
+overlay = "overlays/lip"
+
+[repos.lit]
+overlay = "overlays/lit"
