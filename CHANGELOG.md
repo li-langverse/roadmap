@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Changed
+
+- Org-owner PR-review bypass on **Li: protected branches** (`bypass_org_owners` in `org-branch-protection.json`; `OrganizationAdmin` + `pull_request` mode).
+
 ### Added
 
 - Agent-oriented release notes policy, template, skill, rule, and stop hook (agent-kit 1.1.0).

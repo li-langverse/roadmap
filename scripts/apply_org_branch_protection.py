@@ -23,6 +23,7 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 CONFIG = ROOT / "scripts" / "org-branch-protection.json"
 API = "https://api.github.com"
+VALID_BYPASS_MODES = ("pull_request", "always")
 
 
 def gh_request(method: str, path: str, body: dict | None = None) -> Any:
@@ -117,11 +118,33 @@ def repo_branches(org: str, repo: str, prefixes: list[str]) -> list[str]:
     return [f"refs/heads/{b}" for b in sorted(found)]
 
 
+def org_owner_bypass_actors(mode: str) -> list[dict]:
+    if mode not in VALID_BYPASS_MODES:
+        raise SystemExit(
+            f"invalid bypass_org_owners_mode {mode!r} — use {VALID_BYPASS_MODES}"
+        )
+    return [
+        {
+            "actor_id": None,
+            "actor_type": "OrganizationAdmin",
+            "bypass_mode": mode,
+        }
+    ]
+
+
+def bypass_actors_from_config(cfg: dict) -> list[dict]:
+    if not cfg.get("bypass_org_owners"):
+        return []
+    mode = cfg.get("bypass_org_owners_mode", "pull_request")
+    return org_owner_bypass_actors(mode)
+
+
 def build_ruleset(
     name: str,
     refs: list[str],
     checks: list[str],
     codeowners: bool,
+    bypass_actors: list[dict],
 ) -> dict:
     rules: list[dict] = [
         {"type": "update"},
@@ -152,7 +175,7 @@ def build_ruleset(
         "name": name,
         "target": "branch",
         "enforcement": "active",
-        "bypass_actors": [],
+        "bypass_actors": bypass_actors,
         "conditions": {"ref_name": {"include": refs, "exclude": []}},
         "rules": rules,
     }
@@ -171,7 +194,11 @@ def upsert_ruleset(org: str, repo: str, payload: dict, dry_run: bool) -> str:
     path = f"/repos/{org}/{repo}/rulesets"
     if dry_run:
         action = "PUT" if existing else "POST"
-        print(f"  [dry-run] {action} {org}/{repo} ruleset '{payload['name']}' refs={payload['conditions']['ref_name']['include']}")
+        bypass = payload.get("bypass_actors") or []
+        print(
+            f"  [dry-run] {action} {org}/{repo} ruleset '{payload['name']}' "
+            f"refs={payload['conditions']['ref_name']['include']} bypass={bypass}"
+        )
         return "dry-run"
     if existing:
         gh_put(f"{path}/{existing['id']}", payload)
@@ -205,7 +232,13 @@ def main() -> None:
     else:
         targets = list_org_repos(org)
 
-    print(f"Org: {org} | ruleset: {ruleset_name} | repos: {len(targets)}")
+    bypass_actors = bypass_actors_from_config(cfg)
+    bypass_note = (
+        f"OrganizationAdmin/{cfg.get('bypass_org_owners_mode', 'pull_request')}"
+        if bypass_actors
+        else "none"
+    )
+    print(f"Org: {org} | ruleset: {ruleset_name} | repos: {len(targets)} | bypass: {bypass_note}")
     results: list[tuple[str, str]] = []
 
     for repo in targets:
@@ -216,12 +249,16 @@ def main() -> None:
             refs,
             settings.get("required_checks", []),
             bool(settings.get("require_code_owner_review", False)),
+            bypass_actors,
         )
         print(f"==> {repo}")
         try:
             action = upsert_ruleset(org, repo, payload, dry_run)
             results.append((repo, action))
-            print(f"    {action}: {', '.join(refs)} checks={settings.get('required_checks', [])}")
+            print(
+                f"    {action}: {', '.join(refs)} "
+                f"checks={settings.get('required_checks', [])} bypass={bypass_note}"
+            )
         except SystemExit as e:
             print(f"    ERROR: {e}", file=sys.stderr)
             results.append((repo, "failed"))

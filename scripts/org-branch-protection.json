@@ -1,5 +1,7 @@
 {
   "org": "li-langverse",
+  "bypass_org_owners": true,
+  "bypass_org_owners_mode": "pull_request",
   "ruleset_name": "Li: protected branches",
   "protected_ref_prefixes": ["refs/heads/main", "refs/heads/dev", "refs/heads/master"],
   "repos": {

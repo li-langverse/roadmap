@@ -23,11 +23,13 @@ This upserts ruleset **Li: protected branches** on every `li-langverse` repo:
 | `required_status_checks` | Per-repo CI jobs (see `scripts/org-branch-protection.json`) |
 | `non_fast_forward` | No force-push |
 
+**Org-owner bypass (solo maintainer):** When `bypass_org_owners` is `true` in `scripts/org-branch-protection.json`, **organization owners** may bypass **pull-request review** rules only (`bypass_org_owners_mode`: `pull_request`). They still merge via PR; CI required checks still apply. Owners use **Merge without waiting for requirements** on the PR — self-approval does not count. Set `bypass_org_owners` to `false` to remove bypass on the next apply run.
+
 **Human intervention (by design):**
 
-- **PR approval / merge** — maintainers (agents open PRs only; see `li-pr-only.mdc`)
+- **PR approval / merge** — maintainers (agents open PRs only; see `li-pr-only.mdc`); org owners may bypass review when configured above
 - **Roadmap governance paths** — `CODEOWNERS` on `docs/`, `proposals/`, `agent-kit/` (`require_code_owner_review` on roadmap)
-- **Org secrets, new repos, bypass** — maintainers only
+- **Org secrets, new repos, bypass flags** — maintainers only
 
 Per-repo CI contexts: edit `scripts/org-branch-protection.json`, re-run apply script.
 
