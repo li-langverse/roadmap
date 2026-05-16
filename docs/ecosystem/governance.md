@@ -15,11 +15,21 @@ Li standard and first-party software lives under the **[`li-langverse`](https://
 
 Create an org repo when a package is listed in [official-packages.md](official-packages.md), has multiple consumers, or will be published to the registry.
 
+**CI is mandatory** before the repo is used: `.github/workflows/ci.yml` on `main` (job `check` for packages). Audit:
+
 ```bash
-gh repo create li-langverse/my-pkg --public --license apache-2.0
+# from benchmarks checkout
+python3 scripts/ensure-org-repo-ci.py
 ```
 
-Use `./scripts/li-new-package my-pkg --official` for the correct tree and `PKG-*` id.
+Use `./scripts/li-new-package my-pkg --official` for the correct tree (`PKG-*`, **ci.yml**, Dependabot). Then:
+
+```bash
+./scripts/push-official-package-repo.sh my-pkg --create
+cd roadmap && ./scripts/apply-org-branch-protection.sh my-pkg
+```
+
+Do **not** run bare `gh repo create` without the package tree and CI workflow.
 
 ## Documentation standards
 
