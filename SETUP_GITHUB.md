@@ -1,53 +1,64 @@
-# GitHub setup (human-only)
+# GitHub setup
 
 <!-- DOC-roadmap-setup-github -->
 
-Complete once per org. Agents: post **“Action needed from you”** and wait.
+Most protection is **automated**. Human steps are only where noted below.
 
-## Create repositories
+## Branch protection (automated)
+
+From a roadmap checkout with `GH_TOKEN` (org admin or custom role with rulesets):
+
+```bash
+cd ../roadmap
+../li/scripts/with-github-env.sh ./scripts/apply-org-branch-protection.sh
+../li/scripts/with-github-env.sh ./scripts/verify-org-branch-protection.sh
+```
+
+This upserts ruleset **Li: protected branches** on every `li-langverse` repo:
+
+| Rule | Effect |
+|------|--------|
+| `update` | No direct push to `main` / `dev` / `master` |
+| `pull_request` | Merge only via PR + **1 approval** |
+| `required_status_checks` | Per-repo CI jobs (see `scripts/org-branch-protection.json`) |
+| `non_fast_forward` | No force-push |
+
+**Org-owner bypass (solo maintainer):** When `bypass_org_owners` is `true` in `scripts/org-branch-protection.json`, **organization owners** may bypass **pull-request review** rules only (`bypass_org_owners_mode`: `pull_request`). They still merge via PR; CI required checks still apply. Owners use **Merge without waiting for requirements** on the PR — self-approval does not count. Set `bypass_org_owners` to `false` to remove bypass on the next apply run.
+
+**Human intervention (by design):**
+
+- **PR approval / merge** — maintainers (agents open PRs only; see `li-pr-only.mdc`); org owners may bypass review when configured above
+- **Roadmap governance paths** — `CODEOWNERS` on `docs/`, `proposals/`, `agent-kit/` (`require_code_owner_review` on roadmap)
+- **Org secrets, new repos, bypass flags** — maintainers only
+
+Per-repo CI contexts: edit `scripts/org-branch-protection.json`, re-run apply script.
+
+## Create repositories (human)
 
 ```bash
 gh repo create li-langverse/roadmap --public --description "Li ecosystem governance + agent-kit"
 gh repo create li-langverse/benchmarks --public --description "Li benchmark aggregation + dashboard"
 ```
 
-Push sibling checkouts:
-
-```bash
-cd ../roadmap && git init && git add -A && git commit -m "chore: initial roadmap + agent-kit"
-git branch -M main
-git remote add origin https://github.com/li-langverse/roadmap.git
-git push -u origin main
-
-cd ../benchmarks && git init && git add -A && git commit -m "chore: initial benchmarks hub + dashboard"
-git branch -M main
-git remote add origin https://github.com/li-langverse/benchmarks.git
-git push -u origin main
-```
-
-## Branch protection (both repos)
-
-On `main`:
-
-- Require pull request before merging
-- Require approvals: **1**
-- Require status checks to pass
-- Do not allow bypassing
-
-### Roadmap path rulesets (optional second ruleset)
-
-- **Governance:** `docs/**`, `proposals/**`, `README.md`, `CHANGELOG.md` — require code owner review
-- **Agent-kit:** `agent-kit/**` — require CI + 1 approval
+Then run `apply-org-branch-protection.sh` on the new repo name.
 
 ## Benchmarks: GitHub Pages
 
 Repo **Settings → Pages → Build from GitHub Actions** (`pages.yml` workflow).
 
-Dashboard URL: https://li-langverse.github.io/benchmarks/
+Dashboard: https://li-langverse.github.io/benchmarks/
 
 ## CI dispatch token (benchmarks ingest)
 
-1. Create fine-grained PAT or repo secret `BENCHMARKS_INGEST_TOKEN` on **benchmarks** repo.
-2. Add `LI_BENCHMARKS_DISPATCH_TOKEN` secret on **lic** for `repository_dispatch` after bench CI.
+1. Repo secret `BENCHMARKS_INGEST_TOKEN` on **benchmarks**
+2. `LI_BENCHMARKS_DISPATCH_TOKEN` on **lic** for `repository_dispatch` after bench CI
 
-See `benchmarks/SETUP_GITHUB.md` for ingest workflow wiring.
+See `benchmarks/SETUP_GITHUB.md` for ingest wiring.
+
+## Agent-kit sync
+
+After changing `agent-kit/`:
+
+```bash
+./scripts/apply-org-agent-kit.sh   # all sibling repos
+```

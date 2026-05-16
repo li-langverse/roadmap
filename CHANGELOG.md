@@ -2,10 +2,15 @@
 
 ## [Unreleased]
 
+### Changed
+
+- Org-owner PR-review bypass on **Li: protected branches** (`bypass_org_owners` in `org-branch-protection.json`; `OrganizationAdmin` + `pull_request` mode).
+
 ### Added
 
 - Agent-oriented release notes policy, template, skill, rule, and stop hook (agent-kit 1.1.0).
 - `scripts/apply-org-agent-kit.sh`; root `.cursor/` sync; org-wide rollout to sibling repos.
+- `scripts/apply-org-branch-protection.sh` — GitHub rulesets (PR-only + CI) for all org repos; agent-kit 1.2.0.
 
 ## [1.1.0] - 2026-05-16
 

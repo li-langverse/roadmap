@@ -17,6 +17,18 @@ jobs:
       - name: Dry-run manifest
         run: test -f agent-kit/manifest.toml
 
+  branch-protection:
+    runs-on: ubuntu-24.04
+    if: github.event_name == 'pull_request' || github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify org branch rulesets (this repo)
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          chmod +x scripts/verify-org-branch-protection.sh
+          ./scripts/verify-org-branch-protection.sh roadmap
+
   markdown:
     runs-on: ubuntu-24.04
     steps:

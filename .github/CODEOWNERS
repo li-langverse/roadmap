@@ -6,5 +6,5 @@
 /SECURITY.md @li-langverse/maintainers
 /LICENSE @li-langverse/maintainers
 
-# Guard hooks — human review if weakened
-/agent-kit/.cursor/hooks/guard-*.sh @li-langverse/maintainers
+# Agent-kit — human review (sync to code repos after merge)
+/agent-kit/ @li-langverse/maintainers
