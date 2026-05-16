@@ -18,6 +18,9 @@
         "command": ".cursor/hooks/remind-governance-docs.sh",
         "matcher": "proposals/**"
       }
+    ],
+    "stop": [
+      { "command": ".cursor/hooks/remind-release-notes.sh" }
     ]
   }
 }

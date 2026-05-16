@@ -124,3 +124,4 @@ Before implementing a **new ecosystem feature** (package manager, HTTP proxy, re
 - [ ] **Learned from** other ecosystems documented
 - [ ] Downstream pins notified if `lic` / API changed
 - [ ] `.li-agent-coord.json` claims updated
+- [ ] **Release notes** — [release-notes.md](release-notes.md) + dated `docs/release-notes/` + CHANGELOG (skill **write-li-release-notes**)

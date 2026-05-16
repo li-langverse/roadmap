@@ -17,6 +17,7 @@ Use when work spans **`lic`**, **`lip`**, **`lit`**, **`lis`**, or official **`l
 3. [agent-coordination.md](../../../docs/ecosystem/agent-coordination.md) — update `.li-agent-coord.json`
 4. [lic master plan](https://github.com/li-langverse/lic/blob/main/docs/superpowers/plans/2026-05-14-li-master-plan.md) — current **PH-**
 5. [Benchmarks dashboard](https://li-langverse.github.io/benchmarks/) — after perf work
+6. [release-notes.md](../../../docs/ecosystem/release-notes.md) — before PR
 
 ## Per task checklist
 
@@ -28,11 +29,13 @@ Use when work spans **`lic`**, **`lip`**, **`lit`**, **`lis`**, or official **`l
 - [ ] **Coverage tier** — std 100% / publish 80%
 - [ ] Downstream `li-toolchain.toml` if `lic` API changed
 - [ ] **PR opened** — do not self-merge
+- [ ] **Release notes** — `docs/release-notes/YYYY-MM-DD-*.md` + CHANGELOG (`write-li-release-notes`)
 
 ## Related skills (in `lic` after sync)
 
 - `create-li-package` — new packages
 - `build-li-master-plan` — compiler phases
+- `write-li-release-notes` — before every merge-worthy PR
 
 ## Do not
 

@@ -6,5 +6,6 @@ Li session: read ../roadmap/docs/ecosystem/engineering-standards.md and vision-a
 Strict gates: functionality, security, performance. std/** = 100% coverage; lip publish >= 80%.
 Perf status: https://li-langverse.github.io/benchmarks/
 PR-only: feature branch + PR; never push to main/dev; do not self-merge.
+Release notes: CHANGELOG + docs/release-notes/ (skill write-li-release-notes) before every merge-worthy PR.
 EOF
 exit 0

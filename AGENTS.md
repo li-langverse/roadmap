@@ -7,5 +7,6 @@
 5. **READ** governance docs; **EDIT** `agent-kit/**` via PR only; **DRAFT** `docs/**` and `proposals/**` for human merge.
 6. After agent-kit changes: bump `agent-kit/manifest.toml`, run `./scripts/install-agent-kit.sh lic` in a **lic** PR.
 7. Perf status: https://li-langverse.github.io/benchmarks/
+8. **Release notes** before PR: skill `write-li-release-notes`; rule `li-release-notes.mdc`
 
 **Never:** push to `main`, `gh pr merge` on your PR, `--no-verify`, weaken `guard-*.sh` without human approval.
