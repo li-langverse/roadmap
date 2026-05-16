@@ -6,17 +6,9 @@ ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 SRC="${ROOT}/docs/development-overview.md"
 OUT_DIR="${ROOT}/site/development-overview"
 OUT_HTML="${OUT_DIR}/index.html"
-STATUS_SRC="${ROOT}/data/development-overview/status.json"
 AS_OF="$(grep -m1 'scanned \*\*' "$SRC" | sed -n 's/.*scanned \*\*\([^*]*\)\*\*.*/\1/p' || date -u +%Y-%m-%dT%H:%MZ)"
 
 mkdir -p "$OUT_DIR"
-
-if [[ ! -f "$STATUS_SRC" ]]; then
-  echo "status.json missing; running refresh-development-overview.sh" >&2
-  chmod +x "${ROOT}/scripts/refresh-development-overview.sh"
-  "${ROOT}/scripts/refresh-development-overview.sh"
-fi
-cp "$STATUS_SRC" "$OUT_DIR/status.json"
 
 PY="${PYTHON:-python3}"
 if ! "$PY" -c "import markdown" 2>/dev/null; then
@@ -146,7 +138,7 @@ html = f"""<!DOCTYPE html>
     </header>
     <section class="live-banner" aria-labelledby="live-heading">
       <h2 id="live-heading">Live PR merge queue</h2>
-      <p>Auto-refreshes from <code>status.json</code> (GitHub <code>gh</code> every 15&nbsp;min on <code>main</code>). Branch CI, docs, and benchmark tables below are the markdown snapshot.</p>
+      <p>Live queue: embedded JavaScript calls the <a href="https://docs.github.com/en/rest/search">GitHub API</a> from your browser (no Actions cron). CI status fills in gradually (~90s per PR). Tables below are the markdown snapshot.</p>
       <div class="live-metrics" id="live-metrics"></div>
       <div class="live-table-wrap">
         <table id="live-pr-table">

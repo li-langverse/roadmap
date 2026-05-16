@@ -145,4 +145,4 @@ Catalog source: `li-langverse/benchmarks` `catalog.toml` (main) · tier-3 planne
 
 *Agents do not merge governance PRs without owner sign-off. Never push directly to protected `main` branches.*
 
-*Snapshot: edit this file, then `./scripts/gen-development-overview.sh`. Live queue: `./scripts/refresh-development-overview.sh` → `data/development-overview/status.json` (auto every 15&nbsp;min on `main`). Published: [development overview](https://li-langverse.github.io/roadmap/development-overview/) polls `status.json` in the browser. Canvas source: `lic` workspace `canvases/pr-merge-queue.canvas.tsx` — link the canvas iframe/panel to the Pages URL for live PR counts.*
+*Snapshot: edit this file, then `./scripts/gen-development-overview.sh`. Live queue: browser JavaScript on the [development overview](https://li-langverse.github.io/roadmap/development-overview/) page (GitHub Search API — no Actions cron). Optional offline refresh: `./scripts/refresh-development-overview.sh`. Canvas: `lic` `canvases/pr-merge-queue.canvas.tsx` — link to the Pages URL.*

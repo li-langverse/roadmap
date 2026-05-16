@@ -5,17 +5,13 @@ on:
     branches: [main]
     paths:
       - "docs/development-overview.md"
-      - "data/development-overview/**"
       - "scripts/gen-development-overview.sh"
-      - "scripts/refresh-development-overview.sh"
       - "scripts/development-overview-live.js"
       - ".github/workflows/pages.yml"
   pull_request:
     paths:
       - "docs/development-overview.md"
-      - "data/development-overview/**"
       - "scripts/gen-development-overview.sh"
-      - "scripts/refresh-development-overview.sh"
       - "scripts/development-overview-live.js"
       - ".github/workflows/pages.yml"
   workflow_dispatch:
@@ -37,18 +33,6 @@ jobs:
 
       - name: Install build deps
         run: python3 -m pip install markdown
-
-      - name: Refresh live status (PR builds use committed JSON)
-        if: github.event_name == 'pull_request'
-        run: test -f data/development-overview/status.json
-
-      - name: Refresh live status (main / dispatch)
-        if: github.event_name != 'pull_request'
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          chmod +x scripts/refresh-development-overview.sh
-          ./scripts/refresh-development-overview.sh
 
       - name: Generate static site
         run: |
