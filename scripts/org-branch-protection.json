@@ -1,0 +1,38 @@
+{
+  "org": "li-langverse",
+  "ruleset_name": "Li: protected branches",
+  "protected_ref_prefixes": ["refs/heads/main", "refs/heads/dev", "refs/heads/master"],
+  "repos": {
+    "roadmap": {
+      "required_checks": ["verify-kit"],
+      "require_code_owner_review": true
+    },
+    "benchmarks": {
+      "required_checks": ["ingest-smoke", "dashboard-build"]
+    },
+    "lic": {
+      "required_checks": ["version", "build-and-test"]
+    },
+    "li-language": {
+      "required_checks": ["version", "build-and-test"]
+    },
+    "lip": {
+      "required_checks": ["bootstrap"]
+    },
+    "lit": {
+      "required_checks": ["test"]
+    },
+    "lis": {
+      "required_checks": []
+    },
+    "li-httpd": { "required_checks": [] },
+    "li-net": { "required_checks": [] },
+    "li-std-core": { "required_checks": [] },
+    "li-std-math": { "required_checks": [] },
+    "li-demo": { "required_checks": [] }
+  },
+  "default_repo": {
+    "required_checks": [],
+    "require_code_owner_review": false
+  }
+}

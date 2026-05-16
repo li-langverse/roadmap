@@ -110,7 +110,7 @@ Before implementing a **new ecosystem feature** (package manager, HTTP proxy, re
 
 - Lowering coverage, skipping CVE tests, or weakening bench thresholds
 - New `trusted.lean` axioms
-- New org repos, secrets, branch protection
+- New org repos, secrets (branch protection: `roadmap/scripts/apply-org-branch-protection.sh`)
 - Changing **language pillars** or master plan phase order
 
 ---
