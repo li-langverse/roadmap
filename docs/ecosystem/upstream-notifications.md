@@ -13,7 +13,7 @@ When **`lic`**, **`lit`**, or **`lip`** releases, dependent repos get a GitHub *
 ## Action needed from you (one-time)
 
 1. **Secret on `li-langverse/lic`:** `LI_DOWNSTREAM_DISPATCH_TOKEN` — fine-grained PAT on **lip** + **lit** with **Actions: Read and write** (for `repository_dispatch`). Re-run **notify-downstream** after updating scopes if you see HTTP 403.
-2. **Secrets on `li-langverse/lip` and `li-langverse/lit`:** `LIC_CHECKOUT_TOKEN` — fine-grained PAT with **Contents: Read** on **lic** (needed while **lic** is private).
+2. **Secrets on `li-langverse/lip` and `li-langverse/lit` (optional):** `LIC_CHECKOUT_TOKEN` — only if **lic** is private; **lic** is public — default `GITHUB_TOKEN` checkout is enough.
 2. **Optional org app:** [Renovate](https://github.com/apps/renovate) on `li-langverse` for auto-PRs on `lic_version` in `li-toolchain.toml`.
 4. **Label:** create `ecosystem-upstream` on repos (or issues will be created without label).
 5. **Push** updated workflows to **lic**, **lip**, **lit** on GitHub.
