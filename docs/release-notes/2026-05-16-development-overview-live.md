@@ -10,22 +10,22 @@
 
 ## Summary (one sentence)
 
-The published development overview on GitHub Pages now polls `status.json` for a live PR merge queue while keeping the markdown snapshot for branch CI and ecosystem tables.
+The published development overview uses **embedded JavaScript** to call the GitHub API from the browser for a live PR queue (no Actions cron). Markdown snapshot tables unchanged.
 
 ## Agent continuation (required)
 
-1. Read: `docs/development-overview.md`, `data/development-overview/status.json`, `scripts/refresh-development-overview.sh`.
-2. Run: `./scripts/refresh-development-overview.sh && ./scripts/gen-development-overview.sh` after org PR changes; on `main`, the scheduled workflow commits JSON every 15 minutes.
-3. Then: merge PR #2; enable GitHub Pages on `roadmap`; point `lic` `canvases/pr-merge-queue.canvas.tsx` at `https://li-langverse.github.io/roadmap/development-overview/`.
-4. Blocked on: none (human merge + Pages env setup on first deploy).
+1. Read: `docs/development-overview.md`, `scripts/development-overview-live.js`.
+2. Run: `./scripts/gen-development-overview.sh` after editing the markdown snapshot; optional offline `refresh-development-overview.sh` for agents without a browser.
+3. Then: merge PR #2; point `lic` canvas at `https://li-langverse.github.io/roadmap/development-overview/`.
+4. Blocked on: none (human merge + Pages env on first deploy).
 
 ## Changed (specific)
 
 | Area | What | Evidence |
 |------|------|----------|
-| Live data | `scripts/refresh-development-overview.sh` + `.github/li-org-repos.txt` | `gh pr list` per repo → `data/development-overview/status.json` |
-| Pages UI | `scripts/development-overview-live.js`, `gen-development-overview.sh` | `site/development-overview/live.js`, polls `status.json` every 60s |
-| CI | `refresh-development-overview.yml` (cron */15), `pages.yml`, `ci.yml` | Refresh on main Pages build; CI dry-run refresh + build |
+| Live UI | `scripts/development-overview-live.js` | GitHub Search API + staggered commit status (browser) |
+| Pages | `gen-development-overview.sh` | Embeds `live.js`; no `status.json` required |
+| CI | Removed `refresh-development-overview.yml` cron | `pages.yml` build-only on push |
 
 ## Not changed (scope fence)
 
