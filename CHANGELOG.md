@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+### Added
+
+- [Development overview](https://li-langverse.github.io/roadmap/development-overview/) — org snapshot (PR queue, branch CI, docs/bench); source `docs/development-overview.md`, built via `scripts/gen-development-overview.sh` and GitHub Pages.
+- Live PR merge queue: `data/development-overview/status.json` refreshed every 15 minutes on `main` (`scripts/refresh-development-overview.sh`); Pages UI polls every 60s (`scripts/development-overview-live.js`).
+
 ### Changed
 
 - Org-owner PR-review bypass on **Li: protected branches** (`bypass_org_owners` in `org-branch-protection.json`; `OrganizationAdmin` + `pull_request` mode).

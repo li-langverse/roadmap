@@ -1,0 +1,13 @@
+# Org repos scanned for PR merge queue live status (one name per line; no org/ prefix).
+lic
+li-language
+lip
+lit
+lis
+benchmarks
+roadmap
+li-net
+li-httpd
+li-std-core
+li-std-math
+li-demo
