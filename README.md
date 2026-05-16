@@ -10,6 +10,7 @@ Canonical **ecosystem governance**, **milestones**, **proposals (ADRs)**, and **
 4. [milestones.md](docs/roadmap/milestones.md)
 5. [lic master plan](https://github.com/li-langverse/lic/blob/main/docs/superpowers/plans/2026-05-14-li-master-plan.md) — **PH-** tracker
 6. [Benchmarks dashboard](https://li-langverse.github.io/benchmarks/)
+7. [Development overview](https://li-langverse.github.io/roadmap/development-overview/) — PR merge queue, branch CI, live docs (org snapshot)
 
 ## Normative split
 
@@ -17,7 +18,8 @@ Canonical **ecosystem governance**, **milestones**, **proposals (ADRs)**, and **
 |-------|------|
 | Compiler phases, REQ-*, `li-tests` | [`lic`](https://github.com/li-langverse/lic) |
 | Ecosystem gates, vision, agent coordination | **this repo** |
-| Perf snapshots & regression overview | [`benchmarks`](https://github.com/li-langverse/benchmarks) |
+| Perf snapshots & regression overview | [`benchmarks`](https://li-langverse.github.io/benchmarks/) |
+| Org PR queue, branch CI, docs/bench status | [development overview](https://li-langverse.github.io/roadmap/development-overview/) |
 
 ## Agent-kit install
 

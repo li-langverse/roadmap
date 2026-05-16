@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Added
+
+- [Development overview](https://li-langverse.github.io/roadmap/development-overview/) — static org snapshot (PR queue, branch CI, docs/bench); source `docs/development-overview.md`, built via `scripts/gen-development-overview.sh` and GitHub Pages.
+
 ### Changed
 
 - Org-owner PR-review bypass on **Li: protected branches** (`bypass_org_owners` in `org-branch-protection.json`; `OrganizationAdmin` + `pull_request` mode).

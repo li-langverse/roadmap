@@ -1,0 +1,57 @@
+name: Development overview (Pages)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "docs/development-overview.md"
+      - "scripts/gen-development-overview.sh"
+      - ".github/workflows/pages.yml"
+  pull_request:
+    paths:
+      - "docs/development-overview.md"
+      - "scripts/gen-development-overview.sh"
+      - ".github/workflows/pages.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install build deps
+        run: python3 -m pip install markdown
+
+      - name: Generate static site
+        run: |
+          chmod +x scripts/gen-development-overview.sh
+          ./scripts/gen-development-overview.sh
+
+      - name: Verify output
+        run: test -f site/development-overview/index.html
+
+      - uses: actions/upload-pages-artifact@v3
+        if: github.event_name != 'pull_request'
+        with:
+          path: site
+
+  deploy:
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    needs: build
+    runs-on: ubuntu-24.04
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
