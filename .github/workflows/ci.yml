@@ -40,9 +40,14 @@ jobs:
           test -f docs/development-overview.md
           test -f agent-kit/.cursor/rules/li-pr-only.mdc
 
-      - name: Build development overview (dry-run)
+      - name: Refresh + build development overview (dry-run)
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           python3 -m pip install markdown
-          chmod +x scripts/gen-development-overview.sh
+          chmod +x scripts/refresh-development-overview.sh scripts/gen-development-overview.sh
+          ./scripts/refresh-development-overview.sh
           ./scripts/gen-development-overview.sh
           test -f site/development-overview/index.html
+          test -f site/development-overview/status.json
+          test -f site/development-overview/live.js

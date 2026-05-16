@@ -1,0 +1,39 @@
+name: Refresh development overview (live)
+
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: refresh-development-overview
+  cancel-in-progress: true
+
+jobs:
+  refresh:
+    if: github.repository == 'li-langverse/roadmap' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Refresh status.json
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          chmod +x scripts/refresh-development-overview.sh scripts/gen-development-overview.sh
+          ./scripts/refresh-development-overview.sh
+
+      - name: Commit live status
+        run: |
+          git config user.name "roadmap-overview-bot"
+          git config user.email "roadmap-overview-bot@users.noreply.github.com"
+          git add data/development-overview/status.json
+          if git diff --staged --quiet; then
+            echo "No PR queue changes"
+            exit 0
+          fi
+          git commit -m "chore(overview): refresh live PR merge queue status"
+          git push

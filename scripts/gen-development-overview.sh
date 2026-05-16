@@ -6,9 +6,17 @@ ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 SRC="${ROOT}/docs/development-overview.md"
 OUT_DIR="${ROOT}/site/development-overview"
 OUT_HTML="${OUT_DIR}/index.html"
+STATUS_SRC="${ROOT}/data/development-overview/status.json"
 AS_OF="$(grep -m1 'scanned \*\*' "$SRC" | sed -n 's/.*scanned \*\*\([^*]*\)\*\*.*/\1/p' || date -u +%Y-%m-%dT%H:%MZ)"
 
 mkdir -p "$OUT_DIR"
+
+if [[ ! -f "$STATUS_SRC" ]]; then
+  echo "status.json missing; running refresh-development-overview.sh" >&2
+  chmod +x "${ROOT}/scripts/refresh-development-overview.sh"
+  "${ROOT}/scripts/refresh-development-overview.sh"
+fi
+cp "$STATUS_SRC" "$OUT_DIR/status.json"
 
 PY="${PYTHON:-python3}"
 if ! "$PY" -c "import markdown" 2>/dev/null; then
@@ -95,32 +103,73 @@ html = f"""<!DOCTYPE html>
     li {{ margin: 0.35rem 0; }}
     .nav {{ margin-top: 0.75rem; font-size: 0.85rem; }}
     .nav a {{ margin-right: 1rem; }}
+    .live-banner {{
+      margin: 1rem 0 1.5rem;
+      padding: 0.75rem 1rem;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: #161b22;
+      font-size: 0.88rem;
+    }}
+    .live-metrics {{
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 0.75rem;
+      margin: 1rem 0;
+    }}
+    .metric-card {{
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.65rem 0.75rem;
+      background: #0d1117;
+    }}
+    .metric-card .label {{ color: var(--muted); font-size: 0.78rem; margin: 0; }}
+    .metric-card .value {{ font-size: 1.35rem; font-weight: 600; margin: 0.15rem 0 0; }}
+    .ci-pass {{ color: #3fb950; }}
+    .ci-fail {{ color: #f85149; }}
+    .ci-pending {{ color: #d29922; }}
+    .ci-none {{ color: var(--muted); }}
+    #live-status {{ color: var(--muted); font-size: 0.82rem; }}
+    .live-table-wrap {{ overflow-x: auto; }}
   </style>
 </head>
 <body>
   <div class="wrap">
     <header>
       <h1>Li development overview</h1>
-      <p>li-langverse org · as of {as_of} · <a href="https://github.com/li-langverse/roadmap/blob/main/docs/development-overview.md">edit source</a></p>
+      <p>li-langverse org · snapshot <span id="snapshot-as-of">{as_of}</span> · <span id="live-status">loading live queue…</span> · <a href="https://github.com/li-langverse/roadmap/blob/main/docs/development-overview.md">edit snapshot</a></p>
       <nav class="nav" aria-label="Related">
         <a href="https://li-langverse.github.io/benchmarks/">Benchmarks</a>
         <a href="https://li-langverse.github.io/li-language/">Language docs</a>
         <a href="https://github.com/li-langverse/roadmap">roadmap repo</a>
       </nav>
     </header>
+    <section class="live-banner" aria-labelledby="live-heading">
+      <h2 id="live-heading">Live PR merge queue</h2>
+      <p>Auto-refreshes from <code>status.json</code> (GitHub <code>gh</code> every 15&nbsp;min on <code>main</code>). Branch CI, docs, and benchmark tables below are the markdown snapshot.</p>
+      <div class="live-metrics" id="live-metrics"></div>
+      <div class="live-table-wrap">
+        <table id="live-pr-table">
+          <thead>
+            <tr><th>Repo</th><th>#</th><th>Title</th><th>Base</th><th>CI</th><th>Ready</th></tr>
+          </thead>
+          <tbody id="live-pr-body"></tbody>
+        </table>
+      </div>
+    </section>
     <main>
 {body}
     </main>
   </div>
+  <script src="./live.js" defer></script>
 </body>
 </html>
 """
-
-html = html.replace("<motion.div", "<div")
 
 Path(out_path).write_text(html, encoding="utf-8")
 print(f"Wrote {out_path}")
 PY
 
 cp "$SRC" "$OUT_DIR/overview.md"
+cp "${ROOT}/scripts/development-overview-live.js" "$OUT_DIR/live.js"
 echo "Generated ${OUT_HTML}"
