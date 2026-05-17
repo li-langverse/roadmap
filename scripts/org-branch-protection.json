@@ -27,14 +27,14 @@
     "lis": {
       "required_checks": []
     },
-    "li-httpd": { "required_checks": [] },
-    "li-net": { "required_checks": [] },
-    "li-std-core": { "required_checks": [] },
-    "li-std-math": { "required_checks": [] },
-    "li-demo": { "required_checks": [] }
+    "li-httpd": { "required_checks": ["check"] },
+    "li-net": { "required_checks": ["check"] },
+    "li-std-core": { "required_checks": ["check"] },
+    "li-std-math": { "required_checks": ["check"] },
+    "li-demo": { "required_checks": ["check"] }
   },
   "default_repo": {
-    "required_checks": [],
+    "required_checks": ["check"],
     "require_code_owner_review": false
   }
 }

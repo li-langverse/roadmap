@@ -1,5 +1,5 @@
 # Agent-kit manifest — bump version when shared .cursor files change.
-version = "1.2.1"
+version = "1.3.2"
 
 [preserve]
 # Never delete these paths in target repos during install (repo-specific).
@@ -17,6 +17,12 @@ paths = [
   "skills/build-li-master-plan",
   "skills/create-li-package",
   "skills/push-li-github",
+  "skills/plan-feature-from-issue",
+  "skills/audit-plan-completion",
+  "automations/issue-feature-planner.md",
+  "automations/plan-completion-audit.md",
+  "commands/plan-feature.md",
+  "commands/audit-plans.md",
 ]
 
 [repos.lic]
@@ -27,6 +33,9 @@ overlay = "overlays/lip"
 
 [repos.lit]
 overlay = "overlays/lit"
+
+[repos.benchmarks]
+overlay = "overlays/benchmarks"
 
 [repos.li-cursor-agents]
 overlay = "overlays/li-cursor-agents"

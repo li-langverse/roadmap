@@ -23,13 +23,29 @@
 - **Governance** — `docs/ecosystem/` (canonical; `lic` has stubs)
 - **Milestones** — `docs/roadmap/`; master plan stays normative for **PH-** order
 - **Agent-kit** — `agent-kit/`; install into code repos via `scripts/install-agent-kit.sh`
-- Agents: read **engineering-standards** + **master plan PH tracker** each session
+- Agents: read **engineering-standards** + **this page** + **master plan PH tracker** each session
+
+---
+
+## North star — go-to ecosystem (agents: read first)
+
+**Li aims to become the go-to open ecosystem for high-performance computing (HPC), scientific computing, and AI** — not a general-purpose scripting language with optional proofs.
+
+| Domain | What “go-to” means in Li |
+|--------|---------------------------|
+| **HPC** | Native CPU performance: LLVM, SIMD, `parallel for`, OpenMP; tier benchmarks; race/disjointness are **compile errors**, not runtime surprises |
+| **Scientific computing** | Simulation-shaped types and stdlib; reproducible builds; **`lic build`** = Lean certificate on shipped code |
+| **AI** | Agent-first tooling (`lic` structured diagnostics, `lis` gateway, observability, safe edge defaults) — with **provable bounds** where code ships, not “move fast and skip contracts” |
+
+**Agents:** Prioritize work that advances this north star (benches, proved kernels, `lip`/`lit`/`lis`, CVE/perf gates). Defer generic-app or syntax-only churn unless a **PH-** row or master-plan gate requires it. Cross-cutting features belong in the **master plan** + roadmap proposal, not a lone package README.
+
+**Not the goal:** “Python speed with a new syntax,” optional proof, or perf claims without dashboard evidence ([benchmarks](https://li-langverse.github.io/benchmarks/)).
 
 ---
 
 ## Li vision (non-negotiable)
 
-All ecosystem work must reinforce:
+All ecosystem work must reinforce the north star through:
 
 1. **Easy** — Nim-like surface; low ceremony; TOML/config desugar
 2. **AI-first** — agents, streaming, observability, safe defaults at the edge

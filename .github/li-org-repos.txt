@@ -1,4 +1,5 @@
-# Org repos scanned for PR merge queue live status (one name per line; no org/ prefix).
+# Org repos — one name per line (no org/ prefix).
+# CI policy: every repo must have .github/workflows/ci.yml — see benchmarks docs/ecosystem/repo-ci-required.md
 lic
 li-language
 lip

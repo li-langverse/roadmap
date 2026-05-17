@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Changed
+
+- Vision **north star**: go-to ecosystem for HPC, scientific computing, and AI (`docs/ecosystem/vision-and-roadmap.md`); agent-kit **1.3.1** session hooks
+
 ### Added
 
 - [Development overview](https://li-langverse.github.io/roadmap/development-overview/) — org snapshot (PR queue, branch CI, docs/bench); source `docs/development-overview.md`, built via `scripts/gen-development-overview.sh` and GitHub Pages.

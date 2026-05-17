@@ -2,7 +2,7 @@
 
 <!-- DOC-ecosystem-overview -->
 
-Li ships as a **language** ([`li-langverse/li-language`](https://github.com/li-langverse/li-language)) plus **packages** you build and publish under the same org.
+Li ships as a **language** ([`li-langverse/li-language`](https://github.com/li-langverse/li-language)) plus **packages** you build and publish under the same org. The org’s ambition is to be the **go-to open ecosystem for HPC, scientific computing, and AI** — see [vision north star](vision-and-roadmap.md#north-star--go-to-ecosystem-agents-read-first).
 
 ## Three tools
 
