@@ -1,11 +1,9 @@
 # Agent-kit changelog
 
-## 1.3.0 — 2026-05-16
+## 1.2.1 — 2026-05-17
 
-- Skills: `plan-feature-from-issue`, `audit-plan-completion`
-- Automations: issue-feature-planner, plan-completion-audit
-- Commands: `plan-feature`, `audit-plans`
-- Overlay `benchmarks`; workflow template for issue planning
+- Overlay `overlays/li-cursor-agents` — commit-when-done + agent-kit sync for Cursor SDK runner
+- `install-agent-kit.sh` resolves `li-cursor-agents` sibling repo
 
 ## 1.1.0 — 2026-05-16
 

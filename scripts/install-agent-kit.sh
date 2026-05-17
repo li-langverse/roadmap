@@ -27,7 +27,7 @@ done
 resolve_target() {
   local arg="$1"
   case "$arg" in
-    lic|lip|lit|lis|roadmap|benchmarks)
+    lic|lip|lit|lis|roadmap|benchmarks|li-cursor-agents)
       local sibling="$ROADMAP_ROOT/../$arg"
       if [[ "$arg" == "lic" && -d "$ROADMAP_ROOT/../li" ]]; then
         sibling="$ROADMAP_ROOT/../li"
