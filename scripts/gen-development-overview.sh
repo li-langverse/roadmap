@@ -4,6 +4,7 @@ set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 SRC="${ROOT}/docs/development-overview.md"
+ECO_JSON="${ROOT}/data/development-overview/ecosystem-stats.json"
 OUT_DIR="${ROOT}/site/development-overview"
 OUT_HTML="${OUT_DIR}/index.html"
 AS_OF="$(grep -m1 'scanned \*\*' "$SRC" | sed -n 's/.*scanned \*\*\([^*]*\)\*\*.*/\1/p' || date -u +%Y-%m-%dT%H:%MZ)"
@@ -20,12 +21,13 @@ if ! "$PY" -c "import markdown" 2>/dev/null; then
   PY="${VENV}/bin/python"
 fi
 
-"$PY" - "$SRC" "$OUT_HTML" "$AS_OF" <<'PY'
+"$PY" - "$SRC" "$OUT_HTML" "$AS_OF" "$ECO_JSON" <<'PY'
+import json
 import re
 import sys
 from pathlib import Path
 
-src_path, out_path, as_of = sys.argv[1:4]
+src_path, out_path, as_of, eco_path = sys.argv[1:5]
 text = Path(src_path).read_text(encoding="utf-8")
 
 try:
@@ -44,6 +46,32 @@ body = markdown.markdown(
 )
 
 body = re.sub(r"^<h1[^>]*>.*?</h1>\s*", "", body, count=1, flags=re.DOTALL)
+
+eco = {}
+eco_file = Path(eco_path)
+if eco_file.is_file():
+    try:
+        eco = json.loads(eco_file.read_text(encoding="utf-8"))
+    except json.JSONDecodeError:
+        pass
+
+def fmt_int(n) -> str:
+    if n is None:
+        return "—"
+    return f"{int(n):,}"
+
+
+eco_as_of = eco.get("generated_at", "—")
+eco_cards = [
+    ("Lines of code", fmt_int(eco.get("lines_of_code"))),
+    ("Package repos", fmt_int(eco.get("packages"))),
+    ("Open issues", fmt_int(eco.get("issues_open"))),
+    ("Closed PRs", fmt_int(eco.get("prs_closed"))),
+]
+eco_cards_html = "".join(
+    f'<div class="metric-card"><p class="label">{label}</p><p class="value">{value}</p></div>'
+    for label, value in eco_cards
+)
 
 html = f"""<!DOCTYPE html>
 <html lang="en">
@@ -136,6 +164,11 @@ html = f"""<!DOCTYPE html>
         <a href="https://github.com/li-langverse/roadmap">roadmap repo</a>
       </nav>
     </header>
+    <section class="live-banner" aria-labelledby="eco-heading">
+      <h2 id="eco-heading">Ecosystem statistics</h2>
+      <p>Snapshot <span id="eco-as-of">{eco_as_of}</span> · live open issues &amp; closed PRs refresh in the browser · <a href="https://github.com/li-langverse/roadmap/blob/main/scripts/compute-ecosystem-stats.py">recompute LoC</a></p>
+      <div class="live-metrics" id="ecosystem-metrics">{eco_cards_html}</div>
+    </section>
     <section class="live-banner" aria-labelledby="live-heading">
       <h2 id="live-heading">Live PR merge queue</h2>
       <p>Live queue: embedded JavaScript calls the <a href="https://docs.github.com/en/rest/search">GitHub API</a> from your browser (no Actions cron). CI status fills in gradually (~90s per PR). Tables below are the markdown snapshot.</p>
@@ -164,4 +197,7 @@ PY
 
 cp "$SRC" "$OUT_DIR/overview.md"
 cp "${ROOT}/scripts/development-overview-live.js" "$OUT_DIR/live.js"
+if [[ -f "$ECO_JSON" ]]; then
+  cp "$ECO_JSON" "$OUT_DIR/ecosystem-stats.json"
+fi
 echo "Generated ${OUT_HTML}"

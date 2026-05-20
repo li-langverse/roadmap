@@ -9,6 +9,17 @@
 | Blocked / needs work | 2 |
 | Repos with live docs | 2 / 12 |
 
+## Ecosystem statistics
+
+Org-wide snapshot · refresh with `./scripts/compute-ecosystem-stats.py` · open issues / closed PRs also update live in the browser.
+
+| Metric | Value |
+|--------|------:|
+| Lines of code (tracked repos) | 68,107 |
+| Official package repos | 5 |
+| Open issues | 57 |
+| Closed pull requests | 103 |
+
 ## Recommended merge order
 
 1. **Package CI (P0, all green):** [li-net #2](https://github.com/li-langverse/li-net/pull/2), [li-httpd #2](https://github.com/li-langverse/li-httpd/pull/2), [li-std-core #2](https://github.com/li-langverse/li-std-core/pull/2), [li-std-math #2](https://github.com/li-langverse/li-std-math/pull/2), [li-demo #1](https://github.com/li-langverse/li-demo/pull/1).
