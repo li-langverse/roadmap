@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Compute li-langverse ecosystem stats (LoC, packages) for the development overview."""
+"""Compute li-langverse ecosystem stats (LoC, org repo count) for the development overview."""
 from __future__ import annotations
 
 import json
@@ -42,16 +42,6 @@ SKIP_DIR_NAMES = {
     "dist",
     "out",
 }
-# Official package mirror repos (see docs/ecosystem/official-packages.md)
-PACKAGE_REPOS = frozenset(
-    {
-        "li-net",
-        "li-httpd",
-        "li-std-core",
-        "li-std-math",
-        "li-demo",
-    }
-)
 
 
 def repo_root() -> Path:
@@ -87,6 +77,55 @@ def search_total_count(query: str) -> int | None:
     if isinstance(data, int):
         return data
     return None
+
+
+def count_org_repositories() -> int | None:
+    """All repositories visible to `gh` under the org (public + private for the token)."""
+    proc = subprocess.run(
+        ["gh", "repo", "list", ORG, "--limit", "10000", "--json", "name"],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    if proc.returncode == 0 and proc.stdout.strip():
+        data = json.loads(proc.stdout)
+        if isinstance(data, list):
+            return len(data)
+    return count_org_repositories_via_token()
+
+
+def count_org_repositories_via_token() -> int | None:
+    """Fallback when `gh repo list` fails: paginate org repos with GITHUB_TOKEN (e.g. Actions)."""
+    import urllib.error
+    import urllib.request
+
+    token = os.environ.get("GITHUB_TOKEN")
+    if not token:
+        return None
+    total = 0
+    page = 1
+    while True:
+        url = f"https://api.github.com/orgs/{ORG}/repos?per_page=100&page={page}&type=all"
+        req = urllib.request.Request(
+            url,
+            headers={
+                "Authorization": f"Bearer {token}",
+                "Accept": "application/vnd.github+json",
+                "X-GitHub-Api-Version": "2022-11-28",
+            },
+        )
+        try:
+            with urllib.request.urlopen(req, timeout=60) as resp:
+                chunk = json.loads(resp.read().decode())
+        except (urllib.error.HTTPError, urllib.error.URLError, TimeoutError, json.JSONDecodeError):
+            return total if total else None
+        if not isinstance(chunk, list) or not chunk:
+            break
+        total += len(chunk)
+        if len(chunk) < 100:
+            break
+        page += 1
+    return total
 
 
 def count_lines(repo_path: Path) -> int:
@@ -169,7 +208,7 @@ def main() -> int:
     clone_missing = os.environ.get("ECOSYSTEM_STATS_SKIP_CLONE", "") != "1"
 
     lines_total, lines_per_repo = compute_loc(repos, root, clone_missing)
-    packages = sum(1 for r in repos if r in PACKAGE_REPOS)
+    org_repositories = count_org_repositories()
 
     open_issues = search_total_count(f"org:{ORG}+is:issue+is:open")
     closed_issues = search_total_count(f"org:{ORG}+is:issue+is:closed")
@@ -182,8 +221,7 @@ def main() -> int:
         "repos_tracked": len(repos),
         "lines_of_code": lines_total,
         "lines_per_repo": lines_per_repo,
-        "packages": packages,
-        "package_repos": sorted(PACKAGE_REPOS & frozenset(repos)),
+        "org_repositories": org_repositories,
         "issues_open": open_issues,
         "issues_closed": closed_issues,
         "issues_total": (open_issues or 0) + (closed_issues or 0)
@@ -196,7 +234,7 @@ def main() -> int:
     out_dir.mkdir(parents=True, exist_ok=True)
     out_json.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
     print(
-        f"Wrote {out_json} — LoC {lines_total:,}, packages {packages}, "
+        f"Wrote {out_json} — LoC {lines_total:,}, org repos {org_repositories}, "
         f"issues open {open_issues}, closed PRs {closed_prs}"
     )
     return 0

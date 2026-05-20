@@ -9,7 +9,7 @@ const CI_TICK_MS = 90_000;
 const SEARCH_URL = `https://api.github.com/search/issues?q=org:${ORG}+is:open+is:pr&per_page=100&sort=updated`;
 const ECO_STATS_URL = "./ecosystem-stats.json";
 
-/** @type {{ lines_of_code?: number, packages?: number, issues_open?: number, prs_closed?: number, generated_at?: string }} */
+/** @type {{ lines_of_code?: number, org_repositories?: number, packages?: number, issues_open?: number, prs_closed?: number, generated_at?: string }} */
 let ecosystemSnapshot = {};
 
 /** @type {Map<string, { ci: string, ready: boolean }>} */
@@ -60,9 +60,15 @@ function fmtNum(n) {
   return Number(n).toLocaleString();
 }
 
+function orgReposFromSnapshot(snap) {
+  if (snap.org_repositories != null) return snap.org_repositories;
+  if (snap.packages != null) return snap.packages;
+  return undefined;
+}
+
 function renderEcosystemMetrics(live = {}) {
   const loc = live.lines_of_code ?? ecosystemSnapshot.lines_of_code;
-  const packages = live.packages ?? ecosystemSnapshot.packages;
+  const orgRepos = live.org_repositories ?? orgReposFromSnapshot(ecosystemSnapshot);
   const issues = live.issues_open ?? ecosystemSnapshot.issues_open;
   const closedPrs = live.prs_closed ?? ecosystemSnapshot.prs_closed;
   const asOf = live.generated_at ?? ecosystemSnapshot.generated_at;
@@ -71,7 +77,7 @@ function renderEcosystemMetrics(live = {}) {
 
   return [
     ["Lines of code", fmtNum(loc)],
-    ["Package repos", fmtNum(packages)],
+    ["Org repositories", fmtNum(orgRepos)],
     ["Open issues", fmtNum(issues)],
     ["Closed PRs", fmtNum(closedPrs)],
   ]

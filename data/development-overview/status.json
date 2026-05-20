@@ -1,45 +1,38 @@
 {
-  "generated_at": "2026-05-20T06:35Z",
+  "generated_at": "2026-05-20T08:18Z",
   "pages_url": "https://li-langverse.github.io/roadmap/development-overview/",
   "metrics": {
-    "ready_to_merge": 1,
-    "open_prs": 19,
-    "blocked": 13,
+    "ready_to_merge": 4,
+    "open_prs": 22,
+    "blocked": 14,
     "repos_with_live_docs": 2,
     "repos_total": 12
   },
   "ecosystem": {
-    "generated_at": "2026-05-20T06:35Z",
+    "generated_at": "2026-05-20T08:17Z",
     "org": "li-langverse",
     "repos_tracked": 12,
-    "lines_of_code": 67108,
+    "lines_of_code": 67208,
     "lines_per_repo": {
-      "lic": 35715,
+      "lic": 35770,
       "li-language": 12465,
       "lip": 690,
       "lit": 350,
       "lis": 4375,
       "benchmarks": 10369,
-      "roadmap": 3144,
+      "roadmap": 3189,
       "li-net": 0,
       "li-httpd": 0,
       "li-std-core": 0,
       "li-std-math": 0,
       "li-demo": 0
     },
-    "packages": 5,
-    "package_repos": [
-      "li-demo",
-      "li-httpd",
-      "li-net",
-      "li-std-core",
-      "li-std-math"
-    ],
+    "org_repositories": 14,
     "issues_open": 57,
     "issues_closed": 0,
     "issues_total": 57,
     "prs_closed": 103,
-    "prs_open": 22
+    "prs_open": 25
   },
   "pull_requests": [
     {
@@ -198,9 +191,9 @@
       "title": "feat(packages): World Studio scaffolds (li-sim, li-studio, li-chem, li-voxel)",
       "url": "https://github.com/li-langverse/lic/pull/60",
       "base": "main",
-      "ci": "none",
+      "ci": "pass",
       "draft": false,
-      "ready": false
+      "ready": true
     },
     {
       "repo": "lic",
@@ -228,9 +221,39 @@
       "title": "feat(types): scalar precision types float4\u2013float512, int4\u2013int512",
       "url": "https://github.com/li-langverse/lic/pull/71",
       "base": "main",
-      "ci": "pending",
+      "ci": "pass",
       "draft": true,
       "ready": false
+    },
+    {
+      "repo": "lic",
+      "number": 72,
+      "title": "feat(phase-h): li-http package, P0 runtime stubs, std.bytes path fix",
+      "url": "https://github.com/li-langverse/lic/pull/72",
+      "base": "main",
+      "ci": "fail",
+      "draft": true,
+      "ready": false
+    },
+    {
+      "repo": "lic",
+      "number": 73,
+      "title": "fix(mir): object field access and expanded object parameters",
+      "url": "https://github.com/li-langverse/lic/pull/73",
+      "base": "main",
+      "ci": "pass",
+      "draft": false,
+      "ready": true
+    },
+    {
+      "repo": "roadmap",
+      "number": 12,
+      "title": "feat(docs): ecosystem statistics on development overview",
+      "url": "https://github.com/li-langverse/roadmap/pull/12",
+      "base": "main",
+      "ci": "pass",
+      "draft": false,
+      "ready": true
     }
   ]
 }

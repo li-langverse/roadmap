@@ -11,12 +11,12 @@
 
 ## Ecosystem statistics
 
-Org-wide snapshot · refresh with `./scripts/compute-ecosystem-stats.py` · open issues / closed PRs also update live in the browser.
+Org-wide snapshot · refresh with `./scripts/compute-ecosystem-stats.py` · **Org repositories** counts every repo under `li-langverse` on GitHub (LoC still sums `.github/li-org-repos.txt` only). Open issues / closed PRs also update live in the browser.
 
 | Metric | Value |
 |--------|------:|
-| Lines of code (tracked repos) | 68,107 |
-| Official package repos | 5 |
+| Lines of code (tracked repos) | 67,208 |
+| Org repositories (GitHub) | 14 |
 | Open issues | 57 |
 | Closed pull requests | 103 |
 

@@ -24,7 +24,8 @@ eco = d.get('ecosystem') or {}
 if eco:
     loc = eco.get('lines_of_code')
     loc_s = f\"{loc:,}\" if isinstance(loc, int) else '?'
-    print(f\"LoC: {loc_s}  Packages: {eco.get('packages', '?')}  Issues: {eco.get('issues_open', '?')}  Closed PRs: {eco.get('prs_closed', '?')}\")
+    nrepos = eco.get('org_repositories', eco.get('packages'))
+    print(f\"LoC: {loc_s}  Org repos: {nrepos}  Issues: {eco.get('issues_open', '?')}  Closed PRs: {eco.get('prs_closed', '?')}\")
 failed = [x for x in d['pull_requests'] if x['ci']=='fail']
 if failed:
     print('Failed CI:')
