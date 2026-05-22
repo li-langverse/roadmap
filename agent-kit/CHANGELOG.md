@@ -1,5 +1,10 @@
 # Agent-kit changelog
 
+## 1.3.3 — 2026-05-22
+
+- Skill **`run-local-ci-gha-quota`** — run **li-local-ci** / host CI when GitHub Actions quota is exhausted; merge gate via `benchmarks/data/latest/local-ci-results.json`
+- `install-agent-kit.sh` resolves **`li-local-ci`** sibling repo
+
 ## 1.3.2 — 2026-05-17
 
 - Overlay `overlays/li-cursor-agents` — commit-when-done + agent-kit sync for Cursor SDK runner
