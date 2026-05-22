@@ -27,7 +27,7 @@ done
 resolve_target() {
   local arg="$1"
   case "$arg" in
-    lic|lip|lit|lis|roadmap|benchmarks|li-cursor-agents)
+    lic|lip|lit|lis|roadmap|benchmarks|li-cursor-agents|li-local-ci)
       local sibling="$ROADMAP_ROOT/../$arg"
       if [[ "$arg" == "lic" && -d "$ROADMAP_ROOT/../li" ]]; then
         sibling="$ROADMAP_ROOT/../li"
@@ -98,11 +98,19 @@ if [[ -f "$MERGE_FILE" ]]; then
 fi
 
 echo "Installing agent-kit $STAMP -> $CURSOR_DST"
-rsync -a "$KIT/.cursor/" "$CURSOR_DST/"
-
-OVERLAY="$KIT/overlays/$REPO_ID/.cursor"
-if [[ -d "$OVERLAY" ]]; then
-  rsync -a "$OVERLAY/" "$CURSOR_DST/"
+if command -v rsync >/dev/null 2>&1; then
+  rsync -a "$KIT/.cursor/" "$CURSOR_DST/"
+  OVERLAY="$KIT/overlays/$REPO_ID/.cursor"
+  if [[ -d "$OVERLAY" ]]; then
+    rsync -a "$OVERLAY/" "$CURSOR_DST/"
+  fi
+else
+  mkdir -p "$CURSOR_DST"
+  cp -a "$KIT/.cursor/." "$CURSOR_DST/"
+  OVERLAY="$KIT/overlays/$REPO_ID/.cursor"
+  if [[ -d "$OVERLAY" ]]; then
+    cp -a "$OVERLAY/." "$CURSOR_DST/"
+  fi
 fi
 
 if [[ -n "$MERGE_BACKUP" && -f "$MERGE_BACKUP" ]]; then
