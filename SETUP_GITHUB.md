@@ -42,11 +42,16 @@ gh repo create li-langverse/benchmarks --public --description "Li benchmark aggr
 
 Then run `apply-org-branch-protection.sh` on the new repo name.
 
-## Benchmarks: GitHub Pages
+## GitHub Pages (no Actions)
 
-Repo **Settings → Pages → Build from GitHub Actions** (`pages.yml` workflow).
+| Site | Local deploy |
+|------|----------------|
+| [Benchmarks dashboard](https://li-langverse.github.io/benchmarks/) | `benchmarks/scripts/deploy-pages-local.sh --build` |
+| [Development overview](https://li-langverse.github.io/roadmap/development-overview/) | `roadmap/scripts/deploy-pages-local.sh --build` |
 
-Dashboard: https://li-langverse.github.io/benchmarks/
+Both push an orphan **`gh-pages`** branch and set Pages source to **branch deploy** (not `pages.yml`). Use `--workflow` only if you intentionally want Actions.
+
+Live PR queue on the overview site refreshes in the **browser** — redeploy only when `docs/development-overview.md` snapshot HTML changes.
 
 ## CI dispatch token (benchmarks ingest)
 

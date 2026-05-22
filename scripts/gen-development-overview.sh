@@ -14,10 +14,20 @@ PY="${PYTHON:-python3}"
 if ! "$PY" -c "import markdown" 2>/dev/null; then
   VENV="${ROOT}/.venv-overview"
   if [[ ! -x "${VENV}/bin/python" ]]; then
-    "$PY" -m venv "$VENV"
-    "${VENV}/bin/pip" install -q markdown
+    if "$PY" -m venv "$VENV" 2>/dev/null; then
+      "${VENV}/bin/pip" install -q markdown
+    fi
   fi
-  PY="${VENV}/bin/python"
+  if [[ -x "${VENV}/bin/python" ]] && "${VENV}/bin/python" -c "import markdown" 2>/dev/null; then
+    PY="${VENV}/bin/python"
+  elif command -v node >/dev/null 2>&1 || [[ -x "${HOME}/.local/node/bin/node" ]]; then
+    export PATH="${HOME}/.local/node/bin:${PATH}"
+    chmod +x "${ROOT}/scripts/gen-development-overview-node.mjs"
+    exec node "${ROOT}/scripts/gen-development-overview-node.mjs"
+  else
+    echo "error: need python markdown or node+npx marked" >&2
+    exit 1
+  fi
 fi
 
 "$PY" - "$SRC" "$OUT_HTML" "$AS_OF" <<'PY'

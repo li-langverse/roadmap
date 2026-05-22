@@ -62,8 +62,11 @@ After editing the snapshot:
 
 ```bash
 ./scripts/gen-development-overview.sh
-# Commit on roadmap branch; push opens PR. Merging to main redeploys Pages.
+./scripts/deploy-pages-local.sh --build   # no Actions; or merge to main + pages.yml
 ```
+
+Live PR queue (`development-overview-live.js`) does **not** need redeploy — browser polls GitHub API.
+Optional offline mirror: `./scripts/refresh-development-overview.sh` → `data/development-overview/status.json` (agents only).
 
 ---
 
