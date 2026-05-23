@@ -1,11 +1,11 @@
 # Li development overview
 
-**li-langverse org** · scanned **2026-05-22T15:57Z** · `gh pr list` / checks · live docs HEAD
+**li-langverse org** · scanned **2026-05-23T00:50Z** · `gh pr list` / checks · live docs HEAD
 
 | Metric | Value |
 |--------|------:|
 | Ready to merge (CI green) | 0 |
-| Open PRs | 1 |
+| Open PRs | 2 |
 | Blocked / needs work | 1 |
 | Repos with live docs | 3 / 12 |
 
@@ -23,13 +23,14 @@ _No PRs with green CI and non-draft status._
 
 | PR | CI | Action | Notes |
 |-----|-----|--------|-------|
-| [lic#173](https://github.com/li-langverse/lic/pull/173) | fail | Fix CI first | feat(httpd): m1 routing, bearer auth, and TOML desugar gates |
+| [lic#176](https://github.com/li-langverse/lic/pull/176) | fail | Fix CI first | feat(wave-a): 2i explicit math, 7e verify, 7d @vectorized on |
 
 ## All open PRs
 
 | Repo | # | Title | Base | CI | Ready |
 |------|---|-------|------|-----|-------|
-| lic | 173 | [feat(httpd): m1 routing, bearer auth, and TOML desugar gates](https://github.com/li-langverse/lic/pull/173) | main | fail | no |
+| lic | 175 | [feat(httpd): httpd plan loop — M1.5–M3 optional gateway hooks](https://github.com/li-langverse/lic/pull/175) | main | none | no |
+| lic | 176 | [feat(wave-a): 2i explicit math, 7e verify, 7d @vectorized on def](https://github.com/li-langverse/lic/pull/176) | main | fail | no |
 
 ---
 

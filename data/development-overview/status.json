@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-05-22T15:57Z",
+  "generated_at": "2026-05-23T00:50Z",
   "pages_url": "https://li-langverse.github.io/roadmap/development-overview/",
   "metrics": {
     "ready_to_merge": 0,
-    "open_prs": 1,
+    "open_prs": 2,
     "blocked": 1,
     "repos_with_live_docs": 2,
     "repos_total": 12
@@ -11,9 +11,19 @@
   "pull_requests": [
     {
       "repo": "lic",
-      "number": 173,
-      "title": "feat(httpd): m1 routing, bearer auth, and TOML desugar gates",
-      "url": "https://github.com/li-langverse/lic/pull/173",
+      "number": 175,
+      "title": "feat(httpd): httpd plan loop \u2014 M1.5\u2013M3 optional gateway hooks",
+      "url": "https://github.com/li-langverse/lic/pull/175",
+      "base": "main",
+      "ci": "none",
+      "draft": false,
+      "ready": false
+    },
+    {
+      "repo": "lic",
+      "number": 176,
+      "title": "feat(wave-a): 2i explicit math, 7e verify, 7d @vectorized on def",
+      "url": "https://github.com/li-langverse/lic/pull/176",
       "base": "main",
       "ci": "fail",
       "draft": false,
