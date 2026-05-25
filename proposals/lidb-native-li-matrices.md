@@ -171,6 +171,20 @@ flowchart LR
 
 ---
 
+## Appendix — Agent query surface token efficiency (2026-05-25)
+
+Measured audit (18 registry + control-plane scenarios; `tiktoken` `cl100k_base`): **liq −35.6% tokens vs hand SQL** on agent-authored strings; PostgREST URLs median-smallest but weaker typing; compiled liq→SQL still **longer** than hand SQL until alias folding.
+
+| Doc | Repo |
+|-----|------|
+| Ecosystem tier + master matrix | [benchmarks `tier-db-token-efficiency.md`](https://github.com/li-langverse/benchmarks/blob/main/docs/ecosystem/tier-db-token-efficiency.md) |
+| Full audit + grammar recommendations | [lidb `liq-token-efficiency-audit.md`](https://github.com/li-langverse/lidb/blob/main/docs/liq-token-efficiency-audit.md) |
+| CI manifest | [benchmarks `data/latest/tier-db-token-efficiency.json`](https://github.com/li-langverse/benchmarks/blob/main/data/latest/tier-db-token-efficiency.json) |
+
+Re-run: `cd benchmarks && ./scripts/run-db-token-efficiency-bench.sh`
+
+---
+
 ## Agent continuation
 
 1. **Read:** this file, [`lidb/docs/architecture-native-li.md`](https://github.com/li-langverse/lidb/blob/main/docs/architecture-native-li.md), [`lidb-native-engine.md`](./lidb-native-engine.md)
