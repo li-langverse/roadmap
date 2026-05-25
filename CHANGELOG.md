@@ -4,6 +4,8 @@
 
 ### Added
 
+- **lidb matrices appendix:** token efficiency cross-link to benchmarks/lidb audit — [2026-05-25-liq-token-efficiency-xlink.md](docs/release-notes/2026-05-25-liq-token-efficiency-xlink.md).
+
 - **lidb native Li research:** `proposals/lidb-native-li-matrices.md` — 8 vertical competitor tables, WP-N1…N9, benchmark spectrum, PH-DB-3.1 ([2026-05-25-lidb-native-li-research.md](docs/release-notes/2026-05-25-lidb-native-li-research.md))
 
 - PH-DB native engine ADR (`proposals/lidb-native-engine.md`): deprecate sqlite smoke; parallel N1/N2/N3/N5; sequential N4 (after N2+N3), N6 (after N5); realtime in `lis` bundle
