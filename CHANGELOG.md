@@ -4,6 +4,8 @@
 
 ### Added
 
+- **HTTP mirror decision (WP-B4):** `docs/ecosystem/httpd-repo-canonical.md` — canonical `li-httpd` vs legacy `net.httpd`; target rename `li-net-httpd` — [2026-05-25-httpd-repo-canonical-wp-b4.md](docs/release-notes/2026-05-25-httpd-repo-canonical-wp-b4.md).
+
 - PH-DB roadmap gaps: `PKG-lidb` in `official-packages.md`; PH-DB-0..10 table + **PH-8d-v2 → PH-DB-4** in `vision-and-roadmap.md`; `benchmark-tier-index.md`; proposal cross-links (`lidb-li-data-platform` ↔ `lidb-multi-model-gpu-research`)
 - PH-DB-0 ADR: Li data platform (`proposals/lidb-li-data-platform.md`) — `lidb`+`lis` bundle, `liorm`+`liq`, Supabase vertical map, PH-DB-0..10 phases, registry-min path (PH-DB-0)
 
