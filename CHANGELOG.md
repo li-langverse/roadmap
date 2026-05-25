@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Changed
+
+- Agent-kit **1.3.3** adoption in `roadmap`: sync `.cursor/` stamps and `run-local-ci-gha-quota` skill ([2026-05-25-roadmap-agent-kit-1.3.3.md](docs/release-notes/2026-05-25-roadmap-agent-kit-1.3.3.md)).
+
 ### Added
 
 - PH-DB roadmap gaps: `PKG-lidb` in `official-packages.md`; PH-DB-0..10 table + **PH-8d-v2 → PH-DB-4** in `vision-and-roadmap.md`; `benchmark-tier-index.md`; proposal cross-links (`lidb-li-data-platform` ↔ `lidb-multi-model-gpu-research`)
