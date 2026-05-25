@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Added
+
+- PH-DB-0 ADR: Li data platform (`proposals/lidb-li-data-platform.md`) — `lidb`+`lis` bundle, `liorm`+`liq`, Supabase vertical map, PH-DB-0..10 phases, registry-min path (PH-DB-0)
+
 ### Changed
 
 - Vision **north star**: go-to ecosystem for HPC, scientific computing, and AI (`docs/ecosystem/vision-and-roadmap.md`); agent-kit **1.3.1** session hooks
