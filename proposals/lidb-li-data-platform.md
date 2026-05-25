@@ -3,7 +3,8 @@
 **Status:** Draft (PH-DB-0)  
 **Date:** 2026-05-25  
 **PH / REQ:** PH-DB-0 … PH-DB-10, REQ-registry-v2, lip **8d v2**  
-**Research track:** [`lidb-multi-model-gpu-research.md`](./lidb-multi-model-gpu-research.md) (PH-DB-G0 — multi-model + GPU; out of PH-DB-1..4 scope)
+**Research track:** [`lidb-multi-model-gpu-research.md`](./lidb-multi-model-gpu-research.md) (PH-DB-G0 — multi-model + GPU; out of PH-DB-1..4 scope)  
+**Native engine:** [`lidb-native-engine.md`](./lidb-native-engine.md) (N1–N6 work packages; **sqlite smoke deprecated**)
 
 ## Context
 
@@ -131,27 +132,29 @@ Document evidence in `lidb/docs/footprint.md` (WP1); CI optional nightly.
 ## Registry-min path
 
 1. **PH-DB-0** — this ADR + roadmap release note (no runtime).
-2. **PH-DB-1** — `lidb` repo: `migrations/001_registry.sql`, smoke script.
+2. **PH-DB-1** — `lidb` repo: native WAL/heap + SQL executor (`001_registry.sql`); **sqlite smoke removed** per [`lidb-native-engine.md`](./lidb-native-engine.md).
 3. **PH-DB-2** — `liorm`/`liq` skeleton + security test stubs.
 4. **PH-DB-3** — `lis db start` + `profiles/registry-min.toml`.
 5. **PH-DB-4** — `lip` registry v2 REST + central DB; domain TLS (human).
 6. **PH-DB-5…9** — auth RLS, storage, realtime, vectors, auto-API (module flags).
 7. **PH-DB-10** — migrate li-cursor-agents control plane off Supabase.
 
-**Parallel WPs (after PH-DB-0):** WP1 ∥ WP4-prep (lip OpenAPI) ∥ WP-bench; then WP2 → WP5 → WP4.
+**Native WPs (after PH-DB-0):** parallel **N1** learned-from ∥ **N2** WAL/pages ∥ **N3** SQL executor ∥ **N5** realtime protocol; sequential **N4** (after N2+N3) → **N6** RLS realtime (after N5). See [`lidb-native-engine.md`](./lidb-native-engine.md).
+
+**Ecosystem WPs (parallel with native):** WP4-prep (lip OpenAPI) ∥ WP-bench (`tier_db_registry`); **lis** bundle (PH-DB-3) after N4 engine cutover.
 
 ## Phased roadmap PH-DB-0 … PH-DB-10
 
 | Phase | ID | Deliverable | Depends |
 |-------|-----|-------------|---------|
 | 0 | **PH-DB-0** | Proposal + ADR (this doc); lic cross-links | — |
-| 1 | **PH-DB-1** | `lidb` scaffold: WAL/heap stub, registry migration, `pg-subset-v1` NOT list | PH-DB-0, human: create `li-langverse/lidb` |
+| 1 | **PH-DB-1** | Native engine: WAL/heap pages, SQL executor, registry migration; sqlite smoke **deprecated** | PH-DB-0; [`lidb-native-engine.md`](./lidb-native-engine.md) N2–N3 |
 | 2 | **PH-DB-2** | `liorm` + `liq` + security harness stubs | PH-DB-1 |
 | 3 | **PH-DB-3** | `lis db` supervisor + `registry-min` profile | PH-DB-1 |
 | 4 | **PH-DB-4** | Registry v2 on lidb; `lip publish` → central DB | PH-DB-1–3, lip OpenAPI; **blocks PH-8d-v2** |
 | 5 | **PH-DB-5** | Auth + RLS for publishers | PH-DB-4 |
 | 6 | **PH-DB-6** | Object storage vertical | PH-DB-4 |
-| 7 | **PH-DB-7** | Realtime (WAL fanout) | PH-DB-4 |
+| 7 | **PH-DB-7** | Realtime (`lis` broker + WAL fanout; N5 protocol, N6 RLS) | PH-DB-4; N5 before N6 |
 | 8 | **PH-DB-8** | Vectors + flexible embedding spaces | PH-DB-1 |
 | 9 | **PH-DB-9** | PostgREST-style auto-API + edge stub | PH-DB-4 |
 | 10 | **PH-DB-10** | Control-plane store migration | PH-DB-4 |
@@ -168,7 +171,7 @@ Document evidence in `lidb/docs/footprint.md` (WP1); CI optional nightly.
 
 | System | Keep | Reject |
 |--------|------|--------|
-| **SQLite** | embedded mode, single-file dev | full SQL legacy surface |
+| **SQLite** | — | PH-DB-1 smoke only — **REMOVED** per [`lidb-native-engine.md`](./lidb-native-engine.md) |
 | **Neon** | storage/compute separation ideas | managed-only ops model |
 | **pgvector** | embedding index patterns | Postgres extension baggage |
 | **Supabase** | vertical feature map, RLS story | 10-container compose default |
@@ -186,6 +189,7 @@ Multi-model storage (relational / document / graph) and GPU acceleration are **o
 
 ## Links
 
+- **Native engine:** [`lidb-native-engine.md`](./lidb-native-engine.md) (N1–N6, sqlite deprecation)
 - **Research:** [`lidb-multi-model-gpu-research.md`](./lidb-multi-model-gpu-research.md) (PH-DB-G0)
 - **Ecosystem PH table:** [`docs/ecosystem/vision-and-roadmap.md`](../docs/ecosystem/vision-and-roadmap.md#li-data-platform-ph-db-0--ph-db-10) — includes **PH-8d-v2 → PH-DB-4**
 - **PKG-lidb:** [`docs/ecosystem/official-packages.md`](../docs/ecosystem/official-packages.md)
