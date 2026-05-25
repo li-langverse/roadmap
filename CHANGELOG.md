@@ -4,12 +4,15 @@
 
 ### Added
 
+- **lidb native Li research:** `proposals/lidb-native-li-matrices.md` — 8 vertical competitor tables, WP-N1…N9, benchmark spectrum, PH-DB-3.1 ([2026-05-25-lidb-native-li-research.md](docs/release-notes/2026-05-25-lidb-native-li-research.md))
+
 - PH-DB native engine ADR (`proposals/lidb-native-engine.md`): deprecate sqlite smoke; parallel N1/N2/N3/N5; sequential N4 (after N2+N3), N6 (after N5); realtime in `lis` bundle
 - PH-DB roadmap gaps: `PKG-lidb` in `official-packages.md`; PH-DB-0..10 table + **PH-8d-v2 → PH-DB-4** in `vision-and-roadmap.md`; `benchmark-tier-index.md`; proposal cross-links (`lidb-li-data-platform` ↔ `lidb-multi-model-gpu-research`)
 - PH-DB-0 ADR: Li data platform (`proposals/lidb-li-data-platform.md`) — `lidb`+`lis` bundle, `liorm`+`liq`, Supabase vertical map, PH-DB-0..10 phases, registry-min path (PH-DB-0)
 
 ### Changed
 
+- `proposals/lidb-li-data-platform.md` — PH-DB-3.1 row, WP-N1…N9 scheduling, links to matrices + lidb architecture ADR
 - Vision **north star**: go-to ecosystem for HPC, scientific computing, and AI (`docs/ecosystem/vision-and-roadmap.md`); agent-kit **1.3.1** session hooks
 
 ### Added

@@ -3,7 +3,11 @@
 **Status:** Draft (PH-DB-1 revision)  
 **Date:** 2026-05-25  
 **Parent ADR:** [`lidb-li-data-platform.md`](./lidb-li-data-platform.md) (PH-DB-0 … PH-DB-10)  
-**PH / REQ:** PH-DB-1 … PH-DB-7, REQ-registry-v2
+**Matrices + WP-N1…N9:** [`lidb-native-li-matrices.md`](./lidb-native-li-matrices.md)  
+**lidb ADR:** [`lidb/docs/architecture-native-li.md`](https://github.com/li-langverse/lidb/blob/main/docs/architecture-native-li.md)  
+**PH / REQ:** PH-DB-1 … PH-DB-7, **PH-DB-3.1**, REQ-registry-v2
+
+> **Note:** This doc uses legacy labels **N1–N6**. Scheduling authority for agent squads is **WP-N1…N9** in [`lidb-native-li-matrices.md`](./lidb-native-li-matrices.md).
 
 ## Context
 
