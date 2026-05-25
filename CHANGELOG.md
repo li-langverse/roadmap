@@ -4,7 +4,11 @@
 
 ### Added
 
+<<<<<<< HEAD
 - **lidb matrices appendix:** token efficiency cross-link to benchmarks/lidb audit — [2026-05-25-liq-token-efficiency-xlink.md](docs/release-notes/2026-05-25-liq-token-efficiency-xlink.md).
+=======
+- **PH-DB status checklist:** `docs/ecosystem/ph-db-status.md` — merged vs open `feat/ph-db*` / `feat/lidb*` / `feat/tier-db*` PRs, WP-N1…N9 %, human actions, production registry blockers — [2026-05-25-ph-db-status.md](docs/release-notes/2026-05-25-ph-db-status.md)
+>>>>>>> ec904d5 (chore: CHANGELOG [Unreleased] for ph-db-status checklist)
 
 - **lidb native Li research:** `proposals/lidb-native-li-matrices.md` — 8 vertical competitor tables, WP-N1…N9, benchmark spectrum, PH-DB-3.1 ([2026-05-25-lidb-native-li-research.md](docs/release-notes/2026-05-25-lidb-native-li-research.md))
 
