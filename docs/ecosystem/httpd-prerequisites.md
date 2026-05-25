@@ -13,3 +13,5 @@ li-httpd **M1 `.li` code** does not start until these **`lic`** gates pass. Infr
 **Coverage:** `std/**` = **100%**; published `li-*` = **≥80%** ([engineering-standards.md](engineering-standards.md)).
 
 **lis status:** [implementation-status](https://github.com/li-langverse/lis/blob/main/docs/implementation-status.md) (infra harness complete).
+
+**Org mirrors:** See [httpd-repo-canonical.md](httpd-repo-canonical.md) for `li-httpd` vs legacy `net.httpd` (recommendation only; no deletes until WP-D3 human gate).
