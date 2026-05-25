@@ -8,7 +8,7 @@ Li standard and first-party software lives under the **[`li-langverse`](https://
 
 | What | Where |
 |------|--------|
-| Language + compiler | [`li-langverse/li-language`](https://github.com/li-langverse/li-language) |
+| Language + compiler | [`li-langverse/lic`](https://github.com/li-langverse/lic) — [`li-language`](https://github.com/li-langverse/li-language) deprecated |
 | Standard libraries | `li-langverse/li-std-*` (as they split from the monorepo) |
 | Infrastructure libs | `li-langverse/li-net`, `li-http`, … (see [li-httpd plan](https://github.com/li-langverse/lic/blob/main/docs/superpowers/plans/2026-05-16-li-httpd-plan.md)) |
 | Third-party packages | Author accounts; `lip` registry when phase 8d ships |
@@ -47,7 +47,7 @@ We follow common international practice (not formal ISO certification):
 | `REQ-` | `REQ-PROOF-01` | Language design spec |
 | `PH-` | `PH-Pkg`, `PH-8b` | Master plan phases |
 | `T-` | `T-modules-import-ok` | `li-tests/manifest.toml` notes |
-| `PKG-` | `PKG-li-language` | [official-packages.md](official-packages.md) |
+| `PKG-` | `PKG-lic` | [official-packages.md](official-packages.md) |
 | `DOC-` | `DOC-ecosystem-lip` | HTML comment in doc source |
 
 Each official package includes `PUBLISH.md`, `docs/traceability.md`, and `CHANGELOG.md`.

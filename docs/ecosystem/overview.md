@@ -2,17 +2,19 @@
 
 <!-- DOC-ecosystem-overview -->
 
-Li ships as a **language** ([`li-langverse/li-language`](https://github.com/li-langverse/li-language)) plus **packages** you build and publish under the same org. The org’s ambition is to be the **go-to open ecosystem for HPC, scientific computing, and AI** — see [vision north star](vision-and-roadmap.md#north-star--go-to-ecosystem-agents-read-first).
+Li ships as a **language** ([`li-langverse/lic`](https://github.com/li-langverse/lic)) plus **packages** you build and publish under the same org. The org’s ambition is to be the **go-to open ecosystem for HPC, scientific computing, and AI** — see [vision north star](vision-and-roadmap.md#north-star--go-to-ecosystem-agents-read-first).
+
+> **Note:** [`li-language`](https://github.com/li-langverse/li-language) is **deprecated** — use **`lic`** for the compiler, handbook, and CI. Archive redirect is tracked in org hygiene WP-B3.
 
 ## Three tools
 
 | Tool | Repo | Role | Status |
 |------|------|------|--------|
-| **`lic`** | [li-language](https://github.com/li-langverse/li-language) | Compile and prove your code | Available |
+| **`lic`** | [lic](https://github.com/li-langverse/lic) | Compile and prove your code | Available |
 | **`lit`** | [**lip**](https://github.com/li-langverse/lip) | Tests and ≥80% line coverage gate | Bootstrap (phase 8e) |
 | **`lip`** | [**lip**](https://github.com/li-langverse/lip) | Dependencies, lockfile, registry publish | Bootstrap (phase 8b–8d) |
 
-Package manager and test tooling live in **[`li-langverse/lip`](https://github.com/li-langverse/lip)** (sibling repo to `li-language`).
+Package manager and test tooling live in **[`li-langverse/lip`](https://github.com/li-langverse/lip)** (sibling repo to **`lic`**).
 
 ## Creating a package today
 
@@ -37,7 +39,7 @@ Compiler changes flow downstream via **`li-toolchain.toml`**, release dispatch, 
 
 ```bash
 git clone https://github.com/li-langverse/lip.git   # after org push
-cd lip && LI_REPO=../li-language ./scripts/ci.sh
+cd lip && LI_REPO=../lic ./scripts/ci.sh
 ```
 
 ## Plans

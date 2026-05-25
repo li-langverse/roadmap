@@ -107,7 +107,7 @@ coding-projects/.env.github   # GH_TOKEN=... — chmod 600, never commit
 ```
 
 ```bash
-cd li-language
+cd lic
 ./scripts/with-github-env.sh gh auth status
 ./scripts/push-li-langverse-repos.sh   # when human approves bulk push
 ```
