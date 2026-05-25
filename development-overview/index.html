@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Li development overview — li-langverse</title>
+  <style>
+    :root { --bg:#0d1117; --fg:#e6edf3; --muted:#8b949e; --border:#30363d; --accent:#58a6ff; }
+    body { margin:0; font-family:system-ui,sans-serif; background:var(--bg); color:var(--fg); line-height:1.55; }
+    .wrap { max-width:1100px; margin:0 auto; padding:2rem 1.25rem 4rem; }
+    header { margin-bottom:2rem; border-bottom:1px solid var(--border); padding-bottom:1rem; }
+    a { color:var(--accent); }
+    h2 { margin-top:2.25rem; font-size:1.25rem; border-bottom:1px solid var(--border); padding-bottom:.35rem; }
+    table { width:100%; border-collapse:collapse; font-size:.88rem; margin:1rem 0; }
+    th,td { border:1px solid var(--border); padding:.45rem .6rem; text-align:left; }
+    th { background:#161b22; }
+    .live-banner { margin:1rem 0 1.5rem; padding:.75rem 1rem; border:1px solid var(--border); border-radius:6px; background:#161b22; }
+    .live-metrics { display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:.75rem; margin:1rem 0; }
+    .metric-card { border:1px solid var(--border); border-radius:6px; padding:.65rem .75rem; }
+    .metric-card .label { color:var(--muted); font-size:.78rem; }
+    .metric-card .value { font-size:1.35rem; font-weight:600; }
+    #live-status { color:var(--muted); font-size:.82rem; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>Li development overview</h1>
+      <p>li-langverse org · snapshot <span id="snapshot-as-of">2026-05-25T19:01Z</span> · <span id="live-status">loading live queue…</span></p>
+      <nav><a href="https://li-langverse.github.io/benchmarks/">Benchmarks</a> · <a href="https://github.com/li-langverse/roadmap">roadmap</a></nav>
+    </header>
+    <section class="live-banner">
+      <h2>Live PR merge queue</h2>
+      <p>Browser polls GitHub API — no Actions cron.</p>
+      <div class="live-metrics" id="live-metrics"></div>
+      <table id="live-pr-table"><thead><tr><th>Repo</th><th>#</th><th>Title</th><th>Base</th><th>CI</th><th>Ready</th></tr></thead><tbody id="live-pr-body"></tbody></table>
+    </section>
+    <main><p><strong>li-langverse org</strong> · scanned <strong>2026-05-25T19:01Z</strong> · <code>gh pr list</code> / checks · live docs HEAD</p>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th align="right">Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Ready to merge (CI green)</td>
+<td align="right">17</td>
+</tr>
+<tr>
+<td>Open PRs</td>
+<td align="right">61</td>
+</tr>
+<tr>
+<td>Blocked / needs work</td>
+<td align="right">39</td>
+</tr>
+<tr>
+<td>Repos with live docs</td>
+<td align="right">3 / 12</td>
+</tr>
+</tbody></table>
+<h2>Recommended merge order</h2>
+<ol>
+<li><a href="https://github.com/li-langverse/benchmarks/pull/97">benchmarks #97</a> — ci(benchmarks): WP-E1 skip duplicate dashboard build on main</li>
+<li><a href="https://github.com/li-langverse/benchmarks/pull/99">benchmarks #99</a> — feat(catalog): sync paths from lic benchmarks tree (WP5)</li>
+<li><a href="https://github.com/li-langverse/benchmarks/pull/100">benchmarks #100</a> — fix(dashboard): 79% measured catalog rows via lic ingest</li>
+<li><a href="https://github.com/li-langverse/benchmarks/pull/102">benchmarks #102</a> — fix(dashboard): SOTA relative perf charts on bench drill-down</li>
+<li><a href="https://github.com/li-langverse/benchmarks/pull/103">benchmarks #103</a> — fix(ingest): clear tier0_stability unknown from stability.csv</li>
+<li><a href="https://github.com/li-langverse/benchmarks/pull/104">benchmarks #104</a> — fix(ingest): tier-5 HTTP unknown rows → yellow oracle-only (WP-T5)</li>
+<li><a href="https://github.com/li-langverse/benchmarks/pull/106">benchmarks #106</a> — feat(dashboard): pillar and drilldown SOTA-relative charts</li>
+<li><a href="https://github.com/li-langverse/benchmarks/pull/107">benchmarks #107</a> — fix(dashboard): overview tier cards measured vs pending (WP-O)</li>
+<li><a href="https://github.com/li-langverse/li-demo/pull/14">li-demo #14</a> — chore(docs): GitHub description SEO (WP-A4)</li>
+<li><a href="https://github.com/li-langverse/li-httpd/pull/12">li-httpd #12</a> — chore(docs): GitHub description SEO (WP-A4)</li>
+<li><a href="https://github.com/li-langverse/li-net/pull/10">li-net #10</a> — chore(docs): GitHub description SEO (WP-A4)</li>
+<li><a href="https://github.com/li-langverse/li-std-core/pull/7">li-std-core #7</a> — chore(docs): GitHub description SEO (WP-A4)</li>
+</ol>
+<h2>Merge when reviewed</h2>
+<table>
+<thead>
+<tr>
+<th>Priority</th>
+<th>PR</th>
+<th>CI</th>
+<th>Action</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>P0</td>
+<td><a href="https://github.com/li-langverse/benchmarks/pull/97">benchmarks#97</a></td>
+<td>pass</td>
+<td>Merge when approved</td>
+<td>Auto snapshot 2026-05-25T19:01Z</td>
+</tr>
+<tr>
+<td>P0</td>
+<td><a href="https://github.com/li-langverse/benchmarks/pull/99">benchmarks#99</a></td>
+<td>pass</td>
+<td>Merge when approved</td>
+<td>Auto snapshot 2026-05-25T19:01Z</td>
+</tr>
+<tr>
+<td>P0</td>
+<td><a href="https://github.com/li-langverse/benchmarks/pull/100">benchmarks#100</a></td>
+<td>pass</td>
+<td>Merge when approved</td>
+<td>Auto snapshot 2026-05-25T19:01Z</td>
+</tr>
+<tr>
+<td>P0</td>
+<td><a href="https://github.com/li-langverse/benchmarks/pull/102">benchmarks#102</a></td>
+<td>pass</td>
+<td>Merge when approved</td>
+<td>Auto snapshot 2026-05-25T19:01Z</td>
+</tr>
+<tr>
+<td>P0</td>
+<td><a href="https://github.com/li-langverse/benchmarks/pull/103">benchmarks#103</a></td>
+<td>pass</td>
+<td>Merge when approved</td>
+<td>Auto snapshot 2026-05-25T19:01Z</td>
+</tr>
+<tr>
+<td>P0</td>
+<td><a href="https://github.com/li-langverse/benchmarks/pull/104">benchmarks#104</a></td>
+<td>pass</td>
+<td>Merge when approved</td>
+<td>Auto snapshot 2026-05-25T19:01Z</td>
+</tr>
+<tr>
+<td>P0</td>
+<td><a href="https://github.com/li-langverse/benchmarks/pull/106">benchmarks#106</a></td>
+<td>pass</td>
+<td>Merge when approved</td>
+<td>Auto snapshot 2026-05-25T19:01Z</td>
+</tr>
+<tr>
+<td>P0</td>
+<td><a href="https://github.com/li-langverse/benchmarks/pull/107">benchmarks#107</a></td>
+<td>pass</td>
+<td>Merge when approved</td>
+<td>Auto snapshot 2026-05-25T19:01Z</td>
+</tr>
+<tr>
+<td>P0</td>
+<td><a href="https://github.com/li-langverse/li-demo/pull/14">li-demo#14</a></td>
+<td>pass</td>
+<td>Merge when approved</td>
+<td>Auto snapshot 2026-05-25T19:01Z</td>
+</tr>
+<tr>
+<td>P0</td>
+<td><a href="https://github.com/li-langverse/li-httpd/pull/12">li-httpd#12</a></td>
+<td>pass</td>
+<td>Merge when approved</td>
+<td>Auto snapshot 2026-05-25T19:01Z</td>
+</tr>
+<tr>
+<td>P0</td>
+<td><a href="https://github.com/li-langverse/li-net/pull/10">li-net#10</a></td>
+<td>pass</td>
+<td>Merge when approved</td>
+<td>Auto snapshot 2026-05-25T19:01Z</td>
+</tr>
+<tr>
+<td>P0</td>
+<td><a href="https://github.com/li-langverse/li-std-core/pull/7">li-std-core#7</a></td>
+<td>pass</td>
+<td>Merge when approved</td>
+<td>Auto snapshot 2026-05-25T19:01Z</td>
+</tr>
+<tr>
+<td>P0</td>
+<td><a href="https://github.com/li-langverse/li-std-math/pull/8">li-std-math#8</a></td>
+<td>pass</td>
+<td>Merge when approved</td>
+<td>Auto snapshot 2026-05-25T19:01Z</td>
+</tr>
+<tr>
+<td>P0</td>
+<td><a href="https://github.com/li-langverse/lic/pull/280">lic#280</a></td>
+<td>pass</td>
+<td>Merge when approved</td>
+<td>Auto snapshot 2026-05-25T19:01Z</td>
+</tr>
+<tr>
+<td>P0</td>
+<td><a href="https://github.com/li-langverse/roadmap/pull/19">roadmap#19</a></td>
+<td>pass</td>
+<td>Merge when approved</td>
+<td>Auto snapshot 2026-05-25T19:01Z</td>
+</tr>
+<tr>
+<td>P0</td>
+<td><a href="https://github.com/li-langverse/roadmap/pull/20">roadmap#20</a></td>
+<td>pass</td>
+<td>Merge when approved</td>
+<td>Auto snapshot 2026-05-25T19:01Z</td>
+</tr>
+<tr>
+<td>P0</td>
+<td><a href="https://github.com/li-langverse/roadmap/pull/21">roadmap#21</a></td>
+<td>pass</td>
+<td>Merge when approved</td>
+<td>Auto snapshot 2026-05-25T19:01Z</td>
+</tr>
+</tbody></table>
+<h2>Do not merge yet</h2>
+<table>
+<thead>
+<tr>
+<th>PR</th>
+<th>CI</th>
+<th>Action</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="https://github.com/li-langverse/li-demo/pull/10">li-demo#10</a></td>
+<td>fail</td>
+<td>Fix CI first</td>
+<td>chore(deps): bump actions/checkout from 4 to 6</td>
+</tr>
+<tr>
+<td><a href="https://github.com/li-langverse/li-httpd/pull/7">li-httpd#7</a></td>
+<td>fail</td>
+<td>Fix CI first</td>
+<td>chore(deps): bump actions/checkout from 4 to 6</td>
+</tr>
+<tr>
+<td><a href="https://github.com/li-langverse/li-httpd/pull/10">li-httpd#10</a></td>
+<td>fail</td>
+<td>Fix CI first</td>
+<td>feat(li-net-httpd): plan-loop split from lic/cursor/httpd-pl</td>
+</tr>
+<tr>
+<td><a href="https://github.com/li-langverse/li-net/pull/6">li-net#6</a></td>
+<td>fail</td>
+<td>Fix CI first</td>
+<td>chore(deps): bump actions/checkout from 4 to 6</td>
+</tr>
+<tr>
+<td><a href="https://github.com/li-langverse/li-std-core/pull/6">li-std-core#6</a></td>
+<td>fail</td>
+<td>Fix CI first</td>
+<td>chore(deps): bump actions/checkout from 4 to 6</td>
+</tr>
+<tr>
+<td><a href="https://github.com/li-langverse/li-std-math/pull/7">li-std-math#7</a></td>
+<td>fail</td>
+<td>Fix CI first</td>
+<td>chore(deps): bump actions/checkout from 4 to 6</td>
+</tr>
+<tr>
+<td><a href="https://github.com/li-langverse/lic/pull/183">lic#183</a></td>
+<td>fail</td>
+<td>Fix CI first</td>
+<td>feat(compiler): VC witness + policy module (compiler-only)</td>
+</tr>
+<tr>
+<td><a href="https://github.com/li-langverse/lic/pull/194">lic#194</a></td>
+<td>fail</td>
+<td>Fix CI first</td>
+<td>feat(compiler-studio): wave-d-gui-scaffold — AL-9 import gui</td>
+</tr>
+<tr>
+<td><a href="https://github.com/li-langverse/lic/pull/254">lic#254</a></td>
+<td>fail</td>
+<td>Fix CI first</td>
+<td>chore(verification): Phase 2a gap closure queue</td>
+</tr>
+<tr>
+<td><a href="https://github.com/li-langverse/lic/pull/262">lic#262</a></td>
+<td>fail</td>
+<td>Fix CI first</td>
+<td>feat(2i): plan tracker — norm reduction shape compile_fail</td>
+</tr>
+<tr>
+<td><a href="https://github.com/li-langverse/lic/pull/263">lic#263</a></td>
+<td>fail</td>
+<td>Fix CI first</td>
+<td>feat(proof-db): Phase 2b catalog lemmas + rebuild report</td>
+</tr>
+<tr>
+<td><a href="https://github.com/li-langverse/lic/pull/264">lic#264</a></td>
+<td>fail</td>
+<td>Fix CI first</td>
+<td>fix(ci): resolve verify.py merge conflict on main</td>
+</tr>
+<tr>
+<td><a href="https://github.com/li-langverse/lic/pull/266">lic#266</a></td>
+<td>fail</td>
+<td>Fix CI first</td>
+<td>feat(2f): P-refine guard discharge + prove_lean_ok specimens</td>
+</tr>
+<tr>
+<td><a href="https://github.com/li-langverse/lic/pull/268">lic#268</a></td>
+<td>fail</td>
+<td>Fix CI first</td>
+<td>feat(plans): close tier-0 correctness plot checkbox (Phase 2</td>
+</tr>
+<tr>
+<td><a href="https://github.com/li-langverse/lic/pull/269">lic#269</a></td>
+<td>fail</td>
+<td>Fix CI first</td>
+<td>feat(sim): PH-SIM SIM-2 replay tick stub</td>
+</tr>
+<tr>
+<td><a href="https://github.com/li-langverse/lic/pull/271">lic#271</a></td>
+<td>fail</td>
+<td>Fix CI first</td>
+<td>feat(demo): publish studio-verticals MP4 via GitHub Release</td>
+</tr>
+<tr>
+<td><a href="https://github.com/li-langverse/lic/pull/272">lic#272</a></td>
+<td>fail</td>
+<td>Fix CI first</td>
+<td>feat(ci): package-release dispatch on v* tags</td>
+</tr>
+<tr>
+<td><a href="https://github.com/li-langverse/lic/pull/281">lic#281</a></td>
+<td>fail</td>
+<td>Fix CI first</td>
+<td>feat(8p-b): parallel lic-workspace-build (gap2 plan tracker)</td>
+</tr>
+<tr>
+<td><a href="https://github.com/li-langverse/lic/pull/282">lic#282</a></td>
+<td>fail</td>
+<td>Fix CI first</td>
+<td>feat(proof-db): gap2 catalog slice — three L-MATH entries +</td>
+</tr>
+<tr>
+<td><a href="https://github.com/li-langverse/lic/pull/283">lic#283</a></td>
+<td>fail</td>
+<td>Fix CI first</td>
+<td>feat(PH-AGENT-1): lis MCP stdio stub for Studio tools</td>
+</tr>
+<tr>
+<td><a href="https://github.com/li-langverse/lic/pull/284">lic#284</a></td>
+<td>fail</td>
+<td>Fix CI first</td>
+<td>feat(studio): tier-2 MD oracle in scientific viewport</td>
+</tr>
+<tr>
+<td><a href="https://github.com/li-langverse/lic/pull/285">lic#285</a></td>
+<td>fail</td>
+<td>Fix CI first</td>
+<td>feat(sim): li-sim-automotive drive smoke stub</td>
+</tr>
+<tr>
+<td><a href="https://github.com/li-langverse/lic/pull/286">lic#286</a></td>
+<td>fail</td>
+<td>Fix CI first</td>
+<td>feat(gap2): G-par parallel-for disjoint MIR tag + P-par lemm</td>
+</tr>
+<tr>
+<td><a href="https://github.com/li-langverse/lic/pull/288">lic#288</a></td>
+<td>fail</td>
+<td>Fix CI first</td>
+<td>feat(vertical-gap): wgpu readback phase A — present_blit_rgb</td>
+</tr>
+<tr>
+<td><a href="https://github.com/li-langverse/lic/pull/289">lic#289</a></td>
+<td>fail</td>
+<td>Fix CI first</td>
+<td>feat(PH-SIM): SIM-3 partial — ml.rl EnvPoolStub and sim_rl s</td>
+</tr>
+<tr>
+<td><a href="https://github.com/li-langverse/lic/pull/291">lic#291</a></td>
+<td>fail</td>
+<td>Fix CI first</td>
+<td>feat(PH-HW WP2): LKIR matmul CPU oracle + md_force_short pla</td>
+</tr>
+<tr>
+<td><a href="https://github.com/li-langverse/lic/pull/292">lic#292</a></td>
+<td>fail</td>
+<td>Fix CI first</td>
+<td>chore(studio-ux): Wave 2 plan loop state + UX assessment</td>
+</tr>
+<tr>
+<td><a href="https://github.com/li-langverse/lic/pull/294">lic#294</a></td>
+<td>fail</td>
+<td>Fix CI first</td>
+<td>feat(2f): P-float corpus gate + dedupe #185 (gap2-proof)</td>
+</tr>
+<tr>
+<td><a href="https://github.com/li-langverse/lic/pull/295">lic#295</a></td>
+<td>fail</td>
+<td>Fix CI first</td>
+<td>chore(gates): align master-plan verticals with honest CI evi</td>
+</tr>
+<tr>
+<td><a href="https://github.com/li-langverse/lic/pull/297">lic#297</a></td>
+<td>fail</td>
+<td>Fix CI first</td>
+<td>feat(PH-AM): sim.export.print temp G-code/3MF pipeline</td>
+</tr>
+<tr>
+<td><a href="https://github.com/li-langverse/lic/pull/298">lic#298</a></td>
+<td>fail</td>
+<td>Fix CI first</td>
+<td>feat(wgpu): phase B readback scaffold (after #288)</td>
+</tr>
+<tr>
+<td><a href="https://github.com/li-langverse/lic/pull/299">lic#299</a></td>
+<td>fail</td>
+<td>Fix CI first</td>
+<td>fix(check): wire resource_options_invalid exit (main CI)</td>
+</tr>
+<tr>
+<td><a href="https://github.com/li-langverse/lic/pull/304">lic#304</a></td>
+<td>fail</td>
+<td>Fix CI first</td>
+<td>feat(bench): WP4 compile smokes for qm, auto, ml, viz</td>
+</tr>
+<tr>
+<td><a href="https://github.com/li-langverse/lic/pull/305">lic#305</a></td>
+<td>fail</td>
+<td>Fix CI first</td>
+<td>feat(bench): WP3 tier-2 harnesses (pde, robo, drug, bio, am,</td>
+</tr>
+<tr>
+<td><a href="https://github.com/li-langverse/lic/pull/306">lic#306</a></td>
+<td>fail</td>
+<td>Fix CI first</td>
+<td>feat(bench): tier1 num_* + fft_1d_fixed harnesses (WP1)</td>
+</tr>
+<tr>
+<td><a href="https://github.com/li-langverse/lic/pull/307">lic#307</a></td>
+<td>fail</td>
+<td>Fix CI first</td>
+<td>feat(bench): WP2 tier2 md_* catalog harness fill (PH-5b)</td>
+</tr>
+<tr>
+<td><a href="https://github.com/li-langverse/lic/pull/308">lic#308</a></td>
+<td>fail</td>
+<td>Fix CI first</td>
+<td>feat(bench): registry family harness fill + tier-7 CSV alias</td>
+</tr>
+<tr>
+<td><a href="https://github.com/li-langverse/lic/pull/309">lic#309</a></td>
+<td>fail</td>
+<td>Fix CI first</td>
+<td>fix(bench): tier-2 physics Li builds (WP-T2)</td>
+</tr>
+<tr>
+<td><a href="https://github.com/li-langverse/lis/pull/12">lis#12</a></td>
+<td>fail</td>
+<td>Fix CI first</td>
+<td>feat(tier5): real HTTP bench CSV (WP6 fill-all)</td>
+</tr>
+</tbody></table>
+<h2>All open PRs</h2>
+<table>
+<thead>
+<tr>
+<th>Repo</th>
+<th>#</th>
+<th>Title</th>
+<th>Base</th>
+<th>CI</th>
+<th>Ready</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>benchmarks</td>
+<td>97</td>
+<td><a href="https://github.com/li-langverse/benchmarks/pull/97">ci(benchmarks): WP-E1 skip duplicate dashboard build on main</a></td>
+<td>main</td>
+<td>pass</td>
+<td>yes</td>
+</tr>
+<tr>
+<td>benchmarks</td>
+<td>99</td>
+<td><a href="https://github.com/li-langverse/benchmarks/pull/99">feat(catalog): sync paths from lic benchmarks tree (WP5)</a></td>
+<td>main</td>
+<td>pass</td>
+<td>yes</td>
+</tr>
+<tr>
+<td>benchmarks</td>
+<td>100</td>
+<td><a href="https://github.com/li-langverse/benchmarks/pull/100">fix(dashboard): 79% measured catalog rows via lic ingest</a></td>
+<td>main</td>
+<td>pass</td>
+<td>yes</td>
+</tr>
+<tr>
+<td>benchmarks</td>
+<td>102</td>
+<td><a href="https://github.com/li-langverse/benchmarks/pull/102">fix(dashboard): SOTA relative perf charts on bench drill-down</a></td>
+<td>main</td>
+<td>pass</td>
+<td>yes</td>
+</tr>
+<tr>
+<td>benchmarks</td>
+<td>103</td>
+<td><a href="https://github.com/li-langverse/benchmarks/pull/103">fix(ingest): clear tier0_stability unknown from stability.csv</a></td>
+<td>main</td>
+<td>pass</td>
+<td>yes</td>
+</tr>
+<tr>
+<td>benchmarks</td>
+<td>104</td>
+<td><a href="https://github.com/li-langverse/benchmarks/pull/104">fix(ingest): tier-5 HTTP unknown rows → yellow oracle-only (WP-T5)</a></td>
+<td>main</td>
+<td>pass</td>
+<td>yes</td>
+</tr>
+<tr>
+<td>benchmarks</td>
+<td>106</td>
+<td><a href="https://github.com/li-langverse/benchmarks/pull/106">feat(dashboard): pillar and drilldown SOTA-relative charts</a></td>
+<td>main</td>
+<td>pass</td>
+<td>yes</td>
+</tr>
+<tr>
+<td>benchmarks</td>
+<td>107</td>
+<td><a href="https://github.com/li-langverse/benchmarks/pull/107">fix(dashboard): overview tier cards measured vs pending (WP-O)</a></td>
+<td>main</td>
+<td>pass</td>
+<td>yes</td>
+</tr>
+<tr>
+<td>li-demo</td>
+<td>10</td>
+<td><a href="https://github.com/li-langverse/li-demo/pull/10">chore(deps): bump actions/checkout from 4 to 6</a></td>
+<td>main</td>
+<td>fail</td>
+<td>no</td>
+</tr>
+<tr>
+<td>li-demo</td>
+<td>14</td>
+<td><a href="https://github.com/li-langverse/li-demo/pull/14">chore(docs): GitHub description SEO (WP-A4)</a></td>
+<td>main</td>
+<td>pass</td>
+<td>yes</td>
+</tr>
+<tr>
+<td>li-httpd</td>
+<td>7</td>
+<td><a href="https://github.com/li-langverse/li-httpd/pull/7">chore(deps): bump actions/checkout from 4 to 6</a></td>
+<td>main</td>
+<td>fail</td>
+<td>no</td>
+</tr>
+<tr>
+<td>li-httpd</td>
+<td>10</td>
+<td><a href="https://github.com/li-langverse/li-httpd/pull/10">feat(li-net-httpd): plan-loop split from lic/cursor/httpd-plan-continu…</a></td>
+<td>main</td>
+<td>fail</td>
+<td>no</td>
+</tr>
+<tr>
+<td>li-httpd</td>
+<td>12</td>
+<td><a href="https://github.com/li-langverse/li-httpd/pull/12">chore(docs): GitHub description SEO (WP-A4)</a></td>
+<td>main</td>
+<td>pass</td>
+<td>yes</td>
+</tr>
+<tr>
+<td>li-net</td>
+<td>6</td>
+<td><a href="https://github.com/li-langverse/li-net/pull/6">chore(deps): bump actions/checkout from 4 to 6</a></td>
+<td>main</td>
+<td>fail</td>
+<td>no</td>
+</tr>
+<tr>
+<td>li-net</td>
+<td>10</td>
+<td><a href="https://github.com/li-langverse/li-net/pull/10">chore(docs): GitHub description SEO (WP-A4)</a></td>
+<td>main</td>
+<td>pass</td>
+<td>yes</td>
+</tr>
+<tr>
+<td>li-std-core</td>
+<td>6</td>
+<td><a href="https://github.com/li-langverse/li-std-core/pull/6">chore(deps): bump actions/checkout from 4 to 6</a></td>
+<td>main</td>
+<td>fail</td>
+<td>no</td>
+</tr>
+<tr>
+<td>li-std-core</td>
+<td>7</td>
+<td><a href="https://github.com/li-langverse/li-std-core/pull/7">chore(docs): GitHub description SEO (WP-A4)</a></td>
+<td>main</td>
+<td>pass</td>
+<td>yes</td>
+</tr>
+<tr>
+<td>li-std-math</td>
+<td>7</td>
+<td><a href="https://github.com/li-langverse/li-std-math/pull/7">chore(deps): bump actions/checkout from 4 to 6</a></td>
+<td>main</td>
+<td>fail</td>
+<td>no</td>
+</tr>
+<tr>
+<td>li-std-math</td>
+<td>8</td>
+<td><a href="https://github.com/li-langverse/li-std-math/pull/8">chore(docs): GitHub description SEO (WP-A4)</a></td>
+<td>main</td>
+<td>pass</td>
+<td>yes</td>
+</tr>
+<tr>
+<td>lic</td>
+<td>183</td>
+<td><a href="https://github.com/li-langverse/lic/pull/183">feat(compiler): VC witness + policy module (compiler-only)</a></td>
+<td>main</td>
+<td>fail</td>
+<td>no</td>
+</tr>
+<tr>
+<td>lic</td>
+<td>188</td>
+<td><a href="https://github.com/li-langverse/lic/pull/188">feat(sim): num_dot_axpy (algo_id=1) — li-math-numerics smoke</a></td>
+<td>main</td>
+<td>none</td>
+<td>no</td>
+</tr>
+<tr>
+<td>lic</td>
+<td>194</td>
+<td><a href="https://github.com/li-langverse/lic/pull/194">feat(compiler-studio): wave-d-gui-scaffold — AL-9 import gui</a></td>
+<td>main</td>
+<td>fail</td>
+<td>no</td>
+</tr>
+<tr>
+<td>lic</td>
+<td>254</td>
+<td><a href="https://github.com/li-langverse/lic/pull/254">chore(verification): Phase 2a gap closure queue</a></td>
+<td>main</td>
+<td>fail</td>
+<td>no</td>
+</tr>
+<tr>
+<td>lic</td>
+<td>262</td>
+<td><a href="https://github.com/li-langverse/lic/pull/262">feat(2i): plan tracker — norm reduction shape compile_fail</a></td>
+<td>main</td>
+<td>fail</td>
+<td>no</td>
+</tr>
+<tr>
+<td>lic</td>
+<td>263</td>
+<td><a href="https://github.com/li-langverse/lic/pull/263">feat(proof-db): Phase 2b catalog lemmas + rebuild report</a></td>
+<td>main</td>
+<td>fail</td>
+<td>no</td>
+</tr>
+<tr>
+<td>lic</td>
+<td>264</td>
+<td><a href="https://github.com/li-langverse/lic/pull/264">fix(ci): resolve verify.py merge conflict on main</a></td>
+<td>main</td>
+<td>fail</td>
+<td>no</td>
+</tr>
+<tr>
+<td>lic</td>
+<td>266</td>
+<td><a href="https://github.com/li-langverse/lic/pull/266">feat(2f): P-refine guard discharge + prove_lean_ok specimens</a></td>
+<td>main</td>
+<td>fail</td>
+<td>no</td>
+</tr>
+<tr>
+<td>lic</td>
+<td>268</td>
+<td><a href="https://github.com/li-langverse/lic/pull/268">feat(plans): close tier-0 correctness plot checkbox (Phase 2b)</a></td>
+<td>main</td>
+<td>fail</td>
+<td>no</td>
+</tr>
+<tr>
+<td>lic</td>
+<td>269</td>
+<td><a href="https://github.com/li-langverse/lic/pull/269">feat(sim): PH-SIM SIM-2 replay tick stub</a></td>
+<td>main</td>
+<td>fail</td>
+<td>no</td>
+</tr>
+<tr>
+<td>lic</td>
+<td>271</td>
+<td><a href="https://github.com/li-langverse/lic/pull/271">feat(demo): publish studio-verticals MP4 via GitHub Release</a></td>
+<td>main</td>
+<td>fail</td>
+<td>no</td>
+</tr>
+<tr>
+<td>lic</td>
+<td>272</td>
+<td><a href="https://github.com/li-langverse/lic/pull/272">feat(ci): package-release dispatch on v* tags</a></td>
+<td>main</td>
+<td>fail</td>
+<td>no</td>
+</tr>
+<tr>
+<td>lic</td>
+<td>280</td>
+<td><a href="https://github.com/li-langverse/lic/pull/280">feat(proof-db): lemma rebuild pipeline and math seed</a></td>
+<td>main</td>
+<td>pass</td>
+<td>yes</td>
+</tr>
+<tr>
+<td>lic</td>
+<td>281</td>
+<td><a href="https://github.com/li-langverse/lic/pull/281">feat(8p-b): parallel lic-workspace-build (gap2 plan tracker)</a></td>
+<td>main</td>
+<td>fail</td>
+<td>no</td>
+</tr>
+<tr>
+<td>lic</td>
+<td>282</td>
+<td><a href="https://github.com/li-langverse/lic/pull/282">feat(proof-db): gap2 catalog slice — three L-MATH entries + report</a></td>
+<td>main</td>
+<td>fail</td>
+<td>no</td>
+</tr>
+<tr>
+<td>lic</td>
+<td>283</td>
+<td><a href="https://github.com/li-langverse/lic/pull/283">feat(PH-AGENT-1): lis MCP stdio stub for Studio tools</a></td>
+<td>main</td>
+<td>fail</td>
+<td>no</td>
+</tr>
+<tr>
+<td>lic</td>
+<td>284</td>
+<td><a href="https://github.com/li-langverse/lic/pull/284">feat(studio): tier-2 MD oracle in scientific viewport</a></td>
+<td>main</td>
+<td>fail</td>
+<td>no</td>
+</tr>
+<tr>
+<td>lic</td>
+<td>285</td>
+<td><a href="https://github.com/li-langverse/lic/pull/285">feat(sim): li-sim-automotive drive smoke stub</a></td>
+<td>main</td>
+<td>fail</td>
+<td>no</td>
+</tr>
+<tr>
+<td>lic</td>
+<td>286</td>
+<td><a href="https://github.com/li-langverse/lic/pull/286">feat(gap2): G-par parallel-for disjoint MIR tag + P-par lemma</a></td>
+<td>main</td>
+<td>fail</td>
+<td>no</td>
+</tr>
+<tr>
+<td>lic</td>
+<td>288</td>
+<td><a href="https://github.com/li-langverse/lic/pull/288">feat(vertical-gap): wgpu readback phase A — present_blit_rgba8</a></td>
+<td>main</td>
+<td>fail</td>
+<td>no</td>
+</tr>
+<tr>
+<td>lic</td>
+<td>289</td>
+<td><a href="https://github.com/li-langverse/lic/pull/289">feat(PH-SIM): SIM-3 partial — ml.rl EnvPoolStub and sim_rl studio rout…</a></td>
+<td>main</td>
+<td>fail</td>
+<td>no</td>
+</tr>
+<tr>
+<td>lic</td>
+<td>291</td>
+<td><a href="https://github.com/li-langverse/lic/pull/291">feat(PH-HW WP2): LKIR matmul CPU oracle + md_force_short placeholder</a></td>
+<td>main</td>
+<td>fail</td>
+<td>no</td>
+</tr>
+<tr>
+<td>lic</td>
+<td>292</td>
+<td><a href="https://github.com/li-langverse/lic/pull/292">chore(studio-ux): Wave 2 plan loop state + UX assessment</a></td>
+<td>main</td>
+<td>fail</td>
+<td>no</td>
+</tr>
+<tr>
+<td>lic</td>
+<td>294</td>
+<td><a href="https://github.com/li-langverse/lic/pull/294">feat(2f): P-float corpus gate + dedupe #185 (gap2-proof)</a></td>
+<td>main</td>
+<td>fail</td>
+<td>no</td>
+</tr>
+<tr>
+<td>lic</td>
+<td>295</td>
+<td><a href="https://github.com/li-langverse/lic/pull/295">chore(gates): align master-plan verticals with honest CI evidence</a></td>
+<td>main</td>
+<td>fail</td>
+<td>no</td>
+</tr>
+<tr>
+<td>lic</td>
+<td>297</td>
+<td><a href="https://github.com/li-langverse/lic/pull/297">feat(PH-AM): sim.export.print temp G-code/3MF pipeline</a></td>
+<td>main</td>
+<td>fail</td>
+<td>no</td>
+</tr>
+<tr>
+<td>lic</td>
+<td>298</td>
+<td><a href="https://github.com/li-langverse/lic/pull/298">feat(wgpu): phase B readback scaffold (after #288)</a></td>
+<td>main</td>
+<td>fail</td>
+<td>no</td>
+</tr>
+<tr>
+<td>lic</td>
+<td>299</td>
+<td><a href="https://github.com/li-langverse/lic/pull/299">fix(check): wire resource_options_invalid exit (main CI)</a></td>
+<td>main</td>
+<td>fail</td>
+<td>no</td>
+</tr>
+<tr>
+<td>lic</td>
+<td>301</td>
+<td><a href="https://github.com/li-langverse/lic/pull/301">ci(lic): WP-C1–C5 lic-ci image, build cache, package-ci</a></td>
+<td>main</td>
+<td>none</td>
+<td>no</td>
+</tr>
+<tr>
+<td>lic</td>
+<td>304</td>
+<td><a href="https://github.com/li-langverse/lic/pull/304">feat(bench): WP4 compile smokes for qm, auto, ml, viz</a></td>
+<td>main</td>
+<td>fail</td>
+<td>no</td>
+</tr>
+<tr>
+<td>lic</td>
+<td>305</td>
+<td><a href="https://github.com/li-langverse/lic/pull/305">feat(bench): WP3 tier-2 harnesses (pde, robo, drug, bio, am, fluid)</a></td>
+<td>main</td>
+<td>fail</td>
+<td>no</td>
+</tr>
+<tr>
+<td>lic</td>
+<td>306</td>
+<td><a href="https://github.com/li-langverse/lic/pull/306">feat(bench): tier1 num_* + fft_1d_fixed harnesses (WP1)</a></td>
+<td>main</td>
+<td>fail</td>
+<td>no</td>
+</tr>
+<tr>
+<td>lic</td>
+<td>307</td>
+<td><a href="https://github.com/li-langverse/lic/pull/307">feat(bench): WP2 tier2 md_* catalog harness fill (PH-5b)</a></td>
+<td>main</td>
+<td>fail</td>
+<td>no</td>
+</tr>
+<tr>
+<td>lic</td>
+<td>308</td>
+<td><a href="https://github.com/li-langverse/lic/pull/308">feat(bench): registry family harness fill + tier-7 CSV aliases</a></td>
+<td>main</td>
+<td>fail</td>
+<td>no</td>
+</tr>
+<tr>
+<td>lic</td>
+<td>309</td>
+<td><a href="https://github.com/li-langverse/lic/pull/309">fix(bench): tier-2 physics Li builds (WP-T2)</a></td>
+<td>main</td>
+<td>fail</td>
+<td>no</td>
+</tr>
+<tr>
+<td>lic</td>
+<td>310</td>
+<td><a href="https://github.com/li-langverse/lic/pull/310">docs(research/md): md-r0-sota-survey — MD algorithm SOTA map</a></td>
+<td>main</td>
+<td>none</td>
+<td>no</td>
+</tr>
+<tr>
+<td>lic</td>
+<td>311</td>
+<td><a href="https://github.com/li-langverse/lic/pull/311">docs(numerics): chem-r0 QM SOTA survey (401-432)</a></td>
+<td>main</td>
+<td>none</td>
+<td>no</td>
+</tr>
+<tr>
+<td>lic</td>
+<td>312</td>
+<td><a href="https://github.com/li-langverse/lic/pull/312">feat(httpd): close gap-phase2-mitigation-exploits (tier5 nginx mitigat…</a></td>
+<td>main</td>
+<td>none</td>
+<td>no</td>
+</tr>
+<tr>
+<td>lis</td>
+<td>12</td>
+<td><a href="https://github.com/li-langverse/lis/pull/12">feat(tier5): real HTTP bench CSV (WP6 fill-all)</a></td>
+<td>main</td>
+<td>fail</td>
+<td>no</td>
+</tr>
+<tr>
+<td>roadmap</td>
+<td>19</td>
+<td><a href="https://github.com/li-langverse/roadmap/pull/19">docs(ecosystem): point compiler to lic (WP-A5)</a></td>
+<td>main</td>
+<td>pass</td>
+<td>yes</td>
+</tr>
+<tr>
+<td>roadmap</td>
+<td>20</td>
+<td><a href="https://github.com/li-langverse/roadmap/pull/20">chore(agent-kit): adopt 1.3.3 in roadmap (WP-A1)</a></td>
+<td>main</td>
+<td>pass</td>
+<td>yes</td>
+</tr>
+<tr>
+<td>roadmap</td>
+<td>21</td>
+<td><a href="https://github.com/li-langverse/roadmap/pull/21">docs(ecosystem): httpd mirror canonical decision (WP-B4)</a></td>
+<td>main</td>
+<td>pass</td>
+<td>yes</td>
+</tr>
+</tbody></table>
+<hr>
+<p><em>Agents do not merge governance PRs without owner sign-off. Never push directly to protected <code>main</code>.</em></p>
+<p><em>Snapshot: <code>./scripts/regenerate-development-overview-md.py</code> then <code>./scripts/deploy-pages-local.sh --build</code>. Live queue: browser on <a href="https://li-langverse.github.io/roadmap/development-overview/">development overview</a> — no redeploy for queue-only changes.</em></p>
+
+</main>
+  </div>
+  <script src="./live.js" defer></script>
+</body>
+</html>
