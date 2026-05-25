@@ -9,6 +9,7 @@
 ### Added
 
 - **PH-DB status checklist:** `docs/ecosystem/ph-db-status.md` — merged vs open `feat/ph-db*` / `feat/lidb*` / `feat/tier-db*` PRs, WP-N1…N9 %, human actions, production registry blockers — [2026-05-25-ph-db-status.md](docs/release-notes/2026-05-25-ph-db-status.md)
+- **PH-DB production registry §5:** DNS, TLS (li-httpd), `LIP_REGISTRY_TOKEN`, `lis db start --profile registry-min` — [2026-05-25-production-registry-checklist.md](docs/release-notes/2026-05-25-production-registry-checklist.md)
 
 - **lidb native Li research:** `proposals/lidb-native-li-matrices.md` — 8 vertical competitor tables, WP-N1…N9, benchmark spectrum, PH-DB-3.1 ([2026-05-25-lidb-native-li-research.md](docs/release-notes/2026-05-25-lidb-native-li-research.md))
 

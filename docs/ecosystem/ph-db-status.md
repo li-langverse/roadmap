@@ -106,6 +106,26 @@ Exit gates from [`lidb-native-li-matrices.md`](../../proposals/lidb-native-li-ma
 
 ---
 
+## 5. Production registry checklist (human + host)
+
+Engineering artifacts are merge-ready; **public registry** needs org-owned DNS, TLS, and secrets. Agents document only — **do not invent credentials**.
+
+| Step | Owner | Action |
+|------|-------|--------|
+| **DNS** | Human | CNAME `registry` (or chosen hostname) → registry host public IP / load balancer |
+| **TLS** | Human + eng | Terminate HTTPS at **li-httpd** (preferred) or interim reverse proxy; API must expose `https://<host>/v1` per [lip OpenAPI](https://github.com/li-langverse/lip/blob/main/registry/api/openapi-stub.yaml) |
+| **Data dir** | Host | `export LI_DATA_DIR=/var/lib/lis/registry` (persistent WAL/heap + migration state) |
+| **Bundle** | Host | `lis db migrate --profile registry-min` then `lis db start --profile registry-min` — see [lis production-registry.md](https://github.com/li-langverse/lis/blob/main/docs/production-registry.md) |
+| **Publisher auth** | Human | Store org publisher bearer in secrets manager; operators `export LIP_REGISTRY_TOKEN=…` on publish hosts (**never** commit token) |
+| **Smoke publish** | Eng | After host is up: `lip publish --registry https://<production-host>/v1` from a gated package repo; verify `GET /v1/packages/{name}/{version}` |
+| **CI contract** | Eng | `lip` runs `scripts/validate-production-registry-url.sh` against placeholder `https://registry.li-langverse.example` (dry-run + URL normalize only) |
+
+**Placeholder domain** (OpenAPI + docs): `registry.li-langverse.example` — replace with real FQDN at deploy; update `servers[]` in `lis/openapi/registry-v1.yaml` and `lip/registry/api/openapi-stub.yaml` in the same PR as DNS cutover.
+
+**Related docs:** [lip `docs/registry.md`](https://github.com/li-langverse/lip/blob/main/docs/registry.md) · [lis `docs/production-registry.md`](https://github.com/li-langverse/lis/blob/main/docs/production-registry.md) · [lis `profiles/registry-min.toml`](https://github.com/li-langverse/lis/blob/main/profiles/registry-min.toml)
+
+---
+
 ## Agent continuation
 
 1. **Read:** this file; [`benchmark-tier-index.md`](benchmark-tier-index.md); [`proposals/lidb-native-li-matrices.md`](../../proposals/lidb-native-li-matrices.md)
