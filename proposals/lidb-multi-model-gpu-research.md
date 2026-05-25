@@ -2,7 +2,7 @@
 
 **Status:** Research (PH-DB-G0) — not implementation  
 **Date:** 2026-05-25  
-**Parent ADR:** [`lidb-li-data-platform.md`](./lidb-li-data-platform.md) (PH-DB-0)  
+**Delivery ADR:** [`lidb-li-data-platform.md`](./lidb-li-data-platform.md) (PH-DB-0 … PH-DB-10)  
 **PH / REQ:** PH-DB-G0 (research), PH-DB-1..10 (delivery), REQ-registry-v2, PH-DB-8 (vectors)
 
 ## Purpose
@@ -314,6 +314,8 @@ In `profiles/registry-min.toml`: `modules = []` — no graph, no gpu, no vector 
 
 ## Links
 
-- Parent: [`lidb-li-data-platform.md`](./lidb-li-data-platform.md)  
+- **Delivery ADR:** [`lidb-li-data-platform.md`](./lidb-li-data-platform.md) — PH-DB-0..10 table, **PH-8d-v2 → PH-DB-4**, registry-min path  
+- **Ecosystem PH table:** [`docs/ecosystem/vision-and-roadmap.md`](../docs/ecosystem/vision-and-roadmap.md#li-data-platform-ph-db-0--ph-db-10)  
+- **Bench tiers:** [`docs/ecosystem/benchmark-tier-index.md`](../docs/ecosystem/benchmark-tier-index.md)  
 - Release note: [`docs/release-notes/2026-05-25-lidb-proposal.md`](../docs/release-notes/2026-05-25-lidb-proposal.md)  
 - Control plane: [`li-cursor-agents/docs/plans/lidb-migration-control-plane.md`](https://github.com/li-langverse/li-cursor-agents/blob/main/docs/plans/lidb-migration-control-plane.md)
