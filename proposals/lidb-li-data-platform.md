@@ -179,6 +179,10 @@ Document evidence in `lidb/docs/footprint.md` (WP1); CI optional nightly.
 - **Negative:** New org repo + multi-year engine work; **8d v2** blocked until PH-DB-4.
 - **Risks:** Scope creep (full Postgres clone) — gated by `pg-subset-v1` NOT list; human gate for `li-langverse/lidb` repo creation.
 
+## Future research (PH-DB-G0)
+
+Multi-model storage (relational / document / graph) and GPU acceleration are **out of PH-DB-1..4 scope**. See **[`lidb-multi-model-gpu-research.md`](./lidb-multi-model-gpu-research.md)** for the research plan, bench proposals, and ADR decision table. **registry-min** remains CPU-only with relational + JSONB until that ADR promotes optional `lidb-graph` / `lidb-gpu` modules.
+
 ## Links
 
 - Master plan (lic): [2026-05-14-li-master-plan.md](https://github.com/li-langverse/lic/blob/main/docs/superpowers/plans/2026-05-14-li-master-plan.md) — PH-DB row
