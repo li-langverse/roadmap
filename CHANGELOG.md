@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Added
+
+- **Vision status snapshot (2026-05-27):** Wave A / stub / merge-queue honest status — [2026-05-27-vision-status-snapshot.md](docs/release-notes/2026-05-27-vision-status-snapshot.md), [vision-implementation-status-2026-05-27.md](docs/ecosystem/vision-implementation-status-2026-05-27.md).
+
 ### Changed
 
 - **PH-DB status refresh:** `docs/ecosystem/ph-db-status.md` — post–native merge wave; `lis#10` / `benchmarks#96` / `lidb`→`main` milestone table; WP-N1…N9 % bump; top 3 remaining — [2026-05-25-ph-db-status-refresh.md](docs/release-notes/2026-05-25-ph-db-status-refresh.md)
