@@ -11,10 +11,14 @@
 | Action | PRs / repos | Status |
 |--------|-------------|--------|
 | Merged vertical stack + LLVM bootstrap | `lic` #341, #335–#340, #334, #339 | **On `main`** |
-| Drug-design deepen (LITL + inspector) | `lic` #336 | **Fix pushed** (`b7b82b35` — LLVM dominance split for `array[4,float]` returns); **merge when CI green** |
-| Closed superseded (partial — token) | #289, #285 | **Closed** |
-| Close remaining superseded | #284, #297, optional #269/#292 | **Pending** `gh` (see § Superseded hygiene) |
-| Green merge candidates | `lic` #280; org agent-kit sync | **Pending** rebase + human/`merge-approved` |
+| Drug-design deepen (LITL + inspector) | `lic` #336, #343 | **Merged** |
+| Studio drug demo frame | `lic` #345 | **Merged** (`15af4ab6`) |
+| Bench harness wave | `lic` #304–#309, #329 | **Merged** |
+| Wgpu readback | `lic` #342, #346 | **Merged**; **#298 closed** (superseded) |
+| Proof-db lemma rebuild | `lic` #280 | **Merged** |
+| Wave A AutoVC | `lic` #321 | **Merged** |
+| Closed superseded | #284, #297, #269, #292, #289, #285, #328, #298 | **Closed** |
+| Next queue | `lic` #299 hotfix, #323–#327 PH-DB docs, #327 Wave0 ADT | Rebase + review |
 
 ---
 
@@ -64,15 +68,11 @@ North star: [master plan PH-2e/2f/7e](https://github.com/li-langverse/lic/blob/m
 
 | PR | Action |
 |----|--------|
-| **#336** | Merge after CI (drug LITL deepen) |
-| **#297** | **Close** — superseded by #334 (AM export) |
-| **#289** | **Closed** — superseded by #339 (SIM-3 EnvPool) |
-| **#285** | **Closed** — superseded by #337 |
-| **#284** | **Close** — superseded by #340 |
-| **#269** | Review — SIM-2 replay vs game #338; close if checkpoint on `main` covers it |
-| **#292** | Keep open only if UX plan-loop doc deltas are not on `main` |
+| **#336** | **Merged** (drug LITL deepen) |
+| **#345** | **Merged** (vertical demo drug LITL compose) |
+| **#297, #284, #269, #292** | **Closed** (superseded) |
 | **#283** | MCP lis stub — independent; rebase when Wave A stable |
-| **#288–#298** | wgpu readback chain — merge **#288** before #298 |
+| **#342, #346** | **Merged** (wgpu phase A/B); **#298 closed** |
 
 ---
 
