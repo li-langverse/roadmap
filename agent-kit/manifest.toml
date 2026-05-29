@@ -1,5 +1,5 @@
 # Agent-kit manifest — bump version when shared .cursor files change.
-version = "1.3.3"
+version = "1.3.4"
 
 [preserve]
 # Never delete these paths in target repos during install (repo-specific).
