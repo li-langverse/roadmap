@@ -20,6 +20,7 @@ chmod +x scripts/*.sh
 ./scripts/refresh-development-overview.sh
 python3 scripts/compute-ecosystem-stats.py
 cat data/development-overview/status.json | head -80
+cat data/development-overview/history.json | tail -40
 
 # Optional cross-check from benchmarks (if checked out)
 if [ -d ../benchmarks ]; then

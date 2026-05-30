@@ -202,6 +202,13 @@ html = f"""<!DOCTYPE html>
       <p>Snapshot <span id="eco-as-of">{eco_as_of}</span> · <strong>Org repositories</strong> = every repo under li-langverse on GitHub (LoC still sums <code>.github/li-org-repos.txt</code> only). Live open issues &amp; closed PRs refresh in the browser · <a href="https://github.com/li-langverse/roadmap/blob/main/scripts/compute-ecosystem-stats.py">recompute stats</a></p>
       <div class="live-metrics" id="ecosystem-metrics">{eco_cards_html}</div>
     </section>
+
+    <section class="live-banner" aria-labelledby="history-heading">
+      <h2 id="history-heading">Org activity history</h2>
+      <p>PR and issue trends from committed snapshots (<code>refresh-development-overview.sh</code>) plus live GitHub Search API points in your browser.</p>
+      <div class="history-grid" id="history-charts"></div>
+      <p id="history-status" class="history-meta"></p>
+    </section>
     <section class="live-banner" aria-labelledby="live-heading">
       <h2 id="live-heading">Live PR merge queue</h2>
       <p>Live queue: embedded JavaScript calls the <a href="https://docs.github.com/en/rest/search">GitHub API</a> from your browser (no Actions cron). CI status fills in gradually (~90s per PR). Tables below are the markdown snapshot.</p>
@@ -219,6 +226,7 @@ html = f"""<!DOCTYPE html>
 {body}
     </main>
   </div>
+  <script src="./history.js" defer></script>
   <script src="./live.js" defer></script>
 </body>
 </html>
@@ -230,6 +238,11 @@ PY
 
 cp "$SRC" "$OUT_DIR/overview.md"
 cp "${ROOT}/scripts/development-overview-live.js" "$OUT_DIR/live.js"
+cp "${ROOT}/scripts/development-overview-history.js" "$OUT_DIR/history.js"
+HIST_JSON="${ROOT}/data/development-overview/history.json"
+if [[ -f "$HIST_JSON" ]]; then
+  cp "$HIST_JSON" "$OUT_DIR/history.json"
+fi
 if [[ -f "$ECO_JSON" ]]; then
   cp "$ECO_JSON" "$OUT_DIR/ecosystem-stats.json"
 fi
