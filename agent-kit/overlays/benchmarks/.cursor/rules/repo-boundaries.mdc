@@ -21,7 +21,7 @@ This repo is **wall-clock performance matrix + dashboard only**.
 
 ## Cross-repo links
 
-- `/proofs` redirects to https://li-langverse.github.io/proof-library/
+- `/proofs` redirects to https://proofs.lilangverse.xyz/
 - Nav may link externally; do not re-import proof-library components or ingest scripts
 
 ## Ingest
