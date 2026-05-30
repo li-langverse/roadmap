@@ -205,7 +205,7 @@ html = f"""<!DOCTYPE html>
 
     <section class="live-banner" aria-labelledby="history-heading">
       <h2 id="history-heading">Org activity history</h2>
-      <p>PR and issue trends from committed snapshots (<code>refresh-development-overview.sh</code>) plus live GitHub Search API points in your browser.</p>
+      <p>PR and issue trends from committed snapshots (<code>refresh-development-overview.sh</code>) plus live GitHub Search API points in your browser. Hover or drag across charts for values.</p>
       <div class="history-grid" id="history-charts"></div>
       <p id="history-status" class="history-meta"></p>
     </section>

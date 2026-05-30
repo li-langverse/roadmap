@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Changed
+
+- Development overview history charts are interactive (Chart.js hover tooltips) with the same dark theme styling.
+
 ### Added
 
 - Org activity history charts on development overview (open/closed PRs and issues; history.json + live API).
