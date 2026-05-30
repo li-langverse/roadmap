@@ -7,12 +7,18 @@ on:
       - "docs/development-overview.md"
       - "scripts/gen-development-overview.sh"
       - "scripts/development-overview-live.js"
+      - "data/development-overview/ecosystem-stats.json"
+      - "data/development-overview/history.json"
+      - "scripts/development-overview-history.js"
       - ".github/workflows/pages.yml"
   pull_request:
     paths:
       - "docs/development-overview.md"
       - "scripts/gen-development-overview.sh"
       - "scripts/development-overview-live.js"
+      - "data/development-overview/ecosystem-stats.json"
+      - "data/development-overview/history.json"
+      - "scripts/development-overview-history.js"
       - ".github/workflows/pages.yml"
   workflow_dispatch:
 

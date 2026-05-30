@@ -164,4 +164,54 @@ payload = {
 
 out_json.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
 print(f"Wrote {out_json} ({open_count} open PRs, {ready} ready)")
+
+history_path = root / "data" / "development-overview" / "history.json"
+history = {"version": 1, "org": "li-langverse", "points": []}
+if history_path.is_file():
+    try:
+        history = json.loads(history_path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError:
+        pass
+points: list[dict] = list(history.get("points") or [])
+
+def search_total(query: str) -> int | None:
+    proc = subprocess.run(
+        ["gh", "api", f"search/issues?q={query}", "--jq", ".total_count"],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    if proc.returncode != 0 or not proc.stdout.strip():
+        return None
+    try:
+        return int(proc.stdout.strip())
+    except ValueError:
+        return None
+
+now = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%MZ")
+new_point = {
+    "at": now,
+    "open_prs": open_count,
+    "ready_to_merge": ready,
+    "prs_closed": search_total(f"org:li-langverse+is:pr+is:closed"),
+    "issues_open": search_total(f"org:li-langverse+is:issue+is:open"),
+    "issues_closed": search_total(f"org:li-langverse+is:issue+is:closed"),
+    "source": "refresh",
+}
+if points:
+    last = points[-1]
+    same_day = str(last.get("at", ""))[:10] == now[:10]
+    same_vals = all(last.get(k) == new_point.get(k) for k in ("open_prs", "prs_closed", "issues_open", "issues_closed"))
+    if same_day and same_vals:
+        points[-1] = {**last, **new_point}
+    else:
+        points.append(new_point)
+else:
+    points.append(new_point)
+if len(points) > 400:
+    points = points[-400:]
+history["points"] = points
+history_path.write_text(json.dumps(history, indent=2) + "\n", encoding="utf-8")
+print(f"Wrote {history_path} ({len(points)} points)")
+
 PY

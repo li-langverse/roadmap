@@ -55,4 +55,6 @@ jobs:
           ./scripts/gen-development-overview.sh
           test -f site/development-overview/index.html
           test -f site/development-overview/live.js
+          test -f site/development-overview/history.js
+          test -f site/development-overview/history.json
           test -f site/development-overview/ecosystem-stats.json

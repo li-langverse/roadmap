@@ -4,6 +4,10 @@
 
 ### Added
 
+- Org activity history charts on development overview (open/closed PRs and issues; history.json + live API).
+
+### Added
+
 - PH-DB-0 ADR: Li data platform (`proposals/lidb-li-data-platform.md`) — `lidb`+`lis` bundle, `liorm`+`liq`, Supabase vertical map, PH-DB-0..10 phases, registry-min path (PH-DB-0)
 
 ### Changed

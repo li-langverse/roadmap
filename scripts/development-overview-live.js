@@ -110,18 +110,34 @@ async function loadEcosystemSnapshot() {
 }
 
 async function refreshEcosystemLive() {
+  const at = new Date().toISOString().slice(0, 16) + "Z";
   try {
-    const [issuesOpen, prsClosed] = await Promise.all([
+    const [issuesOpen, issuesClosed, prsClosed, prsOpen] = await Promise.all([
       searchCount(`org:${ORG} is:issue is:open`),
+      searchCount(`org:${ORG} is:issue is:closed`),
       searchCount(`org:${ORG} is:pr is:closed`),
+      searchCount(`org:${ORG} is:pr is:open`),
     ]);
     paintEcosystem({
       issues_open: issuesOpen ?? undefined,
       prs_closed: prsClosed ?? undefined,
-      generated_at: new Date().toISOString().slice(0, 16) + "Z",
+      generated_at: at,
+    });
+    window.DevelopmentOverviewHistory?.updateLive({
+      at,
+      open_prs: prsOpen ?? prs.length ?? undefined,
+      prs_closed: prsClosed ?? undefined,
+      issues_open: issuesOpen ?? undefined,
+      issues_closed: issuesClosed ?? undefined,
+      source: "live-api",
     });
   } catch {
     paintEcosystem();
+    window.DevelopmentOverviewHistory?.updateLive({
+      at,
+      open_prs: prs.length || undefined,
+      source: "live-api-partial",
+    });
   }
 }
 
