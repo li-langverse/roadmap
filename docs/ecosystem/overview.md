@@ -46,6 +46,8 @@ cd lip && LI_REPO=../lic ./scripts/ci.sh
 
 | Topic | Document |
 |-------|----------|
+| **Algorithms & libraries (HPC → gaming → drug → CAD → cinematic)** | [algorithms-and-libraries-plan.md](https://github.com/li-langverse/lic/blob/main/docs/ecosystem/algorithms-and-libraries-plan.md) |
+| World Studio (shell + profiles) | [world-studio-vision.md](https://github.com/li-langverse/lic/blob/main/docs/game-dev/world-studio-vision.md) |
 | Scaffold + `li.toml` | [Package scaffold plan](https://github.com/li-langverse/lic/blob/main/docs/superpowers/plans/2026-05-16-li-package-scaffold.md) |
 | `lip` + `lit` | [Package manager plan](https://github.com/li-langverse/lic/blob/main/docs/superpowers/plans/2026-05-16-li-package-manager-lip.md) |
 | Org + traceability | [Ecosystem governance](https://github.com/li-langverse/lic/blob/main/docs/superpowers/plans/2026-05-16-li-ecosystem-governance.md) |

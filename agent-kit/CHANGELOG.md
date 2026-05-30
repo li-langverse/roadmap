@@ -1,5 +1,10 @@
 # Agent-kit changelog
 
+## 1.3.4 — 2026-05-29
+
+- Rules **`li-def-not-proc`**, **`li-native-li-only`** — Li surface and Li-first implementation defaults
+- Hook **`guard-li-surface.sh`** — block new `proc` tokens and helper-code drift outside trusted boundaries
+
 ## 1.3.3 — 2026-05-22
 
 - Skill **`run-local-ci-gha-quota`** — run **li-local-ci** / host CI when GitHub Actions quota is exhausted; merge gate via `benchmarks/data/latest/local-ci-results.json`
