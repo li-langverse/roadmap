@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Changed
+
+- Agent-kit **1.3.3** adoption in `roadmap`: sync `.cursor/` stamps and `run-local-ci-gha-quota` skill ([2026-05-25-roadmap-agent-kit-1.3.3.md](docs/release-notes/2026-05-25-roadmap-agent-kit-1.3.3.md)).
+
 ### Added
 
 - **lidb matrices appendix:** token efficiency cross-link to benchmarks/lidb audit — [2026-05-25-liq-token-efficiency-xlink.md](docs/release-notes/2026-05-25-liq-token-efficiency-xlink.md).
