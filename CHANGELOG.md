@@ -4,28 +4,10 @@
 
 ### Added
 
-- **Org PR battle plan (2026-05-27):** [docs/ecosystem/pr-battle-plan-2026-05-27.md](docs/ecosystem/pr-battle-plan-2026-05-27.md) — merge order after vertical stack (#335–#341), superseded PR hygiene, tier P0–P4 for `lic` + sibling repos.
-
-### Changed
-
-- **PR battle plan refresh:** [docs/ecosystem/pr-battle-plan-2026-05-27.md](docs/ecosystem/pr-battle-plan-2026-05-27.md) — session close-out (`lic` #345, bench harness, wgpu #342/#346, superseded closes).
-
-- **PH-DB status refresh:** `docs/ecosystem/ph-db-status.md` — post–native merge wave; `lis#10` / `benchmarks#96` / `lidb`→`main` milestone table; WP-N1…N9 % bump; top 3 remaining — [2026-05-25-ph-db-status-refresh.md](docs/release-notes/2026-05-25-ph-db-status-refresh.md)
-
-### Added
-
-- **PH-DB status checklist:** `docs/ecosystem/ph-db-status.md` — merged vs open `feat/ph-db*` / `feat/lidb*` / `feat/tier-db*` PRs, WP-N1…N9 %, human actions, production registry blockers — [2026-05-25-ph-db-status.md](docs/release-notes/2026-05-25-ph-db-status.md)
-- **PH-DB production registry §5:** DNS, TLS (li-httpd), `LIP_REGISTRY_TOKEN`, `lis db start --profile registry-min` — [2026-05-25-production-registry-checklist.md](docs/release-notes/2026-05-25-production-registry-checklist.md)
-
-- **lidb native Li research:** `proposals/lidb-native-li-matrices.md` — 8 vertical competitor tables, WP-N1…N9, benchmark spectrum, PH-DB-3.1 ([2026-05-25-lidb-native-li-research.md](docs/release-notes/2026-05-25-lidb-native-li-research.md))
-
-- PH-DB native engine ADR (`proposals/lidb-native-engine.md`): deprecate sqlite smoke; parallel N1/N2/N3/N5; sequential N4 (after N2+N3), N6 (after N5); realtime in `lis` bundle
-- PH-DB roadmap gaps: `PKG-lidb` in `official-packages.md`; PH-DB-0..10 table + **PH-8d-v2 → PH-DB-4** in `vision-and-roadmap.md`; `benchmark-tier-index.md`; proposal cross-links (`lidb-li-data-platform` ↔ `lidb-multi-model-gpu-research`)
 - PH-DB-0 ADR: Li data platform (`proposals/lidb-li-data-platform.md`) — `lidb`+`lis` bundle, `liorm`+`liq`, Supabase vertical map, PH-DB-0..10 phases, registry-min path (PH-DB-0)
 
 ### Changed
 
-- `proposals/lidb-li-data-platform.md` — PH-DB-3.1 row, WP-N1…N9 scheduling, links to matrices + lidb architecture ADR
 - Vision **north star**: go-to ecosystem for HPC, scientific computing, and AI (`docs/ecosystem/vision-and-roadmap.md`); agent-kit **1.3.1** session hooks
 
 ### Added
