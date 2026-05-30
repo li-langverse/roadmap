@@ -1,4 +1,4 @@
-name: Development overview (Pages)
+﻿name: Development overview (Pages)
 
 on:
   push:
@@ -40,7 +40,10 @@ jobs:
           ./scripts/gen-development-overview.sh
 
       - name: Verify output
-        run: test -f site/development-overview/index.html
+        run: |
+          test -f site/development-overview/index.html
+          test -f site/index.html
+          test -f site/CNAME
 
       - uses: actions/upload-pages-artifact@v3
         if: github.event_name != 'pull_request'
