@@ -5,23 +5,15 @@ on:
     branches: [main]
     paths:
       - "docs/development-overview.md"
-      - "data/development-overview/**"
       - "scripts/gen-development-overview.sh"
-      - "scripts/refresh-development-overview.sh"
-      - "scripts/refresh_development_overview.py"
       - "scripts/development-overview-live.js"
       - ".github/workflows/pages.yml"
   pull_request:
     paths:
       - "docs/development-overview.md"
-      - "data/development-overview/**"
       - "scripts/gen-development-overview.sh"
-      - "scripts/refresh-development-overview.sh"
-      - "scripts/refresh_development_overview.py"
       - "scripts/development-overview-live.js"
       - ".github/workflows/pages.yml"
-  schedule:
-    - cron: "15 * * * *"
   workflow_dispatch:
 
 permissions:
@@ -42,13 +34,6 @@ jobs:
       - name: Install build deps
         run: python3 -m pip install markdown
 
-      - name: Refresh status.json from GitHub
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          chmod +x scripts/refresh-development-overview.sh
-          ./scripts/refresh-development-overview.sh
-
       - name: Generate static site
         run: |
           chmod +x scripts/gen-development-overview.sh
@@ -57,10 +42,8 @@ jobs:
       - name: Verify output
         run: |
           test -f site/development-overview/index.html
-          test -f site/development-overview/status.json
           test -f site/index.html
           test -f site/CNAME
-          python3 -c "import json; d=json.load(open('site/development-overview/status.json')); assert d['metrics']['public_repos'] >= 1"
 
       - uses: actions/upload-pages-artifact@v3
         if: github.event_name != 'pull_request'
