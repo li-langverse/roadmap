@@ -1,5 +1,6 @@
-# Org repos — one name per line (no org/ prefix).
-# CI policy: every repo must have .github/workflows/ci.yml — see benchmarks docs/ecosystem/repo-ci-required.md
+﻿# Optional policy hints (one name per line). The development overview discovers
+# all public org repos via the GitHub API — this file is NOT the repo census.
+# CI policy: every repo should have .github/workflows/ci.yml
 lic
 li-language
 lip
@@ -7,6 +8,8 @@ lit
 lis
 benchmarks
 roadmap
+lic-docs
+proof-library
 li-net
 li-httpd
 li-std-core

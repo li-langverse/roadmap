@@ -4,6 +4,8 @@
 
 Pointers from **roadmap** to normative tier docs in [`li-langverse/benchmarks`](https://github.com/li-langverse/benchmarks). Perf claims must cite a row here + dashboard ingest.
 
+**PH-DB sprint status (PRs, WP-N1…N9, deploy blockers):** [`ph-db-status.md`](ph-db-status.md) — refresh after native-li merge waves.
+
 | Tier / suite | Doc | PH / trigger | Status on `main` |
 |--------------|-----|--------------|------------------|
 | Full suite runner | [`full-benchmark-suite.md`](https://github.com/li-langverse/benchmarks/blob/main/docs/ecosystem/full-benchmark-suite.md) | PH-5b | on `main` |
