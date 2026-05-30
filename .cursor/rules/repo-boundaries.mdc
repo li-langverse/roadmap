@@ -1,0 +1,24 @@
+---
+description: Roadmap owns plans and agent-kit — not product implementation
+alwaysApply: true
+---
+
+# Repo boundaries (roadmap)
+
+This repo owns **ecosystem planning, agent-kit, and coordination docs**.
+
+## Owns
+
+- Master plan, PH-* work packages, ecosystem standards
+- `agent-kit/` shared Cursor rules/hooks
+- `scripts/install-agent-kit.sh`, `install-repo-boundaries.sh`, `local-org-cleanup.sh`
+
+## Never add here
+
+- Compiler implementation → **lic**
+- Benchmark ingest/dashboard → **benchmarks**
+- Proof UI → **proof-library**
+
+## Cross-repo
+
+- Changes that affect all repos go through agent-kit version bumps and per-repo install scripts.

@@ -24,6 +24,7 @@ paths = [
   "automations/plan-completion-audit.md",
   "commands/plan-feature.md",
   "commands/audit-plans.md",
+  "rules/repo-boundaries.mdc",
 ]
 
 [repos.lic]
