@@ -1,0 +1,26 @@
+{
+  "generated_at": "2026-05-20T08:17Z",
+  "org": "li-langverse",
+  "repos_tracked": 12,
+  "lines_of_code": 67208,
+  "lines_per_repo": {
+    "lic": 35770,
+    "li-language": 12465,
+    "lip": 690,
+    "lit": 350,
+    "lis": 4375,
+    "benchmarks": 10369,
+    "roadmap": 3189,
+    "li-net": 0,
+    "li-httpd": 0,
+    "li-std-core": 0,
+    "li-std-math": 0,
+    "li-demo": 0
+  },
+  "org_repositories": 14,
+  "issues_open": 57,
+  "issues_closed": 0,
+  "issues_total": 57,
+  "prs_closed": 103,
+  "prs_open": 25
+}
