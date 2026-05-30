@@ -18,6 +18,7 @@ chmod +x scripts/*.sh
 
 # Live queue + org scan (offline; mirrors what the website shows)
 ./scripts/refresh-development-overview.sh
+python3 scripts/compute-ecosystem-stats.py
 cat data/development-overview/status.json | head -80
 
 # Optional cross-check from benchmarks (if checked out)

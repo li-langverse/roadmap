@@ -2,20 +2,13 @@
 
 ## [Unreleased]
 
-### Added
-
-- **Org PR battle plan (2026-05-27):** [docs/ecosystem/pr-battle-plan-2026-05-27.md](docs/ecosystem/pr-battle-plan-2026-05-27.md) — merge order after vertical stack (#335–#341), superseded PR hygiene, tier P0–P4 for `lic` + sibling repos.
-
 ### Changed
 
-- **PR battle plan refresh:** [docs/ecosystem/pr-battle-plan-2026-05-27.md](docs/ecosystem/pr-battle-plan-2026-05-27.md) — session close-out (`lic` #345, bench harness, wgpu #342/#346, superseded closes).
-
-- **PH-DB status refresh:** `docs/ecosystem/ph-db-status.md` — post–native merge wave; `lis#10` / `benchmarks#96` / `lidb`→`main` milestone table; WP-N1…N9 % bump; top 3 remaining — [2026-05-25-ph-db-status-refresh.md](docs/release-notes/2026-05-25-ph-db-status-refresh.md)
+- Agent-kit **1.3.3** adoption in `roadmap`: sync `.cursor/` stamps and `run-local-ci-gha-quota` skill ([2026-05-25-roadmap-agent-kit-1.3.3.md](docs/release-notes/2026-05-25-roadmap-agent-kit-1.3.3.md)).
 
 ### Added
 
-- **PH-DB status checklist:** `docs/ecosystem/ph-db-status.md` — merged vs open `feat/ph-db*` / `feat/lidb*` / `feat/tier-db*` PRs, WP-N1…N9 %, human actions, production registry blockers — [2026-05-25-ph-db-status.md](docs/release-notes/2026-05-25-ph-db-status.md)
-- **PH-DB production registry §5:** DNS, TLS (li-httpd), `LIP_REGISTRY_TOKEN`, `lis db start --profile registry-min` — [2026-05-25-production-registry-checklist.md](docs/release-notes/2026-05-25-production-registry-checklist.md)
+- **lidb matrices appendix:** token efficiency cross-link to benchmarks/lidb audit — [2026-05-25-liq-token-efficiency-xlink.md](docs/release-notes/2026-05-25-liq-token-efficiency-xlink.md).
 
 - **lidb native Li research:** `proposals/lidb-native-li-matrices.md` — 8 vertical competitor tables, WP-N1…N9, benchmark spectrum, PH-DB-3.1 ([2026-05-25-lidb-native-li-research.md](docs/release-notes/2026-05-25-lidb-native-li-research.md))
 
