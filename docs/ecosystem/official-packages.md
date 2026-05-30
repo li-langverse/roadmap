@@ -11,6 +11,7 @@ Packages maintained under **[`li-langverse`](https://github.com/li-langverse)**.
 | `PKG-lit` | [`li-langverse/lit`](https://github.com/li-langverse/lit) | Tests + ≥80% coverage | 8e | `lic` |
 | `PKG-roadmap` | [`li-langverse/roadmap`](https://github.com/li-langverse/roadmap) | Governance docs + agent-kit | meta | — |
 | `PKG-benchmarks` | [`li-langverse/benchmarks`](https://github.com/li-langverse/benchmarks) | Benchmark ingest + dashboard | meta | `lic`, `lis` |
+| `PKG-lidb` | *proposed* [`li-langverse/lidb`](https://github.com/li-langverse/lidb) | Postgres-shaped engine, `liorm`, `liq`, registry migrations | **PH-DB-0..10** | `lis`, `lip`, `benchmarks` |
 | `PKG-li-std-core` | `packages/li-std-core` → *planned* [`li-std-core`](https://github.com/li-langverse/li-std-core) | Standard library core | **4s**, **8a** | `lic` |
 | `PKG-li-std-math` | `packages/li-std-math` → *planned* `li-std-math` | Math / linalg (2i/7e) | **2i** | `lic`, `li-std-core` |
 | `PKG-li-http` | *planned* `li-langverse/li-http` | HTTP stack | H | `lic`, registry deps TBD |
