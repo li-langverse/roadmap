@@ -1,0 +1,29 @@
+---
+description: Benchmarks owns perf dashboard only — no proof-library or lic source
+alwaysApply: true
+---
+
+# Repo boundaries (benchmarks)
+
+This repo is **wall-clock performance matrix + dashboard only**.
+
+## Owns
+
+- `catalog.toml`, `scripts/ingest/`, `data/latest/summary.json`
+- `dashboard-next/` perf UI (pillars, matrix, bench detail)
+- Sidecars: `benchmark-matrix.json`, `release-index.json`
+
+## Never add here
+
+- Proof corpus UI, voting board, `library.json`, `posture.json` → **proof-library**
+- `proof-db/`, TOML entries, Lean bridge → **lic**
+- Full lic/lis checkouts under `data/` → gitignored `data/workspaces/` for ephemeral agent runs only
+
+## Cross-repo links
+
+- `/proofs` redirects to https://li-langverse.github.io/proof-library/
+- Nav may link externally; do not re-import proof-library components or ingest scripts
+
+## Ingest
+
+Read sibling **lic** at CI via `LIC_ROOT` — do not vendor lic sources into this repo.

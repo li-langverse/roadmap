@@ -1,0 +1,30 @@
+---
+description: lic owns compiler and canonical proof-db — not published proof UI or benchmarks
+alwaysApply: true
+---
+
+# Repo boundaries (lic)
+
+This repo is the **Li compiler, semantics, and canonical proof corpus**.
+
+## Owns
+
+- `compiler/`, `runtime/`, packages, `li-tests/`
+- `proof-db/` specimens, Lean bridge, `index.json`
+- `docs/verification/proof-database/` TOML catalog
+- `scripts/proof-db*`, proof-db CI gates
+
+## Never add here
+
+- Published proof-library UI or `library.json` for Pages → **proof-library**
+- Benchmark dashboard, `catalog.toml`, perf ingest → **benchmarks**
+- Agent workspace clones of other repos → gitignored `data/workspaces/` only
+
+## Cross-repo
+
+- **proof-library** reads this repo at ingest; do not duplicate catalog JSON for display.
+- **benchmarks** reads harness CSV from lic builds; do not embed the dashboard here.
+
+## Worktrees
+
+Sibling dirs (`lic-studio-ui/`, `lic-worktrees/*`) are branch checkouts of **this repo** — merge via PR, never fork proof-db as a second canonical source.
