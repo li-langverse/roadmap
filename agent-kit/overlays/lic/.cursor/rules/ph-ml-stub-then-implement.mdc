@@ -1,0 +1,46 @@
+---
+description: PH-ML + GPU — stubs only as Wave/step 1; same branch must land real behavior or blocked with evidence
+alwaysApply: true
+globs: packages/li-ml/**,packages/li-ml-rl/**,packages/lig/**,runtime/**,docs/game-dev/PH-ML*,docs/release-notes/*ph-ml*,CHANGELOG.md
+---
+
+# PH-ML stub-then-implement
+
+Stubs are **Wave/step 1 only** within the same battle plan / PR series — never the final deliverable for a WP marked **implement** in [PH-ML-GPU-battle-plan.md](../../docs/game-dev/PH-ML-GPU-battle-plan.md).
+
+## Same PR / branch requirements
+
+Every stub commit or stub-heavy PR on `feat/ph-ml-gpu-swarm` (or a single-WP branch) must include **before merge**:
+
+| Artifact | Content |
+|----------|---------|
+| **Stub→Real table** | In the release note: stub behavior \| real behavior \| verification command |
+| **Tracker row** | `stub` → `in_progress` → `done` (or `blocked` + hardware/dependency reason) — never leave at `stub` when WP is implement-tier |
+
+## Forbidden exit states
+
+- Marking WP **done** in [PH-ML-GPU-execution-tracker.md](../../docs/game-dev/PH-ML-GPU-execution-tracker.md) while only returning constants, fake `gpu_timing_ns`, or `return -1` with no documented follow-up commit / blocker.
+- `N/A` timing in bench JSON **without** a release-note row explaining the next WP that removes `N/A`.
+- Closing implement WPs with only RFC text when the battle plan §5 proof gate names `lic check` or a bench id.
+
+## Allowed stub patterns (honest)
+
+- `N/A` / `blocked` in bench JSON and TOML when no GPU hardware (see ph-ml-gpu-honesty in lic `.cursor/rules/`).
+- Compile-only smokes (`compile_ok`, `compile_fail` with `expected_substr`).
+- RFC / design docs (Wave 5 style) with tracker `blocked` or `partial`, not `done`.
+- Host launch status `1` (emit stub) or `0` (CPU/SPIR-V validation path) **without** claiming GPU nanoseconds.
+
+## Same-plan wiring rule
+
+If you add `*_stub.li`, `*_stub.c`, or `workload_class = "stub"`:
+
+- The **next commit on the same branch** must replace or wire real behavior, **or**
+- Add an explicit battle-plan subsection + tracker `blocked` with dependency (Vulkan lavapipe, ROCm CI, WP-ML-13 `tensor`, etc.).
+
+## Cross-links (lic repo paths)
+
+- `docs/game-dev/PH-ML-GPU-battle-plan.md`
+- `docs/game-dev/PH-ML-GPU-execution-tracker.md`
+- `.cursor/rules/ph-ml-gpu-honesty.mdc`
+- `.cursor/rules/li-native-li-only.mdc`
+- `.cursor/skills/execute-ph-ml-gpu-wp/SKILL.md`
