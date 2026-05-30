@@ -1,9 +1,9 @@
-﻿{
+{
   "version": 1,
   "org": "li-langverse",
   "points": [
     {
-      "at": "2026-05-16T18:10Z",
+      "at": "2026-05-16",
       "open_prs": 16,
       "prs_closed": 103,
       "issues_open": 57,
@@ -11,7 +11,7 @@
       "source": "snapshot"
     },
     {
-      "at": "2026-05-20T08:17Z",
+      "at": "2026-05-20",
       "open_prs": 25,
       "prs_closed": 103,
       "issues_open": 57,
@@ -19,28 +19,13 @@
       "source": "ecosystem-stats"
     },
     {
-      "at": "2026-05-25T19:01Z",
+      "at": "2026-05-25",
       "open_prs": 61,
       "ready_to_merge": 17,
       "source": "status-refresh"
     },
     {
-      "at": "2026-05-30T06:00Z",
-      "open_prs": 255,
-      "source": "org-merge-sprint"
-    },
-    {
-      "at": "2026-05-30T10:00Z",
-      "open_prs": 243,
-      "source": "org-merge-sprint"
-    },
-    {
-      "at": "2026-05-30T14:00Z",
-      "open_prs": 232,
-      "source": "org-merge-sprint"
-    },
-    {
-      "at": "2026-05-30T17:00Z",
+      "at": "2026-05-30",
       "open_prs": 219,
       "source": "org-merge-sprint"
     }

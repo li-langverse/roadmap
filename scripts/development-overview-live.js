@@ -110,7 +110,7 @@ async function loadEcosystemSnapshot() {
 }
 
 async function refreshEcosystemLive() {
-  const at = new Date().toISOString().slice(0, 16) + "Z";
+  const at = new Date().toISOString().slice(0, 10);
   try {
     const [issuesOpen, issuesClosed, prsClosed, prsOpen] = await Promise.all([
       searchCount(`org:${ORG} is:issue is:open`),

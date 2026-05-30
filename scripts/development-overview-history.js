@@ -1,10 +1,18 @@
 /**
- * Interactive org activity charts (Chart.js) for the development overview.
+ * Interactive org activity charts (Chart.js) — one point per calendar day.
  */
 (function () {
   const HISTORY_URL = "./history.json";
   const CHART_CDN =
     "https://cdn.jsdelivr.net/npm/chart.js@4.4.9/dist/chart.umd.min.js";
+
+  const METRIC_KEYS = [
+    "open_prs",
+    "ready_to_merge",
+    "prs_closed",
+    "issues_open",
+    "issues_closed",
+  ];
 
   const THEME = {
     grid: "#30363d",
@@ -36,45 +44,57 @@
     return el.innerHTML;
   }
 
-  function parseAt(at) {
-    const t = Date.parse(String(at));
-    return Number.isFinite(t) ? t : 0;
+  function dayKey(at) {
+    if (!at) return "";
+    return String(at).slice(0, 10);
   }
 
-  function fmtShortDate(at) {
-    const d = new Date(parseAt(at));
-    if (!Number.isFinite(d.getTime())) return "?";
-    return d.toLocaleDateString(undefined, { month: "short", day: "numeric" });
-  }
-
-  function fmtLongDate(at) {
-    const d = new Date(parseAt(at));
-    if (!Number.isFinite(d.getTime())) return String(at);
-    return d.toLocaleString(undefined, {
+  function fmtDayLabel(day) {
+    const d = new Date(day + "T12:00:00Z");
+    if (!Number.isFinite(d.getTime())) return day;
+    return d.toLocaleDateString(undefined, {
+      weekday: "short",
       month: "short",
       day: "numeric",
       year: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
     });
   }
 
-  function mergedPoints() {
-    const byDay = new Map();
-    for (const p of committed.points || []) {
-      if (!p.at) continue;
-      const day = String(p.at).slice(0, 10);
-      const prev = byDay.get(day);
-      if (!prev || parseAt(p.at) >= parseAt(prev.at)) byDay.set(day, { ...p });
-    }
-    if (livePoint?.at) {
-      const day = String(livePoint.at).slice(0, 10);
-      const prev = byDay.get(day);
-      if (!prev || parseAt(livePoint.at) >= parseAt(prev.at)) {
-        byDay.set(day, { ...prev, ...livePoint });
+  function fmtShortDay(day) {
+    const d = new Date(day + "T12:00:00Z");
+    if (!Number.isFinite(d.getTime())) return day;
+    return d.toLocaleDateString(undefined, { month: "short", day: "numeric" });
+  }
+
+  function mergeDaily(prev, nxt) {
+    const day = dayKey(nxt?.at || prev?.at);
+    const out = { ...(prev || {}), ...(nxt || {}), at: day };
+    for (const key of METRIC_KEYS) {
+      if (typeof out[key] !== "number" && typeof prev?.[key] === "number") {
+        out[key] = prev[key];
       }
     }
-    return [...byDay.values()].sort((a, b) => parseAt(a.at) - parseAt(b.at));
+    return out;
+  }
+
+  /** Collapse intraday snapshots to one row per UTC calendar day. */
+  function dailyPoints(raw) {
+    const sorted = [...(raw || [])].sort((a, b) => dayKey(a.at).localeCompare(dayKey(b.at)));
+    const byDay = new Map();
+    for (const p of sorted) {
+      const day = dayKey(p.at);
+      if (!day) continue;
+      byDay.set(day, mergeDaily(byDay.get(day), p));
+    }
+    return [...byDay.entries()]
+      .sort(([a], [b]) => a.localeCompare(b))
+      .map(([, p]) => p);
+  }
+
+  function mergedPoints() {
+    const raw = [...(committed.points || [])];
+    if (livePoint?.at) raw.push(livePoint);
+    return dailyPoints(raw);
   }
 
   function ensureChartJs() {
@@ -116,13 +136,14 @@
           padding: 10,
           displayColors: false,
           callbacks: {
-            title: (items) => fmtLongDate(items[0]?.label),
+            title: (items) => fmtDayLabel(items[0]?.label),
             label: (ctx) => `${spec.label}: ${ctx.parsed.y.toLocaleString()}`,
           },
         },
       },
       scales: {
         x: {
+          type: "category",
           grid: { color: THEME.grid },
           border: { color: THEME.grid },
           ticks: {
@@ -130,10 +151,10 @@
             font: { family: THEME.font, size: 10 },
             maxRotation: 0,
             autoSkip: true,
-            maxTicksLimit: 6,
+            maxTicksLimit: 8,
             callback: (_value, index, ticks) => {
               const raw = ticks[index]?.label;
-              return raw ? fmtShortDate(raw) : "";
+              return raw ? fmtShortDay(String(raw)) : "";
             },
           },
         },
@@ -150,8 +171,8 @@
       },
       elements: {
         point: {
-          radius: 2,
-          hoverRadius: 5,
+          radius: 3,
+          hoverRadius: 6,
           hitRadius: 14,
           hoverBorderWidth: 2,
         },
@@ -167,7 +188,7 @@
 
   function renderChartCanvas(spec, points) {
     const values = points
-      .map((p) => ({ at: p.at, v: typeof p[spec.key] === "number" ? p[spec.key] : null }))
+      .map((p) => ({ day: dayKey(p.at), v: typeof p[spec.key] === "number" ? p[spec.key] : null }))
       .filter((row) => row.v !== null);
 
     const id = `history-chart-${spec.key}`;
@@ -181,7 +202,7 @@
         <h3>${esc(spec.label)}</h3>
         <span class="history-latest" style="color:${spec.color}">${last.v.toLocaleString()}</span>
       </div>
-      <div class="history-canvas-wrap"><canvas id="${id}" aria-label="${esc(spec.label)} over time"></canvas></div>
+      <div class="history-canvas-wrap"><canvas id="${id}" aria-label="${esc(spec.label)} by day"></canvas></div>
     </div>`;
   }
 
@@ -199,8 +220,8 @@
       const sources = livePoint ? "committed snapshots + live API" : "committed snapshots";
       status.textContent =
         n > 0
-          ? `${n} day${n === 1 ? "" : "s"} of data (${sources}). Hover charts for values. Run refresh-development-overview.sh to append offline snapshots.`
-          : "Run refresh-development-overview.sh to seed history, or wait for live GitHub API counts.";
+          ? `${n} daily point${n === 1 ? "" : "s"} (${sources}). Hover charts for values. Run refresh-development-overview.sh once per day to append snapshots.`
+          : "Run refresh-development-overview.sh to seed daily history, or wait for live GitHub API counts.";
     }
 
     if (!points.length) return;
@@ -208,13 +229,13 @@
     try {
       await ensureChartJs();
     } catch {
-      if (status) status.textContent += " Chart.js failed to load — static fallback unavailable.";
+      if (status) status.textContent += " Chart.js failed to load.";
       return;
     }
 
     for (const spec of CHARTS) {
       const values = points
-        .map((p) => ({ at: p.at, v: typeof p[spec.key] === "number" ? p[spec.key] : null }))
+        .map((p) => ({ day: dayKey(p.at), v: typeof p[spec.key] === "number" ? p[spec.key] : null }))
         .filter((row) => row.v !== null);
       if (!values.length) continue;
 
@@ -225,7 +246,7 @@
       const chart = new window.Chart(canvas, {
         type: "line",
         data: {
-          labels: values.map((row) => row.at),
+          labels: values.map((row) => row.day),
           datasets: [
             {
               label: spec.label,
@@ -257,11 +278,12 @@
   }
 
   function updateLive(point) {
-    livePoint = point;
+    const day = dayKey(point?.at) || new Date().toISOString().slice(0, 10);
+    livePoint = { ...point, at: day };
     paintCharts();
   }
 
-  window.DevelopmentOverviewHistory = { updateLive, paint: paintCharts, mergedPoints };
+  window.DevelopmentOverviewHistory = { updateLive, paint: paintCharts, mergedPoints, dailyPoints };
 
   loadCommitted();
 })();
