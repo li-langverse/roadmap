@@ -4,6 +4,7 @@ set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 SRC="${ROOT}/docs/development-overview.md"
+ECO_JSON="${ROOT}/data/development-overview/ecosystem-stats.json"
 OUT_DIR="${ROOT}/site/development-overview"
 OUT_HTML="${OUT_DIR}/index.html"
 AS_OF="$(grep -m1 'scanned \*\*' "$SRC" | sed -n 's/.*scanned \*\*\([^*]*\)\*\*.*/\1/p' || date -u +%Y-%m-%dT%H:%MZ)"
@@ -31,18 +32,29 @@ PY="${PYTHON:-python3}"
 if ! "$PY" -c "import markdown" 2>/dev/null; then
   VENV="${ROOT}/.venv-overview"
   if [[ ! -x "${VENV}/bin/python" ]]; then
-    "$PY" -m venv "$VENV"
-    "${VENV}/bin/pip" install -q markdown
+    if "$PY" -m venv "$VENV" 2>/dev/null; then
+      "${VENV}/bin/pip" install -q markdown
+    fi
   fi
-  PY="${VENV}/bin/python"
+  if [[ -x "${VENV}/bin/python" ]] && "${VENV}/bin/python" -c "import markdown" 2>/dev/null; then
+    PY="${VENV}/bin/python"
+  elif command -v node >/dev/null 2>&1 || [[ -x "${HOME}/.local/node/bin/node" ]]; then
+    export PATH="${HOME}/.local/node/bin:${PATH}"
+    chmod +x "${ROOT}/scripts/gen-development-overview-node.mjs"
+    exec node "${ROOT}/scripts/gen-development-overview-node.mjs"
+  else
+    echo "error: need python markdown or node+npx marked" >&2
+    exit 1
+  fi
 fi
 
-"$PY" - "$SRC" "$OUT_HTML" "$AS_OF" <<'PY'
+"$PY" - "$SRC" "$OUT_HTML" "$AS_OF" "$ECO_JSON" <<'PY'
+import json
 import re
 import sys
 from pathlib import Path
 
-src_path, out_path, as_of = sys.argv[1:4]
+src_path, out_path, as_of, eco_path = sys.argv[1:5]
 text = Path(src_path).read_text(encoding="utf-8")
 
 try:
@@ -61,6 +73,38 @@ body = markdown.markdown(
 )
 
 body = re.sub(r"^<h1[^>]*>.*?</h1>\s*", "", body, count=1, flags=re.DOTALL)
+
+eco = {}
+eco_file = Path(eco_path)
+if eco_file.is_file():
+    try:
+        eco = json.loads(eco_file.read_text(encoding="utf-8"))
+    except json.JSONDecodeError:
+        pass
+
+def fmt_int(n) -> str:
+    if n is None:
+        return "—"
+    return f"{int(n):,}"
+
+
+eco_as_of = eco.get("generated_at", "—")
+def org_repos_val(e):
+    v = e.get("org_repositories")
+    if v is not None:
+        return v
+    return e.get("packages")
+
+eco_cards = [
+    ("Lines of code", fmt_int(eco.get("lines_of_code"))),
+    ("Org repositories", fmt_int(org_repos_val(eco))),
+    ("Open issues", fmt_int(eco.get("issues_open"))),
+    ("Closed PRs", fmt_int(eco.get("prs_closed"))),
+]
+eco_cards_html = "".join(
+    f'<div class="metric-card"><p class="label">{label}</p><p class="value">{value}</p></div>'
+    for label, value in eco_cards
+)
 
 html = f"""<!DOCTYPE html>
 <html lang="en">
@@ -153,6 +197,11 @@ html = f"""<!DOCTYPE html>
         <a href="https://github.com/li-langverse/roadmap">roadmap repo</a>
       </nav>
     </header>
+    <section class="live-banner" aria-labelledby="eco-heading">
+      <h2 id="eco-heading">Ecosystem statistics</h2>
+      <p>Snapshot <span id="eco-as-of">{eco_as_of}</span> · <strong>Org repositories</strong> = every repo under li-langverse on GitHub (LoC still sums <code>.github/li-org-repos.txt</code> only). Live open issues &amp; closed PRs refresh in the browser · <a href="https://github.com/li-langverse/roadmap/blob/main/scripts/compute-ecosystem-stats.py">recompute stats</a></p>
+      <div class="live-metrics" id="ecosystem-metrics">{eco_cards_html}</div>
+    </section>
     <section class="live-banner" aria-labelledby="live-heading">
       <h2 id="live-heading">Live PR merge queue</h2>
       <p>Live queue: embedded JavaScript calls the <a href="https://docs.github.com/en/rest/search">GitHub API</a> from your browser (no Actions cron). CI status fills in gradually (~90s per PR). Tables below are the markdown snapshot.</p>
@@ -181,4 +230,7 @@ PY
 
 cp "$SRC" "$OUT_DIR/overview.md"
 cp "${ROOT}/scripts/development-overview-live.js" "$OUT_DIR/live.js"
+if [[ -f "$ECO_JSON" ]]; then
+  cp "$ECO_JSON" "$OUT_DIR/ecosystem-stats.json"
+fi
 echo "Generated ${OUT_HTML}"

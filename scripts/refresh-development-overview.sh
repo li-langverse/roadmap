@@ -14,6 +14,11 @@ fi
 
 mkdir -p "$OUT_DIR"
 
+if [[ -x "${ROOT}/scripts/compute-ecosystem-stats.py" ]]; then
+  ECOSYSTEM_STATS_SKIP_CLONE="${ECOSYSTEM_STATS_SKIP_CLONE:-1}" \
+    python3 "${ROOT}/scripts/compute-ecosystem-stats.py" || true
+fi
+
 export ROOT REPOS_FILE OUT_JSON
 python3 <<'PY'
 import json
@@ -135,6 +140,14 @@ blocked = sum(
     if not p["ready"] and (p["ci"] in ("fail", "pending") or p["draft"])
 )
 
+eco_path = root / "data" / "development-overview" / "ecosystem-stats.json"
+ecosystem = {}
+if eco_path.is_file():
+    try:
+        ecosystem = json.loads(eco_path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError:
+        pass
+
 payload = {
     "generated_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%MZ"),
     "pages_url": "https://li-langverse.github.io/roadmap/development-overview/",
@@ -145,6 +158,7 @@ payload = {
         "repos_with_live_docs": live_docs_count(),
         "repos_total": len(repos),
     },
+    "ecosystem": ecosystem,
     "pull_requests": pull_requests,
 }
 
