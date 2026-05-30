@@ -6,12 +6,14 @@ on:
     paths:
       - "docs/development-overview.md"
       - "scripts/gen-development-overview.sh"
+      - "site/index.html"
       - "scripts/development-overview-live.js"
       - ".github/workflows/pages.yml"
   pull_request:
     paths:
       - "docs/development-overview.md"
       - "scripts/gen-development-overview.sh"
+      - "site/index.html"
       - "scripts/development-overview-live.js"
       - ".github/workflows/pages.yml"
   workflow_dispatch:
@@ -40,7 +42,9 @@ jobs:
           ./scripts/gen-development-overview.sh
 
       - name: Verify output
-        run: test -f site/development-overview/index.html
+        run: |
+          test -f site/development-overview/index.html
+          test -f site/index.html
 
       - uses: actions/upload-pages-artifact@v3
         if: github.event_name != 'pull_request'
