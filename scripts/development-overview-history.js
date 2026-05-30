@@ -1,13 +1,18 @@
 /**
- * Org activity time series for the development overview (committed history.json + live API).
+ * Interactive org activity charts (Chart.js) for the development overview.
  */
 (function () {
   const HISTORY_URL = "./history.json";
+  const CHART_CDN =
+    "https://cdn.jsdelivr.net/npm/chart.js@4.4.9/dist/chart.umd.min.js";
 
-  /** @type {{ version?: number, org?: string, points: Array<Record<string, unknown>> }} */
-  let committed = { points: [] };
-  /** @type {Record<string, unknown> | null} */
-  let livePoint = null;
+  const THEME = {
+    grid: "#30363d",
+    muted: "#8b949e",
+    fg: "#e6edf3",
+    panel: "#161b22",
+    font: "system-ui, -apple-system, Segoe UI, Roboto, sans-serif",
+  };
 
   const CHARTS = [
     { key: "open_prs", label: "Open PRs", color: "#58a6ff" },
@@ -15,6 +20,15 @@
     { key: "issues_open", label: "Open issues", color: "#d29922" },
     { key: "issues_closed", label: "Closed issues (total)", color: "#a371f7" },
   ];
+
+  /** @type {{ version?: number, org?: string, points: Array<Record<string, unknown>> }} */
+  let committed = { points: [] };
+  /** @type {Record<string, unknown> | null} */
+  let livePoint = null;
+  /** @type {Map<string, import("chart.js").Chart>} */
+  const instances = new Map();
+  /** @type {Promise<void> | null} */
+  let chartReady = null;
 
   function esc(s) {
     const el = document.createElement("span");
@@ -31,6 +45,18 @@
     const d = new Date(parseAt(at));
     if (!Number.isFinite(d.getTime())) return "?";
     return d.toLocaleDateString(undefined, { month: "short", day: "numeric" });
+  }
+
+  function fmtLongDate(at) {
+    const d = new Date(parseAt(at));
+    if (!Number.isFinite(d.getTime())) return String(at);
+    return d.toLocaleString(undefined, {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
   }
 
   function mergedPoints() {
@@ -51,69 +77,172 @@
     return [...byDay.values()].sort((a, b) => parseAt(a.at) - parseAt(b.at));
   }
 
-  function renderChart(points, spec) {
+  function ensureChartJs() {
+    if (window.Chart) return Promise.resolve();
+    if (chartReady) return chartReady;
+    chartReady = new Promise((resolve, reject) => {
+      const existing = document.querySelector(`script[src="${CHART_CDN}"]`);
+      if (existing) {
+        existing.addEventListener("load", () => resolve(), { once: true });
+        existing.addEventListener("error", () => reject(new Error("Chart.js load failed")), {
+          once: true,
+        });
+        if (window.Chart) resolve();
+        return;
+      }
+      const script = document.createElement("script");
+      script.src = CHART_CDN;
+      script.async = true;
+      script.onload = () => resolve();
+      script.onerror = () => reject(new Error("Chart.js load failed"));
+      document.head.appendChild(script);
+    });
+    return chartReady;
+  }
+
+  function chartOptions(spec) {
+    return {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { mode: "nearest", axis: "x", intersect: false },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: THEME.panel,
+          titleColor: THEME.fg,
+          bodyColor: THEME.muted,
+          borderColor: THEME.grid,
+          borderWidth: 1,
+          padding: 10,
+          displayColors: false,
+          callbacks: {
+            title: (items) => fmtLongDate(items[0]?.label),
+            label: (ctx) => `${spec.label}: ${ctx.parsed.y.toLocaleString()}`,
+          },
+        },
+      },
+      scales: {
+        x: {
+          grid: { color: THEME.grid },
+          border: { color: THEME.grid },
+          ticks: {
+            color: THEME.muted,
+            font: { family: THEME.font, size: 10 },
+            maxRotation: 0,
+            autoSkip: true,
+            maxTicksLimit: 6,
+            callback: (_value, index, ticks) => {
+              const raw = ticks[index]?.label;
+              return raw ? fmtShortDate(raw) : "";
+            },
+          },
+        },
+        y: {
+          beginAtZero: true,
+          grid: { color: THEME.grid },
+          border: { color: THEME.grid },
+          ticks: {
+            color: THEME.muted,
+            font: { family: THEME.font, size: 10 },
+            precision: 0,
+          },
+        },
+      },
+      elements: {
+        point: {
+          radius: 2,
+          hoverRadius: 5,
+          hitRadius: 14,
+          hoverBorderWidth: 2,
+        },
+        line: { tension: 0.25, borderWidth: 2 },
+      },
+    };
+  }
+
+  function destroyCharts() {
+    for (const chart of instances.values()) chart.destroy();
+    instances.clear();
+  }
+
+  function renderChartCanvas(spec, points) {
     const values = points
       .map((p) => ({ at: p.at, v: typeof p[spec.key] === "number" ? p[spec.key] : null }))
       .filter((row) => row.v !== null);
-    const w = 280;
-    const h = 120;
-    const pad = { l: 36, r: 8, t: 8, b: 22 };
-    const innerW = w - pad.l - pad.r;
-    const innerH = h - pad.t - pad.b;
 
+    const id = `history-chart-${spec.key}`;
     if (values.length === 0) {
       return `<div class="history-chart"><h3>${esc(spec.label)}</h3><p class="history-empty">No data yet</p></div>`;
     }
 
-    const ys = values.map((r) => r.v);
-    let yMin = Math.min(...ys);
-    let yMax = Math.max(...ys);
-    if (yMin === yMax) {
-      yMin = Math.max(0, yMin - 1);
-      yMax = yMax + 1;
-    }
-    const yPad = (yMax - yMin) * 0.08 || 1;
-    yMin = Math.max(0, yMin - yPad);
-    yMax = yMax + yPad;
-
-    const xScale = (i) => pad.l + (values.length === 1 ? innerW / 2 : (i / (values.length - 1)) * innerW);
-    const yScale = (v) => pad.t + innerH - ((v - yMin) / (yMax - yMin)) * innerH;
-
-    const coords = values.map((r, i) => `${xScale(i)},${yScale(r.v)}`).join(" ");
     const last = values[values.length - 1];
-    const first = values[0];
-
     return `<div class="history-chart">
-      <h3>${esc(spec.label)}</h3>
-      <svg viewBox="0 0 ${w} ${h}" width="100%" height="${h}" role="img" aria-label="${esc(spec.label)} over time">
-        <line x1="${pad.l}" y1="${pad.t + innerH}" x2="${w - pad.r}" y2="${pad.t + innerH}" stroke="#30363d" />
-        <line x1="${pad.l}" y1="${pad.t}" x2="${pad.l}" y2="${pad.t + innerH}" stroke="#30363d" />
-        <text x="${pad.l - 4}" y="${pad.t + 4}" fill="#8b949e" font-size="9" text-anchor="end">${Math.round(yMax)}</text>
-        <text x="${pad.l - 4}" y="${pad.t + innerH}" fill="#8b949e" font-size="9" text-anchor="end">${Math.round(yMin)}</text>
-        <polyline fill="none" stroke="${spec.color}" stroke-width="2" points="${coords}" />
-        <circle cx="${xScale(values.length - 1)}" cy="${yScale(last.v)}" r="3" fill="${spec.color}" />
-        <text x="${pad.l}" y="${h - 4}" fill="#8b949e" font-size="9">${esc(fmtShortDate(first.at))}</text>
-        <text x="${w - pad.r}" y="${h - 4}" fill="#8b949e" font-size="9" text-anchor="end">${esc(fmtShortDate(last.at))}</text>
-        <text x="${w - pad.r}" y="${pad.t + 10}" fill="${spec.color}" font-size="10" text-anchor="end">${last.v.toLocaleString()}</text>
-      </svg>
+      <div class="history-chart-head">
+        <h3>${esc(spec.label)}</h3>
+        <span class="history-latest" style="color:${spec.color}">${last.v.toLocaleString()}</span>
+      </div>
+      <div class="history-canvas-wrap"><canvas id="${id}" aria-label="${esc(spec.label)} over time"></canvas></div>
     </div>`;
   }
 
-  function paint() {
+  async function paintCharts() {
     const grid = document.getElementById("history-charts");
     const status = document.getElementById("history-status");
     if (!grid) return;
 
     const points = mergedPoints();
-    grid.innerHTML = CHARTS.map((spec) => renderChart(points, spec)).join("");
+    destroyCharts();
+    grid.innerHTML = CHARTS.map((spec) => renderChartCanvas(spec, points)).join("");
 
     if (status) {
       const n = points.length;
       const sources = livePoint ? "committed snapshots + live API" : "committed snapshots";
       status.textContent =
         n > 0
-          ? `${n} day${n === 1 ? "" : "s"} of data (${sources}). Run refresh-development-overview.sh to append offline snapshots.`
+          ? `${n} day${n === 1 ? "" : "s"} of data (${sources}). Hover charts for values. Run refresh-development-overview.sh to append offline snapshots.`
           : "Run refresh-development-overview.sh to seed history, or wait for live GitHub API counts.";
+    }
+
+    if (!points.length) return;
+
+    try {
+      await ensureChartJs();
+    } catch {
+      if (status) status.textContent += " Chart.js failed to load — static fallback unavailable.";
+      return;
+    }
+
+    for (const spec of CHARTS) {
+      const values = points
+        .map((p) => ({ at: p.at, v: typeof p[spec.key] === "number" ? p[spec.key] : null }))
+        .filter((row) => row.v !== null);
+      if (!values.length) continue;
+
+      const canvas = document.getElementById(`history-chart-${spec.key}`);
+      if (!canvas) continue;
+
+      const fill = spec.color + "22";
+      const chart = new window.Chart(canvas, {
+        type: "line",
+        data: {
+          labels: values.map((row) => row.at),
+          datasets: [
+            {
+              label: spec.label,
+              data: values.map((row) => row.v),
+              borderColor: spec.color,
+              backgroundColor: fill,
+              pointBackgroundColor: spec.color,
+              pointBorderColor: spec.color,
+              pointHoverBackgroundColor: THEME.fg,
+              pointHoverBorderColor: spec.color,
+              fill: true,
+            },
+          ],
+        },
+        options: chartOptions(spec),
+      });
+      instances.set(spec.key, chart);
     }
   }
 
@@ -124,15 +253,15 @@
     } catch {
       committed = { points: [] };
     }
-    paint();
+    await paintCharts();
   }
 
   function updateLive(point) {
     livePoint = point;
-    paint();
+    paintCharts();
   }
 
-  window.DevelopmentOverviewHistory = { updateLive, paint, mergedPoints };
+  window.DevelopmentOverviewHistory = { updateLive, paint: paintCharts, mergedPoints };
 
   loadCommitted();
 })();
