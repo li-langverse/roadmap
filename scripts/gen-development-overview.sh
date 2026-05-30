@@ -9,7 +9,24 @@ OUT_DIR="${ROOT}/site/development-overview"
 OUT_HTML="${OUT_DIR}/index.html"
 AS_OF="$(grep -m1 'scanned \*\*' "$SRC" | sed -n 's/.*scanned \*\*\([^*]*\)\*\*.*/\1/p' || date -u +%Y-%m-%dT%H:%MZ)"
 
-mkdir -p "$OUT_DIR"
+mkdir -p "$OUT_DIR" "${ROOT}/site"
+
+# Pages root (site/ is gitignored; generated on each Pages build)
+cat >"${ROOT}/site/index.html" <<'HTML'
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Li roadmap</title>
+  <meta http-equiv="refresh" content="0; url=./development-overview/">
+  <link rel="canonical" href="https://li-langverse.github.io/roadmap/development-overview/">
+</head>
+<body>
+  <p>Redirecting to <a href="./development-overview/">development overview</a>…</p>
+</body>
+</html>
+HTML
 
 PY="${PYTHON:-python3}"
 if ! "$PY" -c "import markdown" 2>/dev/null; then
