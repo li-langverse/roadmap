@@ -6,14 +6,12 @@ on:
     paths:
       - "docs/development-overview.md"
       - "scripts/gen-development-overview.sh"
-      - "site/index.html"
       - "scripts/development-overview-live.js"
       - ".github/workflows/pages.yml"
   pull_request:
     paths:
       - "docs/development-overview.md"
       - "scripts/gen-development-overview.sh"
-      - "site/index.html"
       - "scripts/development-overview-live.js"
       - ".github/workflows/pages.yml"
   workflow_dispatch:
