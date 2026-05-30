@@ -188,9 +188,36 @@ def search_total(query: str) -> int | None:
     except ValueError:
         return None
 
-now = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%MZ")
+METRIC_KEYS = ("open_prs", "ready_to_merge", "prs_closed", "issues_open", "issues_closed")
+
+def day_key(at: str) -> str:
+    return str(at)[:10]
+
+
+def merge_daily(prev: dict | None, nxt: dict) -> dict:
+    day = day_key(nxt.get("at", ""))
+    out = {**(prev or {}), **nxt, "at": day}
+    for key in METRIC_KEYS:
+        if not isinstance(out.get(key), (int, float)) and isinstance(
+            (prev or {}).get(key), (int, float)
+        ):
+            out[key] = prev[key]
+    return out
+
+
+def compact_daily(raw_points: list[dict]) -> list[dict]:
+    by_day: dict[str, dict] = {}
+    for p in sorted(raw_points, key=lambda x: day_key(str(x.get("at", "")))):
+        day = day_key(str(p.get("at", "")))
+        if not day:
+            continue
+        by_day[day] = merge_daily(by_day.get(day), p)
+    return [by_day[d] for d in sorted(by_day.keys())]
+
+
+today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
 new_point = {
-    "at": now,
+    "at": today,
     "open_prs": open_count,
     "ready_to_merge": ready,
     "prs_closed": search_total(f"org:li-langverse+is:pr+is:closed"),
@@ -198,16 +225,7 @@ new_point = {
     "issues_closed": search_total(f"org:li-langverse+is:issue+is:closed"),
     "source": "refresh",
 }
-if points:
-    last = points[-1]
-    same_day = str(last.get("at", ""))[:10] == now[:10]
-    same_vals = all(last.get(k) == new_point.get(k) for k in ("open_prs", "prs_closed", "issues_open", "issues_closed"))
-    if same_day and same_vals:
-        points[-1] = {**last, **new_point}
-    else:
-        points.append(new_point)
-else:
-    points.append(new_point)
+points = compact_daily(points + [new_point])
 if len(points) > 400:
     points = points[-400:]
 history["points"] = points
