@@ -6,7 +6,7 @@ ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 SRC="${ROOT}/docs/development-overview.md"
 OUT_DIR="${ROOT}/site/development-overview"
 OUT_HTML="${OUT_DIR}/index.html"
-AS_OF="$(python3 -c "import json;from pathlib import Path;p=Path('${ROOT}/data/development-overview/status.json');print(json.loads(p.read_text(encoding='utf-8'))['generated_at']) if p.is_file() else __import__('datetime').datetime.now(__import__('datetime').timezone.utc).strftime('%Y-%m-%dT%H:%MZ')")"
+AS_OF="$(grep -m1 'scanned \*\*' "$SRC" | sed -n 's/.*scanned \*\*\([^*]*\)\*\*.*/\1/p' || date -u +%Y-%m-%dT%H:%MZ)"
 
 mkdir -p "$OUT_DIR"
 
@@ -129,28 +129,17 @@ html = f"""<!DOCTYPE html>
   <div class="wrap">
     <header>
       <h1>Li development overview</h1>
-      <p>li-langverse org · data as of <span id="snapshot-as-of">{as_of}</span> · <span id="live-status">loading…</span> · <a href="https://github.com/li-langverse/roadmap/blob/main/docs/development-overview.md">docs</a></p>
+      <p>li-langverse org Â· snapshot <span id="snapshot-as-of">{as_of}</span> Â· <span id="live-status">loading live queueâ€¦</span> Â· <a href="https://github.com/li-langverse/roadmap/blob/main/docs/development-overview.md">edit snapshot</a></p>
       <nav class="nav" aria-label="Related">
         <a href="https://benchmarks.lilangverse.xyz/">Benchmarks</a>
         <a href="https://docs.lilangverse.xyz/">Language docs</a>
         <a href="https://github.com/li-langverse/roadmap">roadmap repo</a>
       </nav>
     </header>
-        <section class="live-banner" aria-labelledby="live-heading">
-      <h2 id="live-heading">Live org dashboard</h2>
-      <p>Metrics and tables load from <code>status.json</code>, refreshed on each Pages deploy (hourly schedule + push). Repo list is discovered from the <a href="https://github.com/orgs/li-langverse/repositories">li-langverse org</a> — new repos appear automatically.</p>
+    <section class="live-banner" aria-labelledby="live-heading">
+      <h2 id="live-heading">Live PR merge queue</h2>
+      <p>Live queue: embedded JavaScript calls the <a href="https://docs.github.com/en/rest/search">GitHub API</a> from your browser (no Actions cron). CI status fills in gradually (~90s per PR). Tables below are the markdown snapshot.</p>
       <div class="live-metrics" id="live-metrics"></div>
-      <div id="repo-hint-note"></div>
-      <h3>Repositories</h3>
-      <div class="live-table-wrap">
-        <table id="live-repo-table">
-          <thead>
-            <tr><th>Repo</th><th>Open issues</th><th>Open PRs</th><th>main CI</th><th>Workflows</th><th>Docs</th><th>Last push</th></tr>
-          </thead>
-          <tbody id="live-repo-body"></tbody>
-        </table>
-      </div>
-      <h3>Open pull requests</h3>
       <div class="live-table-wrap">
         <table id="live-pr-table">
           <thead>
@@ -175,9 +164,6 @@ PY
 
 cp "$SRC" "$OUT_DIR/overview.md"
 cp "${ROOT}/scripts/development-overview-live.js" "$OUT_DIR/live.js"
-if [[ -f "${ROOT}/data/development-overview/status.json" ]]; then
-  cp "${ROOT}/data/development-overview/status.json" "$OUT_DIR/status.json"
-fi
 cat > "${ROOT}/site/index.html" <<'ROOTHTML'
 <!DOCTYPE html>
 <html lang="en">
