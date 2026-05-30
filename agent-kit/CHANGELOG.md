@@ -1,14 +1,9 @@
 # Agent-kit changelog
 
-## 1.3.5 — 2026-05-29
-
-- Rule **`ph-ml-stub-then-implement`** — base + `overlays/lic` copy; stub-then-real within same PR series
-- Rules **`li-def-not-proc`**, **`li-native-li-only`** — Li surface and Li-first implementation defaults
-- Hook **`guard-li-surface.sh`** — block new `proc` tokens and helper-code drift outside trusted boundaries (wired in `hooks.json`)
-
 ## 1.3.4 — 2026-05-29
 
-- (Superseded by 1.3.5 bundle) Same li-surface rules/hooks as 1.3.5 without PH-ML stub rule
+- Rules **`li-def-not-proc`**, **`li-native-li-only`** — Li surface and Li-first implementation defaults
+- Hook **`guard-li-surface.sh`** — block new `proc` tokens and helper-code drift outside trusted boundaries
 
 ## 1.3.3 — 2026-05-22
 
