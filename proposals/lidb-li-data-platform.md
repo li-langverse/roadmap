@@ -2,11 +2,7 @@
 
 **Status:** Draft (PH-DB-0)  
 **Date:** 2026-05-25  
-**PH / REQ:** PH-DB-0 … PH-DB-10, REQ-registry-v2, lip **8d v2**  
-**Research track:** [`lidb-multi-model-gpu-research.md`](./lidb-multi-model-gpu-research.md) (PH-DB-G0 — multi-model + GPU; out of PH-DB-1..4 scope)  
-**Native engine:** [`lidb-native-engine.md`](./lidb-native-engine.md) (legacy N1–N6 labels)  
-**Competitor matrices + WP-N1…N9:** [`lidb-native-li-matrices.md`](./lidb-native-li-matrices.md)  
-**Native Li ADR (lidb repo):** [`lidb/docs/architecture-native-li.md`](https://github.com/li-langverse/lidb/blob/main/docs/architecture-native-li.md) — **PH-DB-3.1** sqlite removal
+**PH / REQ:** PH-DB-0 … PH-DB-10, REQ-registry-v2, lip **8d v2**
 
 ## Context
 
@@ -134,30 +130,27 @@ Document evidence in `lidb/docs/footprint.md` (WP1); CI optional nightly.
 ## Registry-min path
 
 1. **PH-DB-0** — this ADR + roadmap release note (no runtime).
-2. **PH-DB-1** — `lidb` repo: native WAL/heap + SQL executor (`001_registry.sql`); **sqlite smoke removed** per [`lidb-native-engine.md`](./lidb-native-engine.md).
+2. **PH-DB-1** — `lidb` repo: `migrations/001_registry.sql`, smoke script.
 3. **PH-DB-2** — `liorm`/`liq` skeleton + security test stubs.
 4. **PH-DB-3** — `lis db start` + `profiles/registry-min.toml`.
 5. **PH-DB-4** — `lip` registry v2 REST + central DB; domain TLS (human).
 6. **PH-DB-5…9** — auth RLS, storage, realtime, vectors, auto-API (module flags).
 7. **PH-DB-10** — migrate li-cursor-agents control plane off Supabase.
 
-**Native WPs (WP-N*, after PH-DB-0):** parallel batch **A** — **N1** heap/WAL C++ ∥ **N2** SQL/Li executor ∥ **N3** realtime changefeed ∥ **N4** benchmark matrix CI ∥ **N5** security harness; then **PH-DB-3.1** sqlite cutover; sequential **N6** PG wire ∥ **N7** RLS+auth ∥ **N8** vector ∥ **N9** `lidb-graph`. See [`lidb-native-li-matrices.md`](./lidb-native-li-matrices.md).
-
-**Ecosystem WPs (parallel with native):** lip OpenAPI prep ∥ `tier_db_registry`; **lis** bundle (**PH-DB-3**) after **PH-DB-3.1** native cutover.
+**Parallel WPs (after PH-DB-0):** WP1 ∥ WP4-prep (lip OpenAPI) ∥ WP-bench; then WP2 → WP5 → WP4.
 
 ## Phased roadmap PH-DB-0 … PH-DB-10
 
 | Phase | ID | Deliverable | Depends |
 |-------|-----|-------------|---------|
 | 0 | **PH-DB-0** | Proposal + ADR (this doc); lic cross-links | — |
-| 1 | **PH-DB-1** | Native engine: WAL/heap pages, SQL executor, registry migration; sqlite smoke **deprecated** | PH-DB-0; [`lidb-native-engine.md`](./lidb-native-engine.md) N2–N3 |
+| 1 | **PH-DB-1** | `lidb` scaffold: WAL/heap stub, registry migration, `pg-subset-v1` NOT list | PH-DB-0, human: create `li-langverse/lidb` |
 | 2 | **PH-DB-2** | `liorm` + `liq` + security harness stubs | PH-DB-1 |
 | 3 | **PH-DB-3** | `lis db` supervisor + `registry-min` profile | PH-DB-1 |
-| 3.1 | **PH-DB-3.1** | Remove sqlite3 smoke from CI/engine (`embed_engine.py`, `embedded.cpp`) | WP-N1 + WP-N2; [`architecture-native-li.md`](https://github.com/li-langverse/lidb/blob/main/docs/architecture-native-li.md) |
-| 4 | **PH-DB-4** | Registry v2 on lidb; `lip publish` → central DB | PH-DB-1–3, lip OpenAPI; **blocks PH-8d-v2** |
+| 4 | **PH-DB-4** | Registry v2 on lidb; `lip publish` → central DB | PH-DB-1–3, lip OpenAPI |
 | 5 | **PH-DB-5** | Auth + RLS for publishers | PH-DB-4 |
 | 6 | **PH-DB-6** | Object storage vertical | PH-DB-4 |
-| 7 | **PH-DB-7** | Realtime (`lis` broker + WAL fanout; N5 protocol, N6 RLS) | PH-DB-4; N5 before N6 |
+| 7 | **PH-DB-7** | Realtime (WAL fanout) | PH-DB-4 |
 | 8 | **PH-DB-8** | Vectors + flexible embedding spaces | PH-DB-1 |
 | 9 | **PH-DB-9** | PostgREST-style auto-API + edge stub | PH-DB-4 |
 | 10 | **PH-DB-10** | Control-plane store migration | PH-DB-4 |
@@ -174,7 +167,7 @@ Document evidence in `lidb/docs/footprint.md` (WP1); CI optional nightly.
 
 | System | Keep | Reject |
 |--------|------|--------|
-| **SQLite** | — | PH-DB-1 smoke only — **REMOVED** per [`lidb-native-engine.md`](./lidb-native-engine.md) |
+| **SQLite** | embedded mode, single-file dev | full SQL legacy surface |
 | **Neon** | storage/compute separation ideas | managed-only ops model |
 | **pgvector** | embedding index patterns | Postgres extension baggage |
 | **Supabase** | vertical feature map, RLS story | 10-container compose default |
@@ -186,17 +179,8 @@ Document evidence in `lidb/docs/footprint.md` (WP1); CI optional nightly.
 - **Negative:** New org repo + multi-year engine work; **8d v2** blocked until PH-DB-4.
 - **Risks:** Scope creep (full Postgres clone) — gated by `pg-subset-v1` NOT list; human gate for `li-langverse/lidb` repo creation.
 
-## Future research (PH-DB-G0)
-
-Multi-model storage (relational / document / graph) and GPU acceleration are **out of PH-DB-1..4 scope**. See **[`lidb-multi-model-gpu-research.md`](./lidb-multi-model-gpu-research.md)** for the research plan, bench proposals, and ADR decision table. **registry-min** remains CPU-only with relational + JSONB until that ADR promotes optional `lidb-graph` / `lidb-gpu` modules.
-
 ## Links
 
-- **Native engine:** [`lidb-native-engine.md`](./lidb-native-engine.md), [`lidb-native-li-matrices.md`](./lidb-native-li-matrices.md), [`lidb/docs/architecture-native-li.md`](https://github.com/li-langverse/lidb/blob/main/docs/architecture-native-li.md)
-- **Research:** [`lidb-multi-model-gpu-research.md`](./lidb-multi-model-gpu-research.md) (PH-DB-G0)
-- **Ecosystem PH table:** [`docs/ecosystem/vision-and-roadmap.md`](../docs/ecosystem/vision-and-roadmap.md#li-data-platform-ph-db-0--ph-db-10) — includes **PH-8d-v2 → PH-DB-4**
-- **PKG-lidb:** [`docs/ecosystem/official-packages.md`](../docs/ecosystem/official-packages.md)
-- **Bench tier index:** [`docs/ecosystem/benchmark-tier-index.md`](../docs/ecosystem/benchmark-tier-index.md) → `tier_db_registry`
-- Master plan (lic): [2026-05-14-li-master-plan.md](https://github.com/li-langverse/lic/blob/main/docs/superpowers/plans/2026-05-14-li-master-plan.md) — PH-DB row (sibling PR)
-- lip 8d: [2026-05-16-li-package-manager-lip.md](https://github.com/li-langverse/lic/blob/main/docs/superpowers/plans/2026-05-16-li-package-manager-lip.md) — registry v2 DB → PH-DB-4 (**PH-8d-v2** blocked until PH-DB-4)
+- Master plan (lic): [2026-05-14-li-master-plan.md](https://github.com/li-langverse/lic/blob/main/docs/superpowers/plans/2026-05-14-li-master-plan.md) — PH-DB row
+- lip 8d: [2026-05-16-li-package-manager-lip.md](https://github.com/li-langverse/lic/blob/main/docs/superpowers/plans/2026-05-16-li-package-manager-lip.md) — registry v2 DB → PH-DB-4
 - Release note: [`docs/release-notes/2026-05-25-lidb-proposal.md`](../docs/release-notes/2026-05-25-lidb-proposal.md)

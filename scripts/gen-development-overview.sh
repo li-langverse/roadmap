@@ -1,12 +1,13 @@
-﻿#!/usr/bin/env bash
+#!/usr/bin/env bash
 # Generate static HTML for GitHub Pages from docs/development-overview.md
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 SRC="${ROOT}/docs/development-overview.md"
+ECO_JSON="${ROOT}/data/development-overview/ecosystem-stats.json"
 OUT_DIR="${ROOT}/site/development-overview"
 OUT_HTML="${OUT_DIR}/index.html"
-AS_OF="$(python3 -c "import json;from pathlib import Path;p=Path('${ROOT}/data/development-overview/status.json');print(json.loads(p.read_text(encoding='utf-8'))['generated_at']) if p.is_file() else __import__('datetime').datetime.now(__import__('datetime').timezone.utc).strftime('%Y-%m-%dT%H:%MZ')")"
+AS_OF="$(grep -m1 'scanned \*\*' "$SRC" | sed -n 's/.*scanned \*\*\([^*]*\)\*\*.*/\1/p' || date -u +%Y-%m-%dT%H:%MZ)"
 
 mkdir -p "$OUT_DIR"
 
@@ -14,18 +15,29 @@ PY="${PYTHON:-python3}"
 if ! "$PY" -c "import markdown" 2>/dev/null; then
   VENV="${ROOT}/.venv-overview"
   if [[ ! -x "${VENV}/bin/python" ]]; then
-    "$PY" -m venv "$VENV"
-    "${VENV}/bin/pip" install -q markdown
+    if "$PY" -m venv "$VENV" 2>/dev/null; then
+      "${VENV}/bin/pip" install -q markdown
+    fi
   fi
-  PY="${VENV}/bin/python"
+  if [[ -x "${VENV}/bin/python" ]] && "${VENV}/bin/python" -c "import markdown" 2>/dev/null; then
+    PY="${VENV}/bin/python"
+  elif command -v node >/dev/null 2>&1 || [[ -x "${HOME}/.local/node/bin/node" ]]; then
+    export PATH="${HOME}/.local/node/bin:${PATH}"
+    chmod +x "${ROOT}/scripts/gen-development-overview-node.mjs"
+    exec node "${ROOT}/scripts/gen-development-overview-node.mjs"
+  else
+    echo "error: need python markdown or node+npx marked" >&2
+    exit 1
+  fi
 fi
 
-"$PY" - "$SRC" "$OUT_HTML" "$AS_OF" <<'PY'
+"$PY" - "$SRC" "$OUT_HTML" "$AS_OF" "$ECO_JSON" <<'PY'
+import json
 import re
 import sys
 from pathlib import Path
 
-src_path, out_path, as_of = sys.argv[1:4]
+src_path, out_path, as_of, eco_path = sys.argv[1:5]
 text = Path(src_path).read_text(encoding="utf-8")
 
 try:
@@ -45,12 +57,44 @@ body = markdown.markdown(
 
 body = re.sub(r"^<h1[^>]*>.*?</h1>\s*", "", body, count=1, flags=re.DOTALL)
 
+eco = {}
+eco_file = Path(eco_path)
+if eco_file.is_file():
+    try:
+        eco = json.loads(eco_file.read_text(encoding="utf-8"))
+    except json.JSONDecodeError:
+        pass
+
+def fmt_int(n) -> str:
+    if n is None:
+        return "—"
+    return f"{int(n):,}"
+
+
+eco_as_of = eco.get("generated_at", "—")
+def org_repos_val(e):
+    v = e.get("org_repositories")
+    if v is not None:
+        return v
+    return e.get("packages")
+
+eco_cards = [
+    ("Lines of code", fmt_int(eco.get("lines_of_code"))),
+    ("Org repositories", fmt_int(org_repos_val(eco))),
+    ("Open issues", fmt_int(eco.get("issues_open"))),
+    ("Closed PRs", fmt_int(eco.get("prs_closed"))),
+]
+eco_cards_html = "".join(
+    f'<div class="metric-card"><p class="label">{label}</p><p class="value">{value}</p></div>'
+    for label, value in eco_cards
+)
+
 html = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Li development overview â€” li-langverse</title>
+  <title>Li development overview — li-langverse</title>
   <meta name="description" content="PR merge queue, branch CI coverage, live docs, and benchmarks across the Li org." />
   <style>
     :root {{
@@ -129,28 +173,22 @@ html = f"""<!DOCTYPE html>
   <div class="wrap">
     <header>
       <h1>Li development overview</h1>
-      <p>li-langverse org · data as of <span id="snapshot-as-of">{as_of}</span> · <span id="live-status">loading…</span> · <a href="https://github.com/li-langverse/roadmap/blob/main/docs/development-overview.md">docs</a></p>
+      <p>li-langverse org · snapshot <span id="snapshot-as-of">{as_of}</span> · <span id="live-status">loading live queue…</span> · <a href="https://github.com/li-langverse/roadmap/blob/main/docs/development-overview.md">edit snapshot</a></p>
       <nav class="nav" aria-label="Related">
-        <a href="https://benchmarks.lilangverse.xyz/">Benchmarks</a>
-        <a href="https://docs.lilangverse.xyz/">Language docs</a>
+        <a href="https://li-langverse.github.io/benchmarks/">Benchmarks</a>
+        <a href="https://li-langverse.github.io/li-language/">Language docs</a>
         <a href="https://github.com/li-langverse/roadmap">roadmap repo</a>
       </nav>
     </header>
-        <section class="live-banner" aria-labelledby="live-heading">
-      <h2 id="live-heading">Live org dashboard</h2>
-      <p>Metrics and tables load from <code>status.json</code>, refreshed on each Pages deploy (hourly schedule + push). Repo list is discovered from the <a href="https://github.com/orgs/li-langverse/repositories">li-langverse org</a> — new repos appear automatically.</p>
+    <section class="live-banner" aria-labelledby="eco-heading">
+      <h2 id="eco-heading">Ecosystem statistics</h2>
+      <p>Snapshot <span id="eco-as-of">{eco_as_of}</span> · <strong>Org repositories</strong> = every repo under li-langverse on GitHub (LoC still sums <code>.github/li-org-repos.txt</code> only). Live open issues &amp; closed PRs refresh in the browser · <a href="https://github.com/li-langverse/roadmap/blob/main/scripts/compute-ecosystem-stats.py">recompute stats</a></p>
+      <div class="live-metrics" id="ecosystem-metrics">{eco_cards_html}</div>
+    </section>
+    <section class="live-banner" aria-labelledby="live-heading">
+      <h2 id="live-heading">Live PR merge queue</h2>
+      <p>Live queue: embedded JavaScript calls the <a href="https://docs.github.com/en/rest/search">GitHub API</a> from your browser (no Actions cron). CI status fills in gradually (~90s per PR). Tables below are the markdown snapshot.</p>
       <div class="live-metrics" id="live-metrics"></div>
-      <div id="repo-hint-note"></div>
-      <h3>Repositories</h3>
-      <div class="live-table-wrap">
-        <table id="live-repo-table">
-          <thead>
-            <tr><th>Repo</th><th>Open issues</th><th>Open PRs</th><th>main CI</th><th>Workflows</th><th>Docs</th><th>Last push</th></tr>
-          </thead>
-          <tbody id="live-repo-body"></tbody>
-        </table>
-      </div>
-      <h3>Open pull requests</h3>
       <div class="live-table-wrap">
         <table id="live-pr-table">
           <thead>
@@ -175,21 +213,7 @@ PY
 
 cp "$SRC" "$OUT_DIR/overview.md"
 cp "${ROOT}/scripts/development-overview-live.js" "$OUT_DIR/live.js"
-if [[ -f "${ROOT}/data/development-overview/status.json" ]]; then
-  cp "${ROOT}/data/development-overview/status.json" "$OUT_DIR/status.json"
+if [[ -f "$ECO_JSON" ]]; then
+  cp "$ECO_JSON" "$OUT_DIR/ecosystem-stats.json"
 fi
-cat > "${ROOT}/site/index.html" <<'ROOTHTML'
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="refresh" content="0; url=development-overview/">
-  <link rel="canonical" href="development-overview/">
-  <title>Li progress</title>
-</head>
-<body><p><a href="development-overview/">Li development overview</a></p></body>
-</html>
-ROOTHTML
-echo "progress.lilangverse.xyz" > "${ROOT}/site/CNAME"
 echo "Generated ${OUT_HTML}"
-

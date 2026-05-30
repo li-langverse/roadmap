@@ -40,6 +40,14 @@ jobs:
           test -f docs/development-overview.md
           test -f agent-kit/.cursor/rules/li-pr-only.mdc
 
+      - name: Ecosystem stats snapshot
+        env:
+          ECOSYSTEM_STATS_SKIP_CLONE: "1"
+        run: |
+          chmod +x scripts/compute-ecosystem-stats.py
+          python3 scripts/compute-ecosystem-stats.py
+          test -f data/development-overview/ecosystem-stats.json
+
       - name: Build development overview (dry-run)
         run: |
           python3 -m pip install markdown
@@ -47,3 +55,4 @@ jobs:
           ./scripts/gen-development-overview.sh
           test -f site/development-overview/index.html
           test -f site/development-overview/live.js
+          test -f site/development-overview/ecosystem-stats.json
