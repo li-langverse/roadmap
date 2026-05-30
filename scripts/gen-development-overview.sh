@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+﻿#!/usr/bin/env bash
 # Generate static HTML for GitHub Pages from docs/development-overview.md
 set -euo pipefail
 
@@ -50,7 +50,7 @@ html = f"""<!DOCTYPE html>
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Li development overview — li-langverse</title>
+  <title>Li development overview â€” li-langverse</title>
   <meta name="description" content="PR merge queue, branch CI coverage, live docs, and benchmarks across the Li org." />
   <style>
     :root {{
@@ -129,10 +129,10 @@ html = f"""<!DOCTYPE html>
   <div class="wrap">
     <header>
       <h1>Li development overview</h1>
-      <p>li-langverse org · snapshot <span id="snapshot-as-of">{as_of}</span> · <span id="live-status">loading live queue…</span> · <a href="https://github.com/li-langverse/roadmap/blob/main/docs/development-overview.md">edit snapshot</a></p>
+      <p>li-langverse org Â· snapshot <span id="snapshot-as-of">{as_of}</span> Â· <span id="live-status">loading live queueâ€¦</span> Â· <a href="https://github.com/li-langverse/roadmap/blob/main/docs/development-overview.md">edit snapshot</a></p>
       <nav class="nav" aria-label="Related">
-        <a href="https://li-langverse.github.io/benchmarks/">Benchmarks</a>
-        <a href="https://li-langverse.github.io/li-language/">Language docs</a>
+        <a href="https://benchmarks.lilangverse.xyz/">Benchmarks</a>
+        <a href="https://docs.lilangverse.xyz/">Language docs</a>
         <a href="https://github.com/li-langverse/roadmap">roadmap repo</a>
       </nav>
     </header>
@@ -164,4 +164,18 @@ PY
 
 cp "$SRC" "$OUT_DIR/overview.md"
 cp "${ROOT}/scripts/development-overview-live.js" "$OUT_DIR/live.js"
+cat > "${ROOT}/site/index.html" <<'ROOTHTML'
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="refresh" content="0; url=development-overview/">
+  <link rel="canonical" href="development-overview/">
+  <title>Li progress</title>
+</head>
+<body><p><a href="development-overview/">Li development overview</a></p></body>
+</html>
+ROOTHTML
+echo "progress.lilangverse.xyz" > "${ROOT}/site/CNAME"
 echo "Generated ${OUT_HTML}"
+
