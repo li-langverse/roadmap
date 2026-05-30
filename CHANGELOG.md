@@ -2,7 +2,13 @@
 
 ## [Unreleased]
 
+### Added
+
+- **Org PR battle plan (2026-05-27):** [docs/ecosystem/pr-battle-plan-2026-05-27.md](docs/ecosystem/pr-battle-plan-2026-05-27.md) — merge order after vertical stack (#335–#341), superseded PR hygiene, tier P0–P4 for `lic` + sibling repos.
+
 ### Changed
+
+- **PR battle plan refresh:** [docs/ecosystem/pr-battle-plan-2026-05-27.md](docs/ecosystem/pr-battle-plan-2026-05-27.md) — session close-out (`lic` #345, bench harness, wgpu #342/#346, superseded closes).
 
 - **PH-DB status refresh:** `docs/ecosystem/ph-db-status.md` — post–native merge wave; `lis#10` / `benchmarks#96` / `lidb`→`main` milestone table; WP-N1…N9 % bump; top 3 remaining — [2026-05-25-ph-db-status-refresh.md](docs/release-notes/2026-05-25-ph-db-status-refresh.md)
 
