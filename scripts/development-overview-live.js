@@ -123,26 +123,21 @@ async function refreshEcosystemLive() {
       prs_closed: prsClosed ?? undefined,
       generated_at: at,
     });
-    window.DevelopmentOverviewHistory?.updateLive({
-      at,
-      open_prs: prsOpen ?? prs.length ?? undefined,
-      prs_closed: prsClosed ?? undefined,
-      issues_open: issuesOpen ?? undefined,
-      issues_closed: issuesClosed ?? undefined,
-      source: "live-api",
-    });
+    const live = { at, source: "live-api" };
+    if (typeof prsOpen === "number") live.open_prs = prsOpen;
+    if (typeof prsClosed === "number") live.prs_closed = prsClosed;
+    if (typeof issuesOpen === "number") live.issues_open = issuesOpen;
+    if (typeof issuesClosed === "number") live.issues_closed = issuesClosed;
+    if (Object.keys(live).length > 2) {
+      window.DevelopmentOverviewHistory?.updateLive(live);
+    }
   } catch {
     paintEcosystem();
-    window.DevelopmentOverviewHistory?.updateLive({
-      at,
-      open_prs: prs.length || undefined,
-      source: "live-api-partial",
-    });
   }
 }
 
 function renderMetrics(list) {
-  const open = list.length;
+  const open = openPrTotal || list.length;
   const drafts = list.filter((p) => p.draft).length;
   const ready = list.filter((p) => p.ready).length;
   const blocked = list.filter((p) => !p.ready && !p.draft && p.ci === "fail").length;
@@ -195,6 +190,19 @@ async function ghGet(url) {
   if (!res.ok) throw new Error(`GitHub API ${res.status}`);
   return res.json();
 }
+
+async function searchAllIssues(query) {
+  const items = [];
+  for (let page = 1; page <= 10; page += 1) {
+    const url = `https://api.github.com/search/issues?q=${encodeURIComponent(query)}&per_page=100&page=${page}&sort=updated`;
+    const data = await ghGet(url);
+    items.push(...(data.items || []));
+    if (items.length >= (data.total_count || 0) || (data.items || []).length < 100) break;
+  }
+  return items;
+}
+
+let openPrTotal = 0;
 
 async function refreshSearch() {
   const statusEl = document.getElementById("live-status");
