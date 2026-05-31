@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import os
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -191,6 +192,27 @@ def compute_loc(repos: list[str], workdir: Path, clone_missing: bool) -> tuple[i
     return sum(per_repo.values()), per_repo
 
 
+
+
+def merge_existing(payload: dict, path: Path) -> dict:
+    """Keep committed snapshot values when a CI/gh refresh cannot resolve them."""
+    if not path.is_file():
+        return payload
+    try:
+        existing = json.loads(path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError:
+        return payload
+    if not isinstance(existing, dict):
+        return payload
+    for key, value in existing.items():
+        if key not in payload or payload.get(key) is None:
+            if value is not None:
+                payload[key] = value
+    if not payload.get("lines_of_code") and existing.get("lines_of_code"):
+        payload["lines_of_code"] = existing["lines_of_code"]
+        payload["lines_per_repo"] = existing.get("lines_per_repo", {})
+    return payload
+
 def main() -> int:
     root = repo_root()
     repos_file = root / ".github" / "li-org-repos.txt"
@@ -200,7 +222,7 @@ def main() -> int:
     if not repos_file.is_file():
         sys.stderr.write(f"missing {repos_file}\n")
         return 1
-    if subprocess.run(["which", "gh"], capture_output=True).returncode != 0:
+    if shutil.which("gh") is None:
         sys.stderr.write("error: gh CLI required\n")
         return 1
 
@@ -232,6 +254,7 @@ def main() -> int:
     }
 
     out_dir.mkdir(parents=True, exist_ok=True)
+    payload = merge_existing(payload, out_json)
     out_json.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
     print(
         f"Wrote {out_json} — LoC {lines_total:,}, org repos {org_repositories}, "

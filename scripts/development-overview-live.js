@@ -93,6 +93,23 @@ function paintEcosystem(live = {}) {
   if (el) el.innerHTML = renderEcosystemMetrics(live);
 }
 
+async function fetchOrgRepositoryCount() {
+  try {
+    let total = 0;
+    for (let page = 1; page <= 10; page += 1) {
+      const repos = await ghGet(
+        `https://api.github.com/orgs/${ORG}/repos?per_page=100&page=${page}`
+      );
+      if (!Array.isArray(repos) || !repos.length) break;
+      total += repos.length;
+      if (repos.length < 100) break;
+    }
+    return total || null;
+  } catch {
+    return null;
+  }
+}
+
 async function searchCount(query) {
   const url = `https://api.github.com/search/issues?q=${encodeURIComponent(query)}&per_page=1`;
   const data = await ghGet(url);
@@ -112,15 +129,17 @@ async function loadEcosystemSnapshot() {
 async function refreshEcosystemLive() {
   const at = new Date().toISOString().slice(0, 10);
   try {
-    const [issuesOpen, issuesClosed, prsClosed, prsOpen] = await Promise.all([
+    const [issuesOpen, issuesClosed, prsClosed, prsOpen, orgRepos] = await Promise.all([
       searchCount(`org:${ORG} is:issue is:open`),
       searchCount(`org:${ORG} is:issue is:closed`),
       searchCount(`org:${ORG} is:pr is:closed`),
       searchCount(`org:${ORG} is:pr is:open`),
+      fetchOrgRepositoryCount(),
     ]);
     paintEcosystem({
       issues_open: issuesOpen ?? undefined,
       prs_closed: prsClosed ?? undefined,
+      org_repositories: orgRepos ?? undefined,
       generated_at: at,
     });
     const live = { at, source: "live-api" };

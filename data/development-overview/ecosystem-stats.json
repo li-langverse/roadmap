@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-31T02:39Z",
+  "generated_at": "2026-05-31T02:43Z",
   "org": "li-langverse",
   "repos_tracked": 12,
   "lines_of_code": 67208,
@@ -17,7 +17,7 @@
     "li-std-math": 0,
     "li-demo": 0
   },
-  "org_repositories": 14,
+  "org_repositories": 35,
   "issues_open": 177,
   "issues_closed": 5,
   "issues_total": 57,

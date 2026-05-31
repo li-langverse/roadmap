@@ -1,4 +1,4 @@
-﻿# Optional policy hints (one name per line). The development overview discovers
+# Optional policy hints (one name per line). The development overview discovers
 # all public org repos via the GitHub API — this file is NOT the repo census.
 # CI policy: every repo should have .github/workflows/ci.yml
 lic
