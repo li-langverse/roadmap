@@ -152,7 +152,7 @@
             maxRotation: 0,
             autoSkip: true,
             maxTicksLimit: 8,
-            callback: (value) => {
+            callback: function (value) {
               const raw = this.getLabelForValue(value);
               return raw ? fmtShortDay(String(raw)) : "";
             },
@@ -256,38 +256,42 @@
       const labels = values.map((row) => row.day);
       const data = values.map((row) => row.v);
       const existing = instances.get(spec.key);
-      if (existing) {
-        existing.data.labels = labels;
-        existing.data.datasets[0].data = data;
-        existing.update("none");
-        continue;
+      try {
+        if (existing) {
+          existing.data.labels = labels;
+          existing.data.datasets[0].data = data;
+          existing.update("none");
+          continue;
+        }
+
+        const canvas = document.getElementById(`history-chart-${spec.key}`);
+        if (!canvas) continue;
+
+        const fill = spec.color + "22";
+        const chart = new window.Chart(canvas, {
+          type: "line",
+          data: {
+            labels,
+            datasets: [
+              {
+                label: spec.label,
+                data,
+                borderColor: spec.color,
+                backgroundColor: fill,
+                pointBackgroundColor: spec.color,
+                pointBorderColor: spec.color,
+                pointHoverBackgroundColor: THEME.fg,
+                pointHoverBorderColor: spec.color,
+                fill: true,
+              },
+            ],
+          },
+          options: chartOptions(spec),
+        });
+        instances.set(spec.key, chart);
+      } catch (err) {
+        console.error(`history chart ${spec.key}:`, err);
       }
-
-      const canvas = document.getElementById(`history-chart-${spec.key}`);
-      if (!canvas) continue;
-
-      const fill = spec.color + "22";
-      const chart = new window.Chart(canvas, {
-        type: "line",
-        data: {
-          labels,
-          datasets: [
-            {
-              label: spec.label,
-              data,
-              borderColor: spec.color,
-              backgroundColor: fill,
-              pointBackgroundColor: spec.color,
-              pointBorderColor: spec.color,
-              pointHoverBackgroundColor: THEME.fg,
-              pointHoverBorderColor: spec.color,
-              fill: true,
-            },
-          ],
-        },
-        options: chartOptions(spec),
-      });
-      instances.set(spec.key, chart);
     }
   }
 
