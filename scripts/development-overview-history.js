@@ -152,8 +152,8 @@
             maxRotation: 0,
             autoSkip: true,
             maxTicksLimit: 8,
-            callback: (_value, index, ticks) => {
-              const raw = ticks[index]?.label;
+            callback: (value) => {
+              const raw = this.getLabelForValue(value);
               return raw ? fmtShortDay(String(raw)) : "";
             },
           },
@@ -212,8 +212,22 @@
     if (!grid) return;
 
     const points = mergedPoints();
-    destroyCharts();
-    grid.innerHTML = CHARTS.map((spec) => renderChartCanvas(spec, points)).join("");
+    const layoutKey = CHARTS.map((s) => s.key).join(",");
+    const prevLayout = grid.dataset.layout;
+    const sameLayout = prevLayout === layoutKey && grid.childElementCount === CHARTS.length;
+    if (!sameLayout) {
+      destroyCharts();
+      grid.innerHTML = CHARTS.map((spec) => renderChartCanvas(spec, points)).join("");
+      grid.dataset.layout = layoutKey;
+    } else {
+      for (const spec of CHARTS) {
+        const values = points
+          .map((p) => ({ day: dayKey(p.at), v: typeof p[spec.key] === "number" ? p[spec.key] : null }))
+          .filter((row) => row.v !== null);
+        const latest = document.querySelector(`#history-chart-${spec.key}`)?.closest(".history-chart")?.querySelector(".history-latest");
+        if (latest && values.length) latest.textContent = values[values.length - 1].v.toLocaleString();
+      }
+    }
 
     if (status) {
       const n = points.length;
@@ -239,6 +253,16 @@
         .filter((row) => row.v !== null);
       if (!values.length) continue;
 
+      const labels = values.map((row) => row.day);
+      const data = values.map((row) => row.v);
+      const existing = instances.get(spec.key);
+      if (existing) {
+        existing.data.labels = labels;
+        existing.data.datasets[0].data = data;
+        existing.update("none");
+        continue;
+      }
+
       const canvas = document.getElementById(`history-chart-${spec.key}`);
       if (!canvas) continue;
 
@@ -246,11 +270,11 @@
       const chart = new window.Chart(canvas, {
         type: "line",
         data: {
-          labels: values.map((row) => row.day),
+          labels,
           datasets: [
             {
               label: spec.label,
-              data: values.map((row) => row.v),
+              data,
               borderColor: spec.color,
               backgroundColor: fill,
               pointBackgroundColor: spec.color,
@@ -278,8 +302,14 @@
   }
 
   function updateLive(point) {
-    const day = dayKey(point?.at) || new Date().toISOString().slice(0, 10);
-    livePoint = { ...point, at: day };
+    if (!point) return;
+    const day = dayKey(point.at) || new Date().toISOString().slice(0, 10);
+    const next = { ...(livePoint || {}), at: day };
+    for (const key of METRIC_KEYS) {
+      if (typeof point[key] === "number") next[key] = point[key];
+    }
+    if (point.source) next.source = point.source;
+    livePoint = next;
     paintCharts();
   }
 

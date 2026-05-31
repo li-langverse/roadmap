@@ -212,6 +212,7 @@ html = f"""<!DOCTYPE html>
     .history-canvas-wrap {{ position: relative; height: 140px; }}
     .history-empty {{ margin: 0.5rem 0 0; color: var(--muted); font-size: 0.82rem; }}
     .history-meta {{ font-size: 0.78rem; color: var(--muted); margin: 0.5rem 0 0; }}
+    .snapshot-notice {{ color: var(--muted); font-size: 0.88rem; margin: 0 0 1.25rem; padding: 0.65rem 0.75rem; border: 1px dashed var(--border); border-radius: 6px; background: #161b22; }}
   </style>
 </head>
 <body>
@@ -251,6 +252,7 @@ html = f"""<!DOCTYPE html>
       </div>
     </section>
     <main>
+      <p class="snapshot-notice"><em>Static tables below are a markdown snapshot from {as_of}. Live PR queue, ecosystem cards, and history charts above refresh from GitHub in your browser.</em></p>
 {body}
     </main>
   </div>
