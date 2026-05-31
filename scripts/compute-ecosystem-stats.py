@@ -208,7 +208,12 @@ def merge_existing(payload: dict, path: Path) -> dict:
         if key not in payload or payload.get(key) is None:
             if value is not None:
                 payload[key] = value
-    if not payload.get("lines_of_code") and existing.get("lines_of_code"):
+    existing_loc = existing.get("lines_of_code") or 0
+    new_loc = payload.get("lines_of_code") or 0
+    if existing_loc and (new_loc == 0 or new_loc < existing_loc * 0.75):
+        payload["lines_of_code"] = existing_loc
+        payload["lines_per_repo"] = existing.get("lines_per_repo", {})
+    elif not payload.get("lines_of_code") and existing.get("lines_of_code"):
         payload["lines_of_code"] = existing["lines_of_code"]
         payload["lines_per_repo"] = existing.get("lines_per_repo", {})
     return payload
@@ -227,9 +232,14 @@ def main() -> int:
         return 1
 
     repos = load_repo_list(repos_file)
-    clone_missing = os.environ.get("ECOSYSTEM_STATS_SKIP_CLONE", "") != "1"
+    skip_clone = os.environ.get("ECOSYSTEM_STATS_SKIP_CLONE", "") == "1"
+    clone_missing = not skip_clone
 
-    lines_total, lines_per_repo = compute_loc(repos, root, clone_missing)
+    if skip_clone:
+        # Pages/CI only checks out roadmap — counting LoC here yields ~6k not ~67k.
+        lines_total, lines_per_repo = None, None
+    else:
+        lines_total, lines_per_repo = compute_loc(repos, root, clone_missing)
     org_repositories = count_org_repositories()
 
     open_issues = search_total_count(f"org:{ORG}+is:issue+is:open")
@@ -241,8 +251,6 @@ def main() -> int:
         "generated_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%MZ"),
         "org": ORG,
         "repos_tracked": len(repos),
-        "lines_of_code": lines_total,
-        "lines_per_repo": lines_per_repo,
         "org_repositories": org_repositories,
         "issues_open": open_issues,
         "issues_closed": closed_issues,
@@ -252,12 +260,16 @@ def main() -> int:
         "prs_closed": closed_prs,
         "prs_open": open_prs,
     }
+    if lines_total is not None:
+        payload["lines_of_code"] = lines_total
+        payload["lines_per_repo"] = lines_per_repo
+
 
     out_dir.mkdir(parents=True, exist_ok=True)
     payload = merge_existing(payload, out_json)
     out_json.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
     print(
-        f"Wrote {out_json} — LoC {lines_total:,}, org repos {org_repositories}, "
+        f"Wrote {out_json} — LoC {payload.get('lines_of_code', lines_total)}, org repos {org_repositories}, "
         f"issues open {open_issues}, closed PRs {closed_prs}"
     )
     return 0
