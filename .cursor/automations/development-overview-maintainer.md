@@ -17,6 +17,7 @@ cd roadmap   # this repo
 chmod +x scripts/*.sh
 
 # Live queue + org scan (offline; mirrors what the website shows)
+./scripts/backfill-development-overview-history.py  # rare: rebuild daily history from GitHub
 ./scripts/refresh-development-overview.sh
 python3 scripts/compute-ecosystem-stats.py
 cat data/development-overview/status.json | head -80

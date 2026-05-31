@@ -163,3 +163,5 @@
 *Snapshot: `./scripts/regenerate-development-overview-md.py` then `./scripts/deploy-pages-local.sh --build`. Live queue: browser on [development overview](https://li-langverse.github.io/roadmap/development-overview/) — no redeploy for queue-only changes.*
 
 *History charts:* data/development-overview/history.json (appended by ./scripts/refresh-development-overview.sh); live points from GitHub Search API in the browser.
+
+*History backfill (once): ./scripts/backfill-development-overview-history.py rebuilds daily series from all org PR/issue timestamps via gh.*

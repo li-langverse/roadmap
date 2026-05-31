@@ -1,33 +1,157 @@
 {
   "version": 1,
   "org": "li-langverse",
+  "generated_at": "2026-05-31T02:32Z",
+  "backfill": {
+    "repos": 35,
+    "prs_total": 1210,
+    "issues_total": 182,
+    "days": 18
+  },
   "points": [
     {
+      "at": "2026-05-14",
+      "open_prs": 0,
+      "prs_closed": 2,
+      "issues_open": 0,
+      "issues_closed": 0,
+      "source": "github-backfill"
+    },
+    {
+      "at": "2026-05-15",
+      "open_prs": 0,
+      "prs_closed": 2,
+      "issues_open": 0,
+      "issues_closed": 0,
+      "source": "github-backfill"
+    },
+    {
       "at": "2026-05-16",
-      "open_prs": 16,
-      "prs_closed": 103,
+      "open_prs": 2,
+      "prs_closed": 53,
+      "issues_open": 2,
+      "issues_closed": 0,
+      "source": "github-backfill"
+    },
+    {
+      "at": "2026-05-17",
+      "open_prs": 7,
+      "prs_closed": 65,
+      "issues_open": 50,
+      "issues_closed": 0,
+      "source": "github-backfill"
+    },
+    {
+      "at": "2026-05-18",
+      "open_prs": 29,
+      "prs_closed": 65,
+      "issues_open": 52,
+      "issues_closed": 0,
+      "source": "github-backfill"
+    },
+    {
+      "at": "2026-05-19",
+      "open_prs": 21,
+      "prs_closed": 102,
       "issues_open": 57,
       "issues_closed": 0,
-      "source": "snapshot"
+      "source": "github-backfill"
     },
     {
       "at": "2026-05-20",
-      "open_prs": 25,
-      "prs_closed": 103,
-      "issues_open": 57,
-      "issues_closed": 0,
-      "source": "ecosystem-stats"
+      "open_prs": 26,
+      "prs_closed": 138,
+      "issues_open": 93,
+      "issues_closed": 1,
+      "source": "github-backfill"
+    },
+    {
+      "at": "2026-05-21",
+      "open_prs": 51,
+      "prs_closed": 181,
+      "issues_open": 93,
+      "issues_closed": 1,
+      "source": "github-backfill"
+    },
+    {
+      "at": "2026-05-22",
+      "open_prs": 2,
+      "prs_closed": 246,
+      "issues_open": 93,
+      "issues_closed": 1,
+      "source": "github-backfill"
+    },
+    {
+      "at": "2026-05-23",
+      "open_prs": 7,
+      "prs_closed": 246,
+      "issues_open": 93,
+      "issues_closed": 1,
+      "source": "github-backfill"
+    },
+    {
+      "at": "2026-05-24",
+      "open_prs": 9,
+      "prs_closed": 246,
+      "issues_open": 106,
+      "issues_closed": 1,
+      "source": "github-backfill"
     },
     {
       "at": "2026-05-25",
-      "open_prs": 61,
-      "ready_to_merge": 17,
-      "source": "status-refresh"
+      "open_prs": 62,
+      "prs_closed": 488,
+      "issues_open": 112,
+      "issues_closed": 3,
+      "source": "github-backfill"
+    },
+    {
+      "at": "2026-05-26",
+      "open_prs": 93,
+      "prs_closed": 492,
+      "issues_open": 113,
+      "issues_closed": 3,
+      "source": "github-backfill"
+    },
+    {
+      "at": "2026-05-27",
+      "open_prs": 73,
+      "prs_closed": 561,
+      "issues_open": 115,
+      "issues_closed": 3,
+      "source": "github-backfill"
+    },
+    {
+      "at": "2026-05-28",
+      "open_prs": 84,
+      "prs_closed": 565,
+      "issues_open": 116,
+      "issues_closed": 3,
+      "source": "github-backfill"
+    },
+    {
+      "at": "2026-05-29",
+      "open_prs": 201,
+      "prs_closed": 612,
+      "issues_open": 150,
+      "issues_closed": 3,
+      "source": "github-backfill"
     },
     {
       "at": "2026-05-30",
-      "open_prs": 219,
-      "source": "org-merge-sprint"
+      "open_prs": 2,
+      "prs_closed": 1179,
+      "issues_open": 174,
+      "issues_closed": 5,
+      "source": "github-backfill"
+    },
+    {
+      "at": "2026-05-31",
+      "open_prs": 1,
+      "prs_closed": 1209,
+      "issues_open": 177,
+      "issues_closed": 5,
+      "source": "github-backfill"
     }
   ]
 }
