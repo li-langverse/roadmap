@@ -184,6 +184,34 @@ html = f"""<!DOCTYPE html>
     .ci-none {{ color: var(--muted); }}
     #live-status {{ color: var(--muted); font-size: 0.82rem; }}
     .live-table-wrap {{ overflow-x: auto; }}
+    .history-grid {{
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1rem;
+      margin: 1rem 0;
+    }}
+    @media (max-width: 720px) {{
+      .history-grid {{ grid-template-columns: 1fr; }}
+    }}
+    .history-chart {{
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.65rem 0.75rem 0.5rem;
+      background: #0d1117;
+      min-width: 0;
+    }}
+    .history-chart-head {{
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 0.5rem;
+      margin-bottom: 0.35rem;
+    }}
+    .history-chart h3 {{ margin: 0; font-size: 0.82rem; color: var(--muted); font-weight: 500; }}
+    .history-latest {{ font-size: 0.95rem; font-weight: 600; font-variant-numeric: tabular-nums; }}
+    .history-canvas-wrap {{ position: relative; height: 140px; }}
+    .history-empty {{ margin: 0.5rem 0 0; color: var(--muted); font-size: 0.82rem; }}
+    .history-meta {{ font-size: 0.78rem; color: var(--muted); margin: 0.5rem 0 0; }}
   </style>
 </head>
 <body>
