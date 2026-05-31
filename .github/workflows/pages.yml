@@ -43,6 +43,7 @@ jobs:
       - name: Refresh ecosystem stats snapshot
         env:
           ECOSYSTEM_STATS_SKIP_CLONE: "1"
+          GH_TOKEN: ${{ github.token }}
         run: |
           chmod +x scripts/compute-ecosystem-stats.py
           python3 scripts/compute-ecosystem-stats.py || true
