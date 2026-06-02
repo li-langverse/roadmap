@@ -99,6 +99,7 @@ eco_cards = [
     ("Lines of code", fmt_int(eco.get("lines_of_code"))),
     ("Org repositories", fmt_int(org_repos_val(eco))),
     ("Open issues", fmt_int(eco.get("issues_open"))),
+    ("Closed issues", fmt_int(eco.get("issues_closed"))),
     ("Closed PRs", fmt_int(eco.get("prs_closed"))),
 ]
 eco_cards_html = "".join(
@@ -228,7 +229,7 @@ html = f"""<!DOCTYPE html>
     </header>
     <section class="live-banner" aria-labelledby="eco-heading">
       <h2 id="eco-heading">Ecosystem statistics</h2>
-      <p>Snapshot <span id="eco-as-of">{eco_as_of}</span> · <strong>Org repositories</strong> = every repo under li-langverse on GitHub (LoC still sums <code>.github/li-org-repos.txt</code> only). Live open issues &amp; closed PRs refresh in the browser · <a href="https://github.com/li-langverse/roadmap/blob/main/scripts/compute-ecosystem-stats.py">recompute stats</a></p>
+      <p>Snapshot <span id="eco-as-of">{eco_as_of}</span> · <span id="eco-live-status"></span> · <strong>Org repositories</strong> = every repo under li-langverse on GitHub (LoC still sums <code>.github/li-org-repos.txt</code> only). Live issue/PR counts refresh in the browser (staggered GitHub Search API) · <a href="https://github.com/li-langverse/roadmap/blob/main/scripts/compute-ecosystem-stats.py">recompute stats</a></p>
       <div class="live-metrics" id="ecosystem-metrics">{eco_cards_html}</div>
     </section>
 
