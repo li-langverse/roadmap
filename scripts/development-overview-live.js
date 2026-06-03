@@ -12,6 +12,18 @@ const ECO_CACHE_KEY = "li-dev-overview-eco-live-v1";
 const SEARCH_URL = `https://api.github.com/search/issues?q=org:${ORG}+is:open+is:pr&per_page=100&sort=updated`;
 const ECO_STATS_URL = "./ecosystem-stats.json";
 
+const GITHUB_SEARCH = (q) =>
+  `https://github.com/search?q=${encodeURIComponent(q)}&type=issues`;
+
+const METRIC_LINKS = {
+  "Open issues": GITHUB_SEARCH(`org:${ORG} is:issue is:open`),
+  "Closed issues": GITHUB_SEARCH(`org:${ORG} is:issue is:closed`),
+  "Closed PRs": GITHUB_SEARCH(`org:${ORG} is:pr is:closed`),
+  "Org repositories": `https://github.com/orgs/${ORG}/repositories`,
+  "Open PRs": GITHUB_SEARCH(`org:${ORG} is:pr is:open`),
+  "Ready to merge": GITHUB_SEARCH(`org:${ORG} is:pr is:open`),
+};
+
 /** @type {{ lines_of_code?: number, org_repositories?: number, packages?: number, issues_open?: number, issues_closed?: number, prs_closed?: number, generated_at?: string }} */
 let ecosystemSnapshot = {};
 
@@ -19,6 +31,8 @@ let ecosystemSnapshot = {};
 const ciCache = new Map();
 let prs = [];
 let ciIndex = 0;
+let openPrTotal = 0;
+let prQueueLive = false;
 
 const GH_HEADERS = { Accept: "application/vnd.github+json" };
 
@@ -73,6 +87,51 @@ function orgReposFromSnapshot(snap) {
   return undefined;
 }
 
+function setEcoStatus(text) {
+  const badge = document.getElementById("eco-live-status");
+  const banner = document.getElementById("freshness-eco");
+  const value = text || "";
+  if (badge) badge.textContent = value;
+  if (banner) banner.textContent = value || "Ecosystem counts pending…";
+}
+
+function ciProgressText() {
+  if (!prs.length) return "";
+  const checked = prs.filter((p) => p.ci !== "…").length;
+  return `CI ${checked}/${prs.length} checked`;
+}
+
+function updateFreshnessPr(extra = "") {
+  const el = document.getElementById("freshness-pr");
+  if (!el) return;
+  if (!prQueueLive) {
+    el.textContent = extra || "Loading PR queue…";
+    return;
+  }
+  const parts = [`PR queue live · ${openPrTotal} open`];
+  const ci = ciProgressText();
+  if (ci) parts.push(ci);
+  if (extra) parts.push(extra);
+  el.textContent = parts.join(" · ");
+}
+
+function markLiveQueueReady() {
+  const details = document.getElementById("markdown-snapshot");
+  if (details && !details.dataset.liveReady) {
+    details.dataset.liveReady = "1";
+    details.open = false;
+  }
+}
+
+function metricCard(label, value, href, hint = "") {
+  const hintHtml = hint ? `<p class="hint">${esc(hint)}</p>` : "";
+  const inner = `<p class="label">${esc(label)}</p><p class="value">${esc(value)}</p>${hintHtml}`;
+  if (href) {
+    return `<div class="metric-card"><a class="metric-card-link" href="${href.replace(/"/g, "&quot;")}" target="_blank" rel="noopener noreferrer">${inner}</a></div>`;
+  }
+  return `<div class="metric-card">${inner}</div>`;
+}
+
 function readEcoCache() {
   try {
     const raw = sessionStorage.getItem(ECO_CACHE_KEY);
@@ -106,22 +165,16 @@ function renderEcosystemMetrics(live = {}) {
   const asOfEl = document.getElementById("eco-as-of");
   if (asOfEl && asOf) asOfEl.textContent = asOf;
 
-  const statusEl = document.getElementById("eco-live-status");
-  if (statusEl) {
-    statusEl.textContent = live._status || "";
-  }
+  setEcoStatus(live._status || "");
 
   return [
-    ["Lines of code", fmtNum(loc)],
-    ["Org repositories", fmtNum(orgRepos)],
-    ["Open issues", fmtNum(issues)],
-    ["Closed issues", fmtNum(closedIssues)],
-    ["Closed PRs", fmtNum(closedPrs)],
+    ["Lines of code", fmtNum(loc), null],
+    ["Org repositories", fmtNum(orgRepos), METRIC_LINKS["Org repositories"]],
+    ["Open issues", fmtNum(issues), METRIC_LINKS["Open issues"]],
+    ["Closed issues", fmtNum(closedIssues), METRIC_LINKS["Closed issues"]],
+    ["Closed PRs", fmtNum(closedPrs), METRIC_LINKS["Closed PRs"]],
   ]
-    .map(
-      ([label, value]) =>
-        `<div class="metric-card"><p class="label">${esc(label)}</p><p class="value">${esc(value)}</p></div>`
-    )
+    .map(([label, value, href]) => metricCard(label, value, href))
     .join("");
 }
 
@@ -206,7 +259,7 @@ async function loadEcosystemSnapshot() {
   if (cached) {
     paintEcosystem({ ...cached, _status: "cached · GitHub refresh soon" });
   } else {
-    paintEcosystem();
+    paintEcosystem({ _status: "loading GitHub counts…" });
   }
 }
 
@@ -215,19 +268,12 @@ async function refreshEcosystemLive(force = false) {
     const cached = readEcoCache();
     if (cached) {
       paintEcosystem({ ...cached, _status: "cached · next GitHub refresh soon" });
-      const at = cached.generated_at || new Date().toISOString().slice(0, 10);
-      window.DevelopmentOverviewHistory?.updateLive({
-        at,
-        source: "cached",
-        ...(typeof cached.open_prs === "number" ? { open_prs: cached.open_prs } : {}),
-        ...(typeof cached.prs_closed === "number" ? { prs_closed: cached.prs_closed } : {}),
-        ...(typeof cached.issues_open === "number" ? { issues_open: cached.issues_open } : {}),
-        ...(typeof cached.issues_closed === "number" ? { issues_closed: cached.issues_closed } : {}),
-      });
+      pushHistoryFromEco(cached, "cached");
       return;
     }
   }
 
+  setEcoStatus("refreshing GitHub counts…");
   const at = new Date().toISOString().slice(0, 10);
   const { out, errors } = await searchCountsSequential([
     ["issues_open", `org:${ORG} is:issue is:open`],
@@ -248,24 +294,28 @@ async function refreshEcosystemLive(force = false) {
   };
 
   const got = Object.entries(out).filter(([, v]) => typeof v === "number").length;
-  let status = got ? `live · ${got}/4 GitHub counts` : "";
+  let status = got ? `live · ${got}/4 GitHub counts` : "live counts unavailable";
   if (errors.length) {
-    status = `${status}${status ? " · " : ""}${errors[0]}`.trim();
+    status = `${status} · ${errors[0]}`.trim();
   }
 
   paintEcosystem({ ...live, _status: status });
-
-  const historyPoint = { at, source: got ? "live-api" : "partial-live" };
-  if (typeof out.open_prs === "number") historyPoint.open_prs = out.open_prs;
-  if (typeof out.prs_closed === "number") historyPoint.prs_closed = out.prs_closed;
-  if (typeof out.issues_open === "number") historyPoint.issues_open = out.issues_open;
-  if (typeof out.issues_closed === "number") historyPoint.issues_closed = out.issues_closed;
-  if (Object.keys(historyPoint).length > 2) {
-    window.DevelopmentOverviewHistory?.updateLive(historyPoint);
-  }
+  pushHistoryFromEco({ ...live, open_prs: out.open_prs }, got ? "live-api" : "partial-live");
 
   if (got > 0) {
     writeEcoCache({ ...live, open_prs: out.open_prs ?? undefined });
+  }
+}
+
+function pushHistoryFromEco(data, source) {
+  const at = data.generated_at || new Date().toISOString().slice(0, 10);
+  const historyPoint = { at, source };
+  if (typeof data.open_prs === "number") historyPoint.open_prs = data.open_prs;
+  if (typeof data.prs_closed === "number") historyPoint.prs_closed = data.prs_closed;
+  if (typeof data.issues_open === "number") historyPoint.issues_open = data.issues_open;
+  if (typeof data.issues_closed === "number") historyPoint.issues_closed = data.issues_closed;
+  if (Object.keys(historyPoint).length > 2) {
+    window.DevelopmentOverviewHistory?.updateLive(historyPoint);
   }
 }
 
@@ -274,16 +324,16 @@ function renderMetrics(list) {
   const drafts = list.filter((p) => p.draft).length;
   const ready = list.filter((p) => p.ready).length;
   const blocked = list.filter((p) => !p.ready && !p.draft && p.ci === "fail").length;
+  const pendingCi = list.filter((p) => !p.draft && p.ci === "…").length;
+  const readyHint = ready === 0 && pendingCi > 0 ? "pending CI checks" : "";
+
   return [
-    ["Ready to merge", ready],
-    ["Open PRs", open],
-    ["Drafts", drafts],
-    ["CI failing", blocked],
+    ["Ready to merge", ready, METRIC_LINKS["Ready to merge"], readyHint],
+    ["Open PRs", open, METRIC_LINKS["Open PRs"]],
+    ["Drafts", drafts, null],
+    ["CI failing", blocked, null],
   ]
-    .map(
-      ([label, value]) =>
-        `<div class="metric-card"><p class="label">${esc(label)}</p><p class="value">${esc(String(value))}</p></div>`
-    )
+    .map(([label, value, href, hint]) => metricCard(label, String(value), href, hint))
     .join("");
 }
 
@@ -295,12 +345,13 @@ function renderPrTable(list) {
     .map((p) => {
       const title = p.title.length > 72 ? `${p.title.slice(0, 69)}…` : p.title;
       const draft = p.draft ? ` <span class="ci-none">(draft)</span>` : "";
+      const ciLabel = p.ci === "…" ? "loading" : p.ci;
       return `<tr>
         <td>${esc(p.repo)}</td>
         <td><a href="${esc(p.url)}">#${p.number}</a></td>
         <td><a href="${esc(p.url)}">${esc(title)}</a>${draft}</td>
         <td class="mono">${esc(p.base)}</td>
-        <td class="${ciClass(p.ci)}">${esc(p.ci)}</td>
+        <td class="${ciClass(p.ci)}" title="${p.ci === "…" ? "CI status not checked yet" : ""}">${esc(ciLabel)}</td>
         <td>${p.ready ? "yes" : "—"}</td>
       </tr>`;
     })
@@ -310,32 +361,29 @@ function renderPrTable(list) {
 function paint() {
   document.getElementById("live-metrics").innerHTML = renderMetrics(prs);
   document.getElementById("live-pr-body").innerHTML = renderPrTable(prs);
+  if (prQueueLive) updateFreshnessPr();
 }
-
-async function searchAllIssues(query) {
-  const items = [];
-  for (let page = 1; page <= 10; page += 1) {
-    const url = `https://api.github.com/search/issues?q=${encodeURIComponent(query)}&per_page=100&page=${page}&sort=updated`;
-    const data = await ghGet(url);
-    items.push(...(data.items || []));
-    if (items.length >= (data.total_count || 0) || (data.items || []).length < 100) break;
-    await sleep(SEARCH_GAP_MS);
-  }
-  return items;
-}
-
-let openPrTotal = 0;
 
 async function refreshSearch() {
-  const statusEl = document.getElementById("live-status");
   try {
     const data = await ghGet(SEARCH_URL);
     openPrTotal = typeof data.total_count === "number" ? data.total_count : (data.items || []).length;
     prs = (data.items || []).map(mapSearchItem);
+    prQueueLive = true;
     paint();
-    statusEl.textContent = `live · ${openPrTotal} open PRs · search every ${SEARCH_MS / 1000}s · CI ~${CI_TICK_MS / 1000}s/PR`;
+    markLiveQueueReady();
+    updateFreshnessPr(`search every ${SEARCH_MS / 1000}s`);
+
+    const at = new Date().toISOString().slice(0, 10);
+    window.DevelopmentOverviewHistory?.updateLive({
+      at,
+      source: "live-api",
+      open_prs: openPrTotal,
+      ready_to_merge: prs.filter((p) => p.ready).length,
+    });
   } catch (e) {
-    statusEl.textContent = `live unavailable: ${e.message}`;
+    prQueueLive = false;
+    updateFreshnessPr(`unavailable: ${e.message}`);
   }
 }
 
