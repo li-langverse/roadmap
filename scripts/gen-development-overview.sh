@@ -174,17 +174,71 @@ html = f"""<!DOCTYPE html>
     .metric-card {{
       border: 1px solid var(--border);
       border-radius: 6px;
-      padding: 0.65rem 0.75rem;
+      padding: 0;
       background: #0d1117;
+      min-width: 0;
+    }}
+    .metric-card-link {{
+      display: block;
+      padding: 0.65rem 0.75rem;
+      color: inherit;
+      text-decoration: none;
+      border-radius: 6px;
+    }}
+    .metric-card-link:hover {{
+      border: 1px solid var(--accent);
+      margin: -1px;
+      background: #161b22;
     }}
     .metric-card .label {{ color: var(--muted); font-size: 0.78rem; margin: 0; }}
     .metric-card .value {{ font-size: 1.35rem; font-weight: 600; margin: 0.15rem 0 0; }}
+    .metric-card .hint {{ color: var(--muted); font-size: 0.72rem; margin: 0.2rem 0 0; }}
     .ci-pass {{ color: #3fb950; }}
     .ci-fail {{ color: #f85149; }}
     .ci-pending {{ color: #d29922; }}
     .ci-none {{ color: var(--muted); }}
-    #live-status {{ color: var(--muted); font-size: 0.82rem; }}
+    .freshness-banner {{
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 0.35rem 0.5rem;
+      margin: 0.5rem 0 0;
+      padding: 0.55rem 0.75rem;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: #161b22;
+      font-size: 0.82rem;
+      color: var(--muted);
+    }}
+    .freshness-banner strong {{ color: var(--fg); font-weight: 500; }}
+    .live-status-badge {{
+      color: var(--accent);
+      font-size: 0.82rem;
+    }}
+    .live-status-badge:empty {{ display: none; }}
+    .page-toc {{
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem 1rem;
+      margin-top: 0.75rem;
+      font-size: 0.85rem;
+    }}
+    .section-note {{ color: var(--muted); font-size: 0.85rem; margin: 0 0 0.75rem; }}
     .live-table-wrap {{ overflow-x: auto; }}
+    .snapshot-details {{
+      margin-top: 2rem;
+      border: 1px dashed var(--border);
+      border-radius: 6px;
+      padding: 0.5rem 0.75rem 1rem;
+      background: #161b22;
+    }}
+    .snapshot-details summary {{
+      cursor: pointer;
+      color: var(--fg);
+      font-weight: 500;
+      padding: 0.35rem 0;
+    }}
+    .snapshot-details .snapshot-body {{ margin-top: 0.75rem; }}
     .history-grid {{
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -213,14 +267,28 @@ html = f"""<!DOCTYPE html>
     .history-canvas-wrap {{ position: relative; height: 140px; }}
     .history-empty {{ margin: 0.5rem 0 0; color: var(--muted); font-size: 0.82rem; }}
     .history-meta {{ font-size: 0.78rem; color: var(--muted); margin: 0.5rem 0 0; }}
-    .snapshot-notice {{ color: var(--muted); font-size: 0.88rem; margin: 0 0 1.25rem; padding: 0.65rem 0.75rem; border: 1px dashed var(--border); border-radius: 6px; background: #161b22; }}
   </style>
 </head>
 <body>
   <div class="wrap">
     <header>
       <h1>Li development overview</h1>
-      <p>li-langverse org · snapshot <span id="snapshot-as-of">{as_of}</span> · <span id="live-status">loading live queue…</span> · <a href="https://github.com/li-langverse/roadmap/blob/main/docs/development-overview.md">edit snapshot</a></p>
+      <p class="section-note">li-langverse org — live sections poll the public GitHub API from your browser.</p>
+      <div class="freshness-banner" id="freshness-banner" aria-live="polite">
+        <span><strong>Markdown snapshot</strong> <time id="snapshot-as-of">{as_of}</time></span>
+        <span aria-hidden="true">·</span>
+        <span id="freshness-pr">Loading PR queue…</span>
+        <span aria-hidden="true">·</span>
+        <span id="freshness-eco">Loading ecosystem counts…</span>
+        <span aria-hidden="true">·</span>
+        <a href="https://github.com/li-langverse/roadmap/blob/main/docs/development-overview.md">edit snapshot</a>
+      </div>
+      <nav class="page-toc" aria-label="On this page">
+        <a href="#eco-heading">Ecosystem</a>
+        <a href="#history-heading">History</a>
+        <a href="#live-heading">PR queue</a>
+        <a href="#markdown-snapshot">Snapshot tables</a>
+      </nav>
       <nav class="nav" aria-label="Related">
         <a href="https://li-langverse.github.io/benchmarks/">Benchmarks</a>
         <a href="https://li-langverse.github.io/li-language/">Language docs</a>
@@ -229,7 +297,12 @@ html = f"""<!DOCTYPE html>
     </header>
     <section class="live-banner" aria-labelledby="eco-heading">
       <h2 id="eco-heading">Ecosystem statistics</h2>
-      <p>Snapshot <span id="eco-as-of">{eco_as_of}</span> · <span id="eco-live-status"></span> · <strong>Org repositories</strong> = every repo under li-langverse on GitHub (LoC still sums <code>.github/li-org-repos.txt</code> only). Live issue/PR counts refresh in the browser (staggered GitHub Search API) · <a href="https://github.com/li-langverse/roadmap/blob/main/scripts/compute-ecosystem-stats.py">recompute stats</a></p>
+      <p class="section-note">
+        Committed baseline <span id="eco-as-of">{eco_as_of}</span> (LoC + repo list).
+        Issue/PR totals refresh live — <span id="eco-live-status" class="live-status-badge"></span>
+        <a href="https://github.com/li-langverse/roadmap/blob/main/.github/li-org-repos.txt" title="Lines of code sum only repos listed in li-org-repos.txt; org repo count is all GitHub repos under li-langverse.">LoC scope</a>
+        · <a href="https://github.com/li-langverse/roadmap/blob/main/scripts/compute-ecosystem-stats.py">Maintainer: recompute snapshot</a>
+      </p>
       <div class="live-metrics" id="ecosystem-metrics">{eco_cards_html}</div>
     </section>
 
@@ -241,7 +314,7 @@ html = f"""<!DOCTYPE html>
     </section>
     <section class="live-banner" aria-labelledby="live-heading">
       <h2 id="live-heading">Live PR merge queue</h2>
-      <p>Live queue: embedded JavaScript calls the <a href="https://docs.github.com/en/rest/search">GitHub API</a> from your browser (no Actions cron). CI status fills in gradually (~90s per PR). Tables below are the markdown snapshot.</p>
+      <p class="section-note">Polls the <a href="https://docs.github.com/en/rest/search">GitHub Search API</a> (~120s). CI status updates about one PR every 90s. Older merge-order tables are in <a href="#markdown-snapshot">snapshot tables</a> (collapsed when live data loads).</p>
       <div class="live-metrics" id="live-metrics"></div>
       <div class="live-table-wrap">
         <table id="live-pr-table">
@@ -253,8 +326,12 @@ html = f"""<!DOCTYPE html>
       </div>
     </section>
     <main>
-      <p class="snapshot-notice"><em>Static tables below are a markdown snapshot from {as_of}. Live PR queue, ecosystem cards, and history charts above refresh from GitHub in your browser.</em></p>
+      <details id="markdown-snapshot" class="snapshot-details" open>
+        <summary>Markdown snapshot tables (<time id="snapshot-as-of-summary">{as_of}</time>)</summary>
+        <div class="snapshot-body">
 {body}
+        </div>
+      </details>
     </main>
   </div>
   <script src="./history.js" defer></script>
