@@ -183,6 +183,16 @@ def compact_daily(raw_points: list[dict]) -> list[dict]:
     return [by_day[d] for d in sorted(by_day.keys())]
 
 
+def load_history_file(path: Path) -> dict:
+    if not path.is_file():
+        return {"version": 1, "org": ORG, "points": []}
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+        return data if isinstance(data, dict) else {"version": 1, "org": ORG, "points": []}
+    except json.JSONDecodeError:
+        return {"version": 1, "org": ORG, "points": []}
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
@@ -191,6 +201,16 @@ def main() -> int:
         default=repo_root() / "data" / "development-overview" / "history.json",
     )
     parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument(
+        "--merge",
+        action="store_true",
+        help="Merge into existing history.json instead of replacing",
+    )
+    parser.add_argument(
+        "--since",
+        metavar="YYYY-MM-DD",
+        help="When merging, only add/update days on or after this date",
+    )
     args = parser.parse_args()
 
     if subprocess.run(["gh", "--version"], capture_output=True).returncode != 0:
@@ -220,18 +240,41 @@ def main() -> int:
         )
 
     points = build_daily_series(pr_events, issue_events)
-    payload = {
-        "version": 1,
-        "org": ORG,
-        "generated_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%MZ"),
-        "backfill": {
+    new_by_day = {str(p["at"])[:10]: p for p in points}
+
+    if args.merge:
+        payload = load_history_file(args.output)
+        old_points = payload.get("points") if isinstance(payload.get("points"), list) else []
+        by_day = {str(p.get("at", ""))[:10]: p for p in old_points if p.get("at")}
+        since = args.since
+        for day, p in new_by_day.items():
+            if since and day < since:
+                continue
+            by_day[day] = merge_daily(by_day.get(day), p)
+        merged = [by_day[d] for d in sorted(by_day.keys())]
+        payload["points"] = compact_daily(merged)
+        payload["generated_at"] = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%MZ")
+        payload["backfill"] = {
             "repos": len(repos),
             "prs_total": len(pr_events),
             "issues_total": len(issue_events),
-            "days": len(points),
-        },
-        "points": compact_daily(points),
-    }
+            "days": len(merged),
+            "merged": True,
+            "since": since,
+        }
+    else:
+        payload = {
+            "version": 1,
+            "org": ORG,
+            "generated_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%MZ"),
+            "backfill": {
+                "repos": len(repos),
+                "prs_total": len(pr_events),
+                "issues_total": len(issue_events),
+                "days": len(points),
+            },
+            "points": compact_daily(points),
+        }
 
     print(
         f"Built {len(points)} daily points "
