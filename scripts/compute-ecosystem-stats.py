@@ -100,7 +100,11 @@ def count_org_repositories_via_token() -> int | None:
     import urllib.error
     import urllib.request
 
-    token = os.environ.get("GITHUB_TOKEN")
+    token = (
+        os.environ.get("GH_TOKEN_OVERVIEW_PAGE")
+        or os.environ.get("GH_TOKEN")
+        or os.environ.get("GITHUB_TOKEN")
+    )
     if not token:
         return None
     total = 0
@@ -219,6 +223,11 @@ def merge_existing(payload: dict, path: Path) -> dict:
     return payload
 
 def main() -> int:
+    overview = os.environ.get("GH_TOKEN_OVERVIEW_PAGE", "").strip()
+    if overview:
+        os.environ.setdefault("GH_TOKEN", overview)
+        os.environ.setdefault("GITHUB_TOKEN", overview)
+
     root = repo_root()
     repos_file = root / ".github" / "li-org-repos.txt"
     out_dir = root / "data" / "development-overview"
