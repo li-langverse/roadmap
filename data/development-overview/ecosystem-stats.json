@@ -1,7 +1,13 @@
 {
-  "generated_at": "2026-05-31T02:43Z",
+  "generated_at": "2026-06-03T03:31Z",
   "org": "li-langverse",
-  "repos_tracked": 12,
+  "repos_tracked": 14,
+  "org_repositories": 37,
+  "issues_open": 152,
+  "issues_closed": 30,
+  "issues_total": 182,
+  "prs_closed": 1388,
+  "prs_open": 62,
   "lines_of_code": 67208,
   "lines_per_repo": {
     "lic": 35770,
@@ -16,11 +22,5 @@
     "li-std-core": 0,
     "li-std-math": 0,
     "li-demo": 0
-  },
-  "org_repositories": 35,
-  "issues_open": 177,
-  "issues_closed": 5,
-  "issues_total": 57,
-  "prs_closed": 1212,
-  "prs_open": 2
+  }
 }
