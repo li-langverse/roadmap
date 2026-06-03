@@ -1,12 +1,14 @@
 {
   "version": 1,
   "org": "li-langverse",
-  "generated_at": "2026-05-31T02:39Z",
+  "generated_at": "2026-06-03T03:42Z",
   "backfill": {
-    "repos": 35,
-    "prs_total": 1214,
+    "repos": 37,
+    "prs_total": 1343,
     "issues_total": 182,
-    "days": 18
+    "days": 21,
+    "merged": true,
+    "since": "2026-06-01"
   },
   "points": [
     {
@@ -152,6 +154,31 @@
       "issues_open": 177,
       "issues_closed": 5,
       "source": "github-backfill"
+    },
+    {
+      "at": "2026-06-01",
+      "open_prs": 74,
+      "prs_closed": 1209,
+      "issues_open": 152,
+      "issues_closed": 30,
+      "source": "github-backfill"
+    },
+    {
+      "at": "2026-06-02",
+      "open_prs": 52,
+      "prs_closed": 1280,
+      "issues_open": 152,
+      "issues_closed": 30,
+      "source": "github-backfill"
+    },
+    {
+      "at": "2026-06-03",
+      "open_prs": 62,
+      "prs_closed": 1392,
+      "issues_open": 152,
+      "issues_closed": 30,
+      "source": "nightly",
+      "ready_to_merge": 17
     }
   ]
 }
