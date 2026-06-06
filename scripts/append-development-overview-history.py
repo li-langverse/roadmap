@@ -94,7 +94,7 @@ def point_from_ecosystem(eco: dict, today: str, status: dict) -> dict:
         "issues_closed": eco.get("issues_closed")
         if eco.get("issues_closed") is not None
         else search_total(f"org:{ORG}+is:issue+is:closed"),
-        "source": "nightly",
+        "source": "scheduled-4h",
     }
     return {k: v for k, v in point.items() if v is not None}
 

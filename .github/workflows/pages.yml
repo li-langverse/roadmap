@@ -9,6 +9,8 @@ on:
       - "scripts/development-overview-live.js"
       - "data/development-overview/ecosystem-stats.json"
       - "data/development-overview/history.json"
+      - ".github/workflows/development-overview-refresh.yml"
+      - "scripts/append-development-overview-history.py"
       - "scripts/development-overview-history.js"
       - ".github/workflows/pages.yml"
   pull_request:
@@ -18,6 +20,8 @@ on:
       - "scripts/development-overview-live.js"
       - "data/development-overview/ecosystem-stats.json"
       - "data/development-overview/history.json"
+      - ".github/workflows/development-overview-refresh.yml"
+      - "scripts/append-development-overview-history.py"
       - "scripts/development-overview-history.js"
       - ".github/workflows/pages.yml"
   workflow_dispatch:

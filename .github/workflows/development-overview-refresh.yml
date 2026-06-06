@@ -1,0 +1,49 @@
+# Every 4h: refresh issue/PR metrics, commit JSON snapshots, trigger Pages redeploy via push to main.
+name: Development overview refresh (4h)
+
+on:
+  schedule:
+    # UTC: 00:00, 04:00, 08:00, 12:00, 16:00, 20:00
+    - cron: "0 */4 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: development-overview-refresh
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Refresh metrics from GitHub
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN_OVERVIEW_PAGE }}
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN_OVERVIEW_PAGE }}
+          ECOSYSTEM_STATS_SKIP_CLONE: "1"
+        run: |
+          chmod +x scripts/compute-ecosystem-stats.py
+          chmod +x scripts/append-development-overview-history.py
+          chmod +x scripts/refresh_development_overview.py
+          python3 scripts/compute-ecosystem-stats.py
+          python3 scripts/refresh_development_overview.py
+          python3 scripts/append-development-overview-history.py
+
+      - name: Commit snapshot data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add \
+            data/development-overview/ecosystem-stats.json \
+            data/development-overview/history.json \
+            data/development-overview/status.json
+          if git diff --staged --quiet; then
+            echo "No metric changes to commit"
+            exit 0
+          fi
+          git commit -m "chore: development overview snapshot $(date -u +%Y-%m-%dT%H:%MZ)"
+          git push
