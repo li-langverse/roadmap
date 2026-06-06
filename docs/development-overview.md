@@ -1,13 +1,18 @@
 # Li development overview
 
-**li-langverse org** · scanned **2026-05-31T02:37Z** · `gh pr list` / checks · live docs HEAD
+**li-langverse org** · scanned **2026-06-06T09:12Z** · org-issue-zero queue + `gh` · live docs HEAD
 
 | Metric | Value |
 |--------|------:|
-| Ready to merge (CI green) | 0 |
-| Open PRs | 1 |
-| Blocked / needs work | 1 |
+| Open issues (org queue) | 143 |
+| Needs triage | 48 |
+| Org swarm issue closes (audit) | 8 |
+| Ready to merge (CI green) | — |
+| Open PRs | — |
 | Repos with live docs | 3 / 15 |
+
+> **Issues:** Open count refreshes from committed `ecosystem-stats.json` and live Search API in the browser. The homelab **org-issue-triage** lane (`li-swarm`) has been closing duplicates/already-implemented issues via `close_github_issue` since 2026-06-06; net open issues down from **152 → 143** (2026-06-03 → 2026-06-06).
+
 
 ## Recommended merge order
 

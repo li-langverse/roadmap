@@ -1,7 +1,7 @@
 {
   "version": 1,
   "org": "li-langverse",
-  "generated_at": "2026-06-03T03:42Z",
+  "generated_at": "2026-06-06T09:12Z",
   "backfill": {
     "repos": 37,
     "prs_total": 1343,
@@ -179,6 +179,15 @@
       "issues_closed": 30,
       "source": "nightly",
       "ready_to_merge": 17
+    },
+    {
+      "at": "2026-06-06",
+      "open_prs": 218,
+      "prs_closed": 1396,
+      "issues_open": 143,
+      "issues_closed": 38,
+      "source": "org-swarm-snapshot",
+      "ready_to_merge": 8
     }
   ]
 }
