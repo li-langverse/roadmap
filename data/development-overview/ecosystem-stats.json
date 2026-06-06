@@ -1,13 +1,13 @@
 {
-  "generated_at": "2026-06-03T03:41Z",
+  "generated_at": "2026-06-06T09:12Z",
   "org": "li-langverse",
   "repos_tracked": 14,
-  "org_repositories": 37,
-  "issues_open": 152,
-  "issues_closed": 30,
-  "issues_total": 182,
-  "prs_closed": 1392,
-  "prs_open": 62,
+  "org_repositories": 38,
+  "issues_open": 143,
+  "issues_closed": 38,
+  "issues_total": 181,
+  "prs_closed": 1396,
+  "prs_open": 218,
   "lines_of_code": 67208,
   "lines_per_repo": {
     "lic": 35770,
@@ -22,5 +22,13 @@
     "li-std-core": 0,
     "li-std-math": 0,
     "li-demo": 0
+  },
+  "org_swarm": {
+    "updated_at": "2026-06-06T09:12Z",
+    "cluster": "homelab engine (li-swarm)",
+    "open_issues_queue": 143,
+    "needs_triage": 48,
+    "lifetime_issue_closes": 8,
+    "note": "Counts from org-issue-queue.json on li-agents-sprint-data PVC; triage agent closes via close_github_issue MCP since 2026-06-06."
   }
 }
