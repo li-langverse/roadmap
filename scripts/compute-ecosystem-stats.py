@@ -8,6 +8,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import time
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -75,6 +76,7 @@ def gh_json(args: list[str]) -> dict | list | None:
 
 def search_total_count(query: str) -> int | None:
     data = gh_json(["api", f"search/issues?q={query}", "--jq", ".total_count"])
+    time.sleep(float(os.environ.get("ECOSYSTEM_STATS_SEARCH_GAP_SEC", "2")))
     if isinstance(data, int):
         return data
     return None

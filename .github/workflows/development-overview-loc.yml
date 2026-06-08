@@ -1,0 +1,59 @@
+# Weekly: recompute lines-of-code across tracked org repos (requires shallow clones).
+name: Development overview LoC (weekly)
+
+on:
+  schedule:
+    # Sundays 06:00 UTC
+    - cron: "0 6 * * 0"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: development-overview-loc
+  cancel-in-progress: false
+
+jobs:
+  loc:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Compute lines of code
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN_OVERVIEW_PAGE }}
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN_OVERVIEW_PAGE }}
+        run: |
+          chmod +x scripts/compute-ecosystem-stats.py
+          python3 scripts/compute-ecosystem-stats.py
+
+      - name: Create or update pull request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ secrets.GH_TOKEN_OVERVIEW_PAGE }}
+          commit-message: "chore: development overview LoC snapshot"
+          title: "chore: development overview LoC snapshot"
+          body: |
+            Weekly recomputation of lines-of-code across repos in `.github/li-org-repos.txt`.
+
+            Merging updates the LoC figure on the [development overview](https://li-langverse.github.io/roadmap/development-overview/) Pages site.
+          branch: automated/development-overview-loc
+          delete-branch: false
+          labels: |
+            automated
+            development-overview
+          add-paths: |
+            data/development-overview/ecosystem-stats.json
+
+      - name: Enable auto-merge when checks pass
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN_OVERVIEW_PAGE }}
+        run: |
+          pr="$(gh pr list --head automated/development-overview-loc --json number --jq '.[0].number')"
+          if [[ -z "$pr" || "$pr" == "null" ]]; then
+            echo "No open LoC PR to auto-merge"
+            exit 0
+          fi
+          gh pr merge "$pr" --auto --merge || true
