@@ -8,7 +8,7 @@ const ECO_MS = 600_000;
 const CI_TICK_MS = 90_000;
 const SEARCH_GAP_MS = 7_000;
 const ECO_CACHE_MS = 600_000;
-const ECO_CACHE_KEY = "li-dev-overview-eco-live-v1";
+const ECO_CACHE_KEY = "li-dev-overview-eco-live-v2";
 const SEARCH_URL = `https://api.github.com/search/issues?q=org:${ORG}+is:open+is:pr&per_page=100&sort=updated`;
 const ECO_STATS_URL = "./ecosystem-stats.json";
 
@@ -26,6 +26,9 @@ const METRIC_LINKS = {
 
 /** @type {{ lines_of_code?: number, org_repositories?: number, packages?: number, issues_open?: number, issues_closed?: number, prs_closed?: number, generated_at?: string }} */
 let ecosystemSnapshot = {};
+
+/** Live issue/PR totals fetched in-browser (updated with PR queue refresh). */
+let liveEcoCounts = {};
 
 /** @type {Map<string, { ci: string, ready: boolean }>} */
 const ciCache = new Map();
@@ -156,25 +159,35 @@ function writeEcoCache(data) {
 }
 
 function renderEcosystemMetrics(live = {}) {
-  const loc = live.lines_of_code ?? ecosystemSnapshot.lines_of_code;
-  const orgRepos = live.org_repositories ?? orgReposFromSnapshot(ecosystemSnapshot);
-  const issues = live.issues_open ?? ecosystemSnapshot.issues_open;
-  const closedIssues = live.issues_closed ?? ecosystemSnapshot.issues_closed;
-  const closedPrs = live.prs_closed ?? ecosystemSnapshot.prs_closed;
-  const asOf = live.generated_at ?? ecosystemSnapshot.generated_at;
+  const merged = { ...liveEcoCounts, ...live };
+  const loc = ecosystemSnapshot.lines_of_code;
+  const orgRepos = merged.org_repositories ?? orgReposFromSnapshot(ecosystemSnapshot);
+  const issues = merged.issues_open ?? ecosystemSnapshot.issues_open;
+  const closedIssues = merged.issues_closed ?? ecosystemSnapshot.issues_closed;
+  const closedPrs = merged.prs_closed ?? ecosystemSnapshot.prs_closed;
+  const locAsOf = ecosystemSnapshot.generated_at;
+  const issuesAsOf = merged.issues_at ?? merged.generated_at;
   const asOfEl = document.getElementById("eco-as-of");
-  if (asOfEl && asOf) asOfEl.textContent = asOf;
+  if (asOfEl) {
+    const parts = [];
+    if (issuesAsOf) parts.push(`issues ${issuesAsOf}`);
+    if (locAsOf) parts.push(`LoC ${locAsOf}`);
+    asOfEl.textContent = parts.length ? parts.join(" · ") : "—";
+  }
 
-  setEcoStatus(live._status || "");
+  setEcoStatus(merged._status || "");
+
+  const locHint =
+    loc != null && locAsOf ? `snapshot ${locAsOf}` : "recomputed weekly on main";
 
   return [
-    ["Lines of code", fmtNum(loc), null],
+    ["Lines of code", fmtNum(loc), null, locHint],
     ["Org repositories", fmtNum(orgRepos), METRIC_LINKS["Org repositories"]],
     ["Open issues", fmtNum(issues), METRIC_LINKS["Open issues"]],
     ["Closed issues", fmtNum(closedIssues), METRIC_LINKS["Closed issues"]],
     ["Closed PRs", fmtNum(closedPrs), METRIC_LINKS["Closed PRs"]],
   ]
-    .map(([label, value, href]) => metricCard(label, value, href))
+    .map(([label, value, href, hint]) => metricCard(label, value, href, hint))
     .join("");
 }
 
@@ -257,9 +270,32 @@ async function loadEcosystemSnapshot() {
   }
   const cached = readEcoCache();
   if (cached) {
-    paintEcosystem({ ...cached, _status: "cached · GitHub refresh soon" });
+    liveEcoCounts = { ...liveEcoCounts, ...cached };
+    paintEcosystem({ _status: "cached · GitHub refresh soon" });
   } else {
     paintEcosystem({ _status: "loading GitHub counts…" });
+  }
+}
+
+async function refreshIssueCounts() {
+  const { out, errors } = await searchCountsSequential([
+    ["issues_open", `org:${ORG} is:issue is:open`],
+    ["issues_closed", `org:${ORG} is:issue is:closed`],
+  ]);
+  const at = new Date().toISOString().slice(0, 16);
+  liveEcoCounts = {
+    ...liveEcoCounts,
+    issues_open: out.issues_open ?? undefined,
+    issues_closed: out.issues_closed ?? undefined,
+    issues_at: at,
+  };
+  const got = Object.values(out).filter((v) => typeof v === "number").length;
+  let status = got ? `issues live · ${got}/2 counts` : "issue counts unavailable";
+  if (errors.length) status = `${status} · ${errors[0]}`.trim();
+  paintEcosystem({ _status: status });
+  if (got > 0) {
+    writeEcoCache(liveEcoCounts);
+    pushHistoryFromEco(liveEcoCounts, "live-api");
   }
 }
 
@@ -267,48 +303,45 @@ async function refreshEcosystemLive(force = false) {
   if (!force) {
     const cached = readEcoCache();
     if (cached) {
-      paintEcosystem({ ...cached, _status: "cached · next GitHub refresh soon" });
-      pushHistoryFromEco(cached, "cached");
+      liveEcoCounts = { ...liveEcoCounts, ...cached };
+      paintEcosystem({ _status: "cached · next GitHub refresh soon" });
+      pushHistoryFromEco(liveEcoCounts, "cached");
       return;
     }
   }
 
   setEcoStatus("refreshing GitHub counts…");
-  const at = new Date().toISOString().slice(0, 10);
-  const { out, errors } = await searchCountsSequential([
-    ["issues_open", `org:${ORG} is:issue is:open`],
-    ["issues_closed", `org:${ORG} is:issue is:closed`],
-    ["prs_closed", `org:${ORG} is:pr is:closed`],
-    ["open_prs", `org:${ORG} is:pr is:open`],
-  ]);
+  await refreshIssueCounts();
 
+  const { out, errors } = await searchCountsSequential([
+    ["prs_closed", `org:${ORG} is:pr is:closed`],
+  ]);
   const orgRepos = await fetchOrgRepositoryCount();
 
-  const live = {
-    issues_open: out.issues_open ?? undefined,
-    issues_closed: out.issues_closed ?? undefined,
+  liveEcoCounts = {
+    ...liveEcoCounts,
     prs_closed: out.prs_closed ?? undefined,
-    open_prs: out.open_prs ?? undefined,
     org_repositories: orgRepos ?? undefined,
-    generated_at: at,
   };
 
-  const got = Object.entries(out).filter(([, v]) => typeof v === "number").length;
-  let status = got ? `live · ${got}/4 GitHub counts` : "live counts unavailable";
-  if (errors.length) {
-    status = `${status} · ${errors[0]}`.trim();
-  }
+  const got =
+    (typeof liveEcoCounts.issues_open === "number" ? 1 : 0) +
+    (typeof liveEcoCounts.issues_closed === "number" ? 1 : 0) +
+    (typeof out.prs_closed === "number" ? 1 : 0);
+  let status = got ? `live · ${got}/3 GitHub counts` : "live counts unavailable";
+  if (errors.length) status = `${status} · ${errors[0]}`.trim();
 
-  paintEcosystem({ ...live, _status: status });
-  pushHistoryFromEco({ ...live, open_prs: out.open_prs }, got ? "live-api" : "partial-live");
+  paintEcosystem({ _status: status });
+  pushHistoryFromEco(liveEcoCounts, got ? "live-api" : "partial-live");
 
-  if (got > 0) {
-    writeEcoCache({ ...live, open_prs: out.open_prs ?? undefined });
-  }
+  if (got > 0) writeEcoCache(liveEcoCounts);
 }
 
 function pushHistoryFromEco(data, source) {
-  const at = data.generated_at || new Date().toISOString().slice(0, 10);
+  const at =
+    (data.issues_at && data.issues_at.slice(0, 10)) ||
+    data.generated_at ||
+    new Date().toISOString().slice(0, 10);
   const historyPoint = { at, source };
   if (typeof data.open_prs === "number") historyPoint.open_prs = data.open_prs;
   if (typeof data.prs_closed === "number") historyPoint.prs_closed = data.prs_closed;
@@ -381,6 +414,11 @@ async function refreshSearch() {
       open_prs: openPrTotal,
       ready_to_merge: prs.filter((p) => p.ready).length,
     });
+
+    // Refresh issue counts on the same cadence as PR stats (staggered to respect rate limits).
+    setTimeout(() => {
+      refreshIssueCounts().catch(() => {});
+    }, SEARCH_GAP_MS);
   } catch (e) {
     prQueueLive = false;
     updateFreshnessPr(`unavailable: ${e.message}`);

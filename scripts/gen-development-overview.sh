@@ -298,8 +298,8 @@ html = f"""<!DOCTYPE html>
     <section class="live-banner" aria-labelledby="eco-heading">
       <h2 id="eco-heading">Ecosystem statistics</h2>
       <p class="section-note">
-        Committed baseline <span id="eco-as-of">{eco_as_of}</span> (LoC + repo list).
-        Issue/PR totals refresh live — <span id="eco-live-status" class="live-status-badge"></span>
+        Committed baseline <span id="eco-as-of">{eco_as_of}</span>.
+        Issue counts refresh live with the PR queue (~120s); LoC recomputes weekly — <span id="eco-live-status" class="live-status-badge"></span>
         <a href="https://github.com/li-langverse/roadmap/blob/main/.github/li-org-repos.txt" title="Lines of code sum only repos listed in li-org-repos.txt; org repo count is all GitHub repos under li-langverse.">LoC scope</a>
         · <a href="https://github.com/li-langverse/roadmap/blob/main/scripts/compute-ecosystem-stats.py">Maintainer: recompute snapshot</a>
       </p>
