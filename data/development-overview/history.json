@@ -188,6 +188,15 @@
       "issues_closed": 38,
       "source": "org-swarm-snapshot",
       "ready_to_merge": 8
+    },
+    {
+      "at": "2026-06-08",
+      "open_prs": 128,
+      "ready_to_merge": 103,
+      "prs_closed": 1558,
+      "issues_open": 41,
+      "issues_closed": 143,
+      "source": "refresh"
     }
   ]
 }
