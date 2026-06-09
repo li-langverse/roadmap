@@ -21,10 +21,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Refresh metrics from GitHub
+      - name: Refresh metrics (GitLab issues + GitHub PRs)
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN_OVERVIEW_PAGE }}
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN_OVERVIEW_PAGE }}
+          GITLAB_TOKEN: ${{ secrets.GITLAB_TOKEN }}
+          LI_VCS_PROVIDER: gitlab
           ECOSYSTEM_STATS_SKIP_CLONE: "1"
         run: |
           chmod +x scripts/compute-ecosystem-stats.py

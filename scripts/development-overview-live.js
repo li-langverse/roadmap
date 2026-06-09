@@ -3,6 +3,10 @@
  * Search API: 10 req/min unauthenticated. Requests are staggered with retry/backoff.
  */
 const ORG = "li-langverse";
+const GITLAB_HOST = "gitlab.lilangverse.xyz";
+const GITLAB_GROUP = "li-langverse";
+const GITLAB_ISSUES = (state) =>
+  `https://${GITLAB_HOST}/groups/${GITLAB_GROUP}/-/issues?state=${state}&sort=created_date`;
 const SEARCH_MS = 120_000;
 const ECO_MS = 600_000;
 const CI_TICK_MS = 90_000;
@@ -16,8 +20,8 @@ const GITHUB_SEARCH = (q) =>
   `https://github.com/search?q=${encodeURIComponent(q)}&type=issues`;
 
 const METRIC_LINKS = {
-  "Open issues": GITHUB_SEARCH(`org:${ORG} is:issue is:open`),
-  "Closed issues": GITHUB_SEARCH(`org:${ORG} is:issue is:closed`),
+  "Open issues": GITLAB_ISSUES("opened"),
+  "Closed issues": GITLAB_ISSUES("closed"),
   "Closed PRs": GITHUB_SEARCH(`org:${ORG} is:pr is:closed`),
   "Org repositories": `https://github.com/orgs/${ORG}/repositories`,
   "Open PRs": GITHUB_SEARCH(`org:${ORG} is:pr is:open`),
@@ -278,24 +282,33 @@ async function loadEcosystemSnapshot() {
 }
 
 async function refreshIssueCounts() {
-  const { out, errors } = await searchCountsSequential([
-    ["issues_open", `org:${ORG} is:issue is:open`],
-    ["issues_closed", `org:${ORG} is:issue is:closed`],
-  ]);
-  const at = new Date().toISOString().slice(0, 16);
-  liveEcoCounts = {
-    ...liveEcoCounts,
-    issues_open: out.issues_open ?? undefined,
-    issues_closed: out.issues_closed ?? undefined,
-    issues_at: at,
-  };
-  const got = Object.values(out).filter((v) => typeof v === "number").length;
-  let status = got ? `issues live · ${got}/2 counts` : "issue counts unavailable";
-  if (errors.length) status = `${status} · ${errors[0]}`.trim();
-  paintEcosystem({ _status: status });
-  if (got > 0) {
-    writeEcoCache(liveEcoCounts);
-    pushHistoryFromEco(liveEcoCounts, "live-api");
+  // GitLab issues require a token — use committed snapshot (refreshed every 4h on main).
+  try {
+    const res = await fetch(ECO_STATS_URL, { cache: "no-store" });
+    if (!res.ok) throw new Error(`snapshot ${res.status}`);
+    const eco = await res.json();
+    ecosystemSnapshot = { ...ecosystemSnapshot, ...eco };
+    const at = eco.generated_at || new Date().toISOString().slice(0, 16);
+    const source = eco.issues_source === "gitlab" ? "GitLab" : "snapshot";
+    liveEcoCounts = {
+      ...liveEcoCounts,
+      issues_open: eco.issues_open ?? undefined,
+      issues_closed: eco.issues_closed ?? undefined,
+      issues_at: at,
+    };
+    const got =
+      (typeof eco.issues_open === "number" ? 1 : 0) +
+      (typeof eco.issues_closed === "number" ? 1 : 0);
+    const status = got ? `issues · ${source} snapshot` : "issue counts unavailable";
+    paintEcosystem({ _status: status });
+    if (got > 0) {
+      writeEcoCache(liveEcoCounts);
+      pushHistoryFromEco(liveEcoCounts, "snapshot");
+    }
+  } catch (e) {
+    paintEcosystem({
+      _status: `issues snapshot unavailable: ${e instanceof Error ? e.message : String(e)}`,
+    });
   }
 }
 

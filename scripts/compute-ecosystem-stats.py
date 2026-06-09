@@ -9,10 +9,15 @@ import subprocess
 import sys
 import tempfile
 import time
+import urllib.error
+import urllib.parse
+import urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
 
 ORG = "li-langverse"
+GITLAB_HOST = os.environ.get("LI_GITLAB_HOST", "gitlab.lilangverse.xyz").strip()
+GITLAB_GROUP = os.environ.get("LI_GITLAB_GROUP", ORG).strip()
 CODE_SUFFIXES = {
     ".li",
     ".cpp",
@@ -80,6 +85,57 @@ def search_total_count(query: str) -> int | None:
     if isinstance(data, int):
         return data
     return None
+
+
+def gitlab_token() -> str | None:
+    token = os.environ.get("GITLAB_TOKEN", "").strip()
+    return token or None
+
+
+def gitlab_group_issue_count(state: str) -> int | None:
+    """Count group issues (incl. subgroups). state: opened | closed."""
+    token = gitlab_token()
+    if not token:
+        return None
+    group = urllib.parse.quote(GITLAB_GROUP, safe="")
+    url = (
+        f"https://{GITLAB_HOST}/api/v4/groups/{group}/issues"
+        f"?state={state}&include_subgroups=true&scope=all&per_page=1&page=1"
+    )
+    req = urllib.request.Request(
+        url,
+        headers={
+            "PRIVATE-TOKEN": token,
+            "Accept": "application/json",
+        },
+        method="GET",
+    )
+    try:
+        with urllib.request.urlopen(req, timeout=60) as resp:
+            total = resp.headers.get("X-Total") or resp.headers.get("x-total")
+            if total is not None:
+                return int(total)
+            payload = json.loads(resp.read().decode())
+            if isinstance(payload, list):
+                return len(payload)
+    except (urllib.error.HTTPError, urllib.error.URLError, ValueError, json.JSONDecodeError) as exc:
+        sys.stderr.write(f"gitlab issue count ({state}) failed: {exc}\n")
+    time.sleep(float(os.environ.get("ECOSYSTEM_STATS_SEARCH_GAP_SEC", "2")))
+    return None
+
+
+def issue_counts() -> tuple[int | None, int | None, str]:
+    """(open, closed, source) — GitLab primary when GITLAB_TOKEN is set."""
+    provider = os.environ.get("LI_VCS_PROVIDER", "gitlab").strip().lower()
+    use_gitlab = provider != "github" and gitlab_token() is not None
+    if use_gitlab:
+        open_n = gitlab_group_issue_count("opened")
+        closed_n = gitlab_group_issue_count("closed")
+        if open_n is not None or closed_n is not None:
+            return open_n, closed_n, "gitlab"
+    open_n = search_total_count(f"org:{ORG}+is:issue+is:open")
+    closed_n = search_total_count(f"org:{ORG}+is:issue+is:closed")
+    return open_n, closed_n, "github"
 
 
 def count_org_repositories() -> int | None:
@@ -253,8 +309,7 @@ def main() -> int:
         lines_total, lines_per_repo = compute_loc(repos, root, clone_missing)
     org_repositories = count_org_repositories()
 
-    open_issues = search_total_count(f"org:{ORG}+is:issue+is:open")
-    closed_issues = search_total_count(f"org:{ORG}+is:issue+is:closed")
+    open_issues, closed_issues, issues_source = issue_counts()
     closed_prs = search_total_count(f"org:{ORG}+is:pr+is:closed")
     open_prs = search_total_count(f"org:{ORG}+is:pr+is:open")
 
@@ -263,6 +318,7 @@ def main() -> int:
         "org": ORG,
         "repos_tracked": len(repos),
         "org_repositories": org_repositories,
+        "issues_source": issues_source,
         "issues_open": open_issues,
         "issues_closed": closed_issues,
         "issues_total": (open_issues or 0) + (closed_issues or 0)
