@@ -216,14 +216,20 @@ def compact_daily(raw_points: list[dict]) -> list[dict]:
 
 
 today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+issues_open = ecosystem.get("issues_open")
+issues_closed = ecosystem.get("issues_closed")
+if issues_open is None:
+    issues_open = search_total(f"org:li-langverse+is:issue+is:open")
+if issues_closed is None:
+    issues_closed = search_total(f"org:li-langverse+is:issue+is:closed")
 new_point = {
     "at": today,
     "open_prs": open_count,
     "ready_to_merge": ready,
     "prs_closed": search_total(f"org:li-langverse+is:pr+is:closed"),
-    "issues_open": search_total(f"org:li-langverse+is:issue+is:open"),
-    "issues_closed": search_total(f"org:li-langverse+is:issue+is:closed"),
-    "source": "refresh",
+    "issues_open": issues_open,
+    "issues_closed": issues_closed,
+    "source": ecosystem.get("issues_source", "refresh"),
 }
 points = compact_daily(points + [new_point])
 if len(points) > 400:
