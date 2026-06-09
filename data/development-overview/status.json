@@ -1,23 +1,24 @@
 {
-  "generated_at": "2026-06-08T04:58Z",
+  "generated_at": "2026-06-09T03:21Z",
   "pages_url": "https://li-langverse.github.io/roadmap/development-overview/",
   "metrics": {
-    "ready_to_merge": 103,
-    "open_prs": 128,
-    "blocked": 25,
+    "ready_to_merge": 120,
+    "open_prs": 127,
+    "blocked": 7,
     "repos_with_live_docs": 2,
     "repos_total": 14
   },
   "ecosystem": {
-    "generated_at": "2026-06-08T04:58Z",
+    "generated_at": "2026-06-09T03:21Z",
     "org": "li-langverse",
     "repos_tracked": 14,
-    "org_repositories": 62,
-    "issues_open": 41,
-    "issues_closed": 143,
+    "org_repositories": 66,
+    "issues_source": "github",
+    "issues_open": 18,
+    "issues_closed": 166,
     "issues_total": 184,
-    "prs_closed": 1558,
-    "prs_open": 700,
+    "prs_closed": 1598,
+    "prs_open": 964,
     "lines_of_code": 67208,
     "lines_per_repo": {
       "lic": 35770,
@@ -43,236 +44,6 @@
     }
   },
   "pull_requests": [
-    {
-      "repo": "benchmarks",
-      "number": 415,
-      "title": "chore(metrics): refresh ecosystem grade 2026-06-06 (performance observer)",
-      "url": "https://github.com/li-langverse/benchmarks/pull/415",
-      "base": "main",
-      "ci": "pass",
-      "draft": false,
-      "ready": true
-    },
-    {
-      "repo": "benchmarks",
-      "number": 416,
-      "title": "feat(ui-audit): expand org preflight ui-audit.json to GUI/TUI ux-targets",
-      "url": "https://github.com/li-langverse/benchmarks/pull/416",
-      "base": "main",
-      "ci": "pass",
-      "draft": false,
-      "ready": true
-    },
-    {
-      "repo": "benchmarks",
-      "number": 417,
-      "title": "chore(metrics): refresh ecosystem grade + swarm observer ux digest",
-      "url": "https://github.com/li-langverse/benchmarks/pull/417",
-      "base": "main",
-      "ci": "pass",
-      "draft": false,
-      "ready": true
-    },
-    {
-      "repo": "benchmarks",
-      "number": 418,
-      "title": "chore(metrics): refresh ecosystem grade 2026-06-06 (api-coverage observer)",
-      "url": "https://github.com/li-langverse/benchmarks/pull/418",
-      "base": "main",
-      "ci": "pass",
-      "draft": false,
-      "ready": true
-    },
-    {
-      "repo": "benchmarks",
-      "number": 419,
-      "title": "chore(metrics): refresh ecosystem grade 2026-06-07 (security observer)",
-      "url": "https://github.com/li-langverse/benchmarks/pull/419",
-      "base": "main",
-      "ci": "pass",
-      "draft": false,
-      "ready": true
-    },
-    {
-      "repo": "benchmarks",
-      "number": 420,
-      "title": "feat(tier5): invalid_method_reject mitigation for CWE-20 (#521 sec-r2)",
-      "url": "https://github.com/li-langverse/benchmarks/pull/420",
-      "base": "main",
-      "ci": "pass",
-      "draft": false,
-      "ready": true
-    },
-    {
-      "repo": "benchmarks",
-      "number": 421,
-      "title": "chore(metrics): refresh ecosystem grade 2026-06-07 (performance observer)",
-      "url": "https://github.com/li-langverse/benchmarks/pull/421",
-      "base": "main",
-      "ci": "pass",
-      "draft": false,
-      "ready": true
-    },
-    {
-      "repo": "benchmarks",
-      "number": 422,
-      "title": "chore(metrics): refresh ecosystem grade 2026-06-07 (security observer)",
-      "url": "https://github.com/li-langverse/benchmarks/pull/422",
-      "base": "main",
-      "ci": "pass",
-      "draft": false,
-      "ready": true
-    },
-    {
-      "repo": "benchmarks",
-      "number": 423,
-      "title": "chore(metrics): refresh ecosystem grade 2026-06-07 (performance observer)",
-      "url": "https://github.com/li-langverse/benchmarks/pull/423",
-      "base": "main",
-      "ci": "pass",
-      "draft": false,
-      "ready": true
-    },
-    {
-      "repo": "benchmarks",
-      "number": 424,
-      "title": "chore(metrics): refresh ecosystem grade 2026-06-07 (ux observer)",
-      "url": "https://github.com/li-langverse/benchmarks/pull/424",
-      "base": "main",
-      "ci": "pass",
-      "draft": false,
-      "ready": true
-    },
-    {
-      "repo": "benchmarks",
-      "number": 425,
-      "title": "chore(metrics): refresh ecosystem grade 2026-06-07 (api-coverage observer)",
-      "url": "https://github.com/li-langverse/benchmarks/pull/425",
-      "base": "main",
-      "ci": "pass",
-      "draft": false,
-      "ready": true
-    },
-    {
-      "repo": "benchmarks",
-      "number": 426,
-      "title": "chore(metrics): refresh ecosystem grade 2026-06-07 (security observer)",
-      "url": "https://github.com/li-langverse/benchmarks/pull/426",
-      "base": "main",
-      "ci": "pass",
-      "draft": false,
-      "ready": true
-    },
-    {
-      "repo": "benchmarks",
-      "number": 427,
-      "title": "chore(metrics): refresh ecosystem grade 2026-06-07 (performance observer)",
-      "url": "https://github.com/li-langverse/benchmarks/pull/427",
-      "base": "main",
-      "ci": "pass",
-      "draft": false,
-      "ready": true
-    },
-    {
-      "repo": "benchmarks",
-      "number": 428,
-      "title": "chore(metrics): refresh ecosystem grade 2026-06-07 (ux observer)",
-      "url": "https://github.com/li-langverse/benchmarks/pull/428",
-      "base": "main",
-      "ci": "pass",
-      "draft": false,
-      "ready": true
-    },
-    {
-      "repo": "benchmarks",
-      "number": 429,
-      "title": "chore(metrics): refresh ecosystem grade 2026-06-07 (api-coverage observer)",
-      "url": "https://github.com/li-langverse/benchmarks/pull/429",
-      "base": "main",
-      "ci": "pass",
-      "draft": false,
-      "ready": true
-    },
-    {
-      "repo": "benchmarks",
-      "number": 430,
-      "title": "chore(metrics): refresh ecosystem grade 2026-06-07 (security observer)",
-      "url": "https://github.com/li-langverse/benchmarks/pull/430",
-      "base": "main",
-      "ci": "pass",
-      "draft": false,
-      "ready": true
-    },
-    {
-      "repo": "benchmarks",
-      "number": 431,
-      "title": "chore(metrics): refresh ecosystem grade 2026-06-07 (performance observer)",
-      "url": "https://github.com/li-langverse/benchmarks/pull/431",
-      "base": "main",
-      "ci": "pass",
-      "draft": false,
-      "ready": true
-    },
-    {
-      "repo": "benchmarks",
-      "number": 433,
-      "title": "chore(metrics): refresh ecosystem grade 2026-06-07 (api-coverage observer)",
-      "url": "https://github.com/li-langverse/benchmarks/pull/433",
-      "base": "main",
-      "ci": "pass",
-      "draft": false,
-      "ready": true
-    },
-    {
-      "repo": "benchmarks",
-      "number": 434,
-      "title": "chore(metrics): refresh ecosystem grade 2026-06-07 (swarm_observer)",
-      "url": "https://github.com/li-langverse/benchmarks/pull/434",
-      "base": "main",
-      "ci": "pass",
-      "draft": false,
-      "ready": true
-    },
-    {
-      "repo": "benchmarks",
-      "number": 435,
-      "title": "docs(plan): catalog path reconciliation refresh PH-5b (#179)",
-      "url": "https://github.com/li-langverse/benchmarks/pull/435",
-      "base": "main",
-      "ci": "pass",
-      "draft": true,
-      "ready": false
-    },
-    {
-      "repo": "benchmarks",
-      "number": 436,
-      "title": "chore(metrics): refresh ecosystem grade 2026-06-07 (performance)",
-      "url": "https://github.com/li-langverse/benchmarks/pull/436",
-      "base": "main",
-      "ci": "pass",
-      "draft": false,
-      "ready": true
-    },
-    {
-      "repo": "benchmarks",
-      "number": 437,
-      "title": "chore(metrics): refresh ecosystem grade 2026-06-07 (ux observer)",
-      "url": "https://github.com/li-langverse/benchmarks/pull/437",
-      "base": "main",
-      "ci": "pass",
-      "draft": false,
-      "ready": true
-    },
-    {
-      "repo": "benchmarks",
-      "number": 438,
-      "title": "fix(ph-5b): catalog path honesty \u2014 0 actionable catalog_gaps (#179)",
-      "url": "https://github.com/li-langverse/benchmarks/pull/438",
-      "base": "main",
-      "ci": "pass",
-      "draft": false,
-      "ready": true
-    },
     {
       "repo": "benchmarks",
       "number": 440,
@@ -539,9 +310,239 @@
       "title": "docs(ecosystem): register li-physics-* org mirrors in catalog (lic#50)",
       "url": "https://github.com/li-langverse/benchmarks/pull/469",
       "base": "main",
-      "ci": "pending",
+      "ci": "pass",
       "draft": false,
-      "ready": false
+      "ready": true
+    },
+    {
+      "repo": "benchmarks",
+      "number": 470,
+      "title": "chore(metrics): refresh ecosystem grade 2026-06-08 (security observer)",
+      "url": "https://github.com/li-langverse/benchmarks/pull/470",
+      "base": "main",
+      "ci": "pass",
+      "draft": false,
+      "ready": true
+    },
+    {
+      "repo": "benchmarks",
+      "number": 471,
+      "title": "chore(metrics): refresh ecosystem grade 2026-06-08 (performance observer)",
+      "url": "https://github.com/li-langverse/benchmarks/pull/471",
+      "base": "main",
+      "ci": "pass",
+      "draft": false,
+      "ready": true
+    },
+    {
+      "repo": "benchmarks",
+      "number": 472,
+      "title": "chore(metrics): refresh ecosystem grade 2026-06-08 (ux observer)",
+      "url": "https://github.com/li-langverse/benchmarks/pull/472",
+      "base": "main",
+      "ci": "pass",
+      "draft": false,
+      "ready": true
+    },
+    {
+      "repo": "benchmarks",
+      "number": 473,
+      "title": "chore(metrics): refresh ecosystem grade 2026-06-08 (performance observer)",
+      "url": "https://github.com/li-langverse/benchmarks/pull/473",
+      "base": "main",
+      "ci": "pass",
+      "draft": false,
+      "ready": true
+    },
+    {
+      "repo": "benchmarks",
+      "number": 474,
+      "title": "chore(metrics): refresh ecosystem grade 2026-06-08 (ux observer)",
+      "url": "https://github.com/li-langverse/benchmarks/pull/474",
+      "base": "main",
+      "ci": "pass",
+      "draft": false,
+      "ready": true
+    },
+    {
+      "repo": "benchmarks",
+      "number": 475,
+      "title": "chore(metrics): refresh ecosystem grade 2026-06-08 (api-coverage observer)",
+      "url": "https://github.com/li-langverse/benchmarks/pull/475",
+      "base": "main",
+      "ci": "pass",
+      "draft": false,
+      "ready": true
+    },
+    {
+      "repo": "benchmarks",
+      "number": 476,
+      "title": "chore(grade): refresh ecosystem quality scorecard (2026-06-08)",
+      "url": "https://github.com/li-langverse/benchmarks/pull/476",
+      "base": "main",
+      "ci": "pass",
+      "draft": false,
+      "ready": true
+    },
+    {
+      "repo": "benchmarks",
+      "number": 477,
+      "title": "chore(metrics): refresh ecosystem grade 2026-06-08 (ux observer)",
+      "url": "https://github.com/li-langverse/benchmarks/pull/477",
+      "base": "main",
+      "ci": "pass",
+      "draft": false,
+      "ready": true
+    },
+    {
+      "repo": "benchmarks",
+      "number": 478,
+      "title": "chore(metrics): refresh ecosystem grade 2026-06-08 (performance observer)",
+      "url": "https://github.com/li-langverse/benchmarks/pull/478",
+      "base": "main",
+      "ci": "pass",
+      "draft": false,
+      "ready": true
+    },
+    {
+      "repo": "benchmarks",
+      "number": 479,
+      "title": "docs(honesty): HPC reference baseline version policy (#27)",
+      "url": "https://github.com/li-langverse/benchmarks/pull/479",
+      "base": "main",
+      "ci": "pass",
+      "draft": false,
+      "ready": true
+    },
+    {
+      "repo": "benchmarks",
+      "number": 480,
+      "title": "chore(metrics): refresh ecosystem grade for security observer 2026-06-08",
+      "url": "https://github.com/li-langverse/benchmarks/pull/480",
+      "base": "main",
+      "ci": "pass",
+      "draft": false,
+      "ready": true
+    },
+    {
+      "repo": "benchmarks",
+      "number": 481,
+      "title": "docs(ecosystem): HPC reference library release cadence (closes #27)",
+      "url": "https://github.com/li-langverse/benchmarks/pull/481",
+      "base": "main",
+      "ci": "pass",
+      "draft": false,
+      "ready": true
+    },
+    {
+      "repo": "benchmarks",
+      "number": 482,
+      "title": "chore(metrics): refresh ecosystem grade for ux swarm observer",
+      "url": "https://github.com/li-langverse/benchmarks/pull/482",
+      "base": "main",
+      "ci": "pass",
+      "draft": false,
+      "ready": true
+    },
+    {
+      "repo": "benchmarks",
+      "number": 483,
+      "title": "chore(metrics): refresh ecosystem grade + swarm observer digest",
+      "url": "https://github.com/li-langverse/benchmarks/pull/483",
+      "base": "main",
+      "ci": "pass",
+      "draft": false,
+      "ready": true
+    },
+    {
+      "repo": "benchmarks",
+      "number": 484,
+      "title": "chore(metrics): refresh ecosystem grade D (org-packages observer)",
+      "url": "https://github.com/li-langverse/benchmarks/pull/484",
+      "base": "main",
+      "ci": "pass",
+      "draft": false,
+      "ready": true
+    },
+    {
+      "repo": "benchmarks",
+      "number": 485,
+      "title": "chore(metrics): refresh ecosystem grade 2026-06-08 (performance observer)",
+      "url": "https://github.com/li-langverse/benchmarks/pull/485",
+      "base": "main",
+      "ci": "pass",
+      "draft": false,
+      "ready": true
+    },
+    {
+      "repo": "benchmarks",
+      "number": 486,
+      "title": "fix(audit): plan-completion-audit LIC_ROOT degraded scan honesty (#20)",
+      "url": "https://github.com/li-langverse/benchmarks/pull/486",
+      "base": "main",
+      "ci": "pass",
+      "draft": false,
+      "ready": true
+    },
+    {
+      "repo": "benchmarks",
+      "number": 487,
+      "title": "chore(swarm): refresh quality scorecard and observer digest",
+      "url": "https://github.com/li-langverse/benchmarks/pull/487",
+      "base": "main",
+      "ci": "pass",
+      "draft": false,
+      "ready": true
+    },
+    {
+      "repo": "benchmarks",
+      "number": 488,
+      "title": "chore(swarm): refresh quality scorecard and observer digest",
+      "url": "https://github.com/li-langverse/benchmarks/pull/488",
+      "base": "main",
+      "ci": "pass",
+      "draft": false,
+      "ready": true
+    },
+    {
+      "repo": "benchmarks",
+      "number": 489,
+      "title": "fix(catalog): tier-2 gaming physics repo field (#19)",
+      "url": "https://github.com/li-langverse/benchmarks/pull/489",
+      "base": "main",
+      "ci": "pass",
+      "draft": false,
+      "ready": true
+    },
+    {
+      "repo": "benchmarks",
+      "number": 490,
+      "title": "fix(catalog): tier-2 gaming physics repo field (#19)",
+      "url": "https://github.com/li-langverse/benchmarks/pull/490",
+      "base": "main",
+      "ci": "pass",
+      "draft": false,
+      "ready": true
+    },
+    {
+      "repo": "benchmarks",
+      "number": 491,
+      "title": "chore(metrics): refresh ecosystem grade D + security observer digest",
+      "url": "https://github.com/li-langverse/benchmarks/pull/491",
+      "base": "main",
+      "ci": "pass",
+      "draft": false,
+      "ready": true
+    },
+    {
+      "repo": "benchmarks",
+      "number": 492,
+      "title": "chore(swarm): refresh scorecard D/66.3 and observer digest abb73afe",
+      "url": "https://github.com/li-langverse/benchmarks/pull/492",
+      "base": "main",
+      "ci": "pass",
+      "draft": false,
+      "ready": true
     },
     {
       "repo": "li-demo",
@@ -665,19 +666,9 @@
     },
     {
       "repo": "lic",
-      "number": 1218,
-      "title": "feat(bench): PDE PETSc+hypre external oracle stub (lic#108)",
-      "url": "https://github.com/li-langverse/lic/pull/1218",
-      "base": "main",
-      "ci": "fail",
-      "draft": false,
-      "ready": false
-    },
-    {
-      "repo": "lic",
-      "number": 1219,
-      "title": "fix(swarm): gap ingest Path fallback; orch-r6 api-coverage",
-      "url": "https://github.com/li-langverse/lic/pull/1219",
+      "number": 1483,
+      "title": "docs(plan): Doc-c G-* phase exit gates (#23)",
+      "url": "https://github.com/li-langverse/lic/pull/1483",
       "base": "main",
       "ci": "pass",
       "draft": false,
@@ -685,9 +676,9 @@
     },
     {
       "repo": "lic",
-      "number": 1220,
-      "title": "feat(sim-scientific): WP-SCI-03 Phase 2 CFD/FEA/QM tier-2 registry (follow-up)",
-      "url": "https://github.com/li-langverse/lic/pull/1220",
+      "number": 1484,
+      "title": "docs(bench): tier0_stability catalog path reconciliation (lic#24)",
+      "url": "https://github.com/li-langverse/lic/pull/1484",
       "base": "main",
       "ci": "pass",
       "draft": false,
@@ -695,429 +686,429 @@
     },
     {
       "repo": "lic",
-      "number": 1221,
-      "title": "feat(sim-scientific): WP-SCI-03 CFD/FEA tier-2 registry oracles",
-      "url": "https://github.com/li-langverse/lic/pull/1221",
-      "base": "main",
-      "ci": "pass",
-      "draft": false,
-      "ready": true
-    },
-    {
-      "repo": "lic",
-      "number": 1222,
-      "title": "fix(swarm): gap-ingest Path fallback + orch-r5 security orchestration",
-      "url": "https://github.com/li-langverse/lic/pull/1222",
-      "base": "main",
-      "ci": "fail",
-      "draft": false,
-      "ready": false
-    },
-    {
-      "repo": "lic",
-      "number": 1223,
-      "title": "fix(gates): accept li_llm_version 10 in stage5/6 PH-ML gates",
-      "url": "https://github.com/li-langverse/lic/pull/1223",
-      "base": "main",
-      "ci": "pass",
-      "draft": false,
-      "ready": true
-    },
-    {
-      "repo": "lic",
-      "number": 1224,
-      "title": "feat(sim-scientific): WP-SCI-03 CFD/FEA tier-2 registry dispatch",
-      "url": "https://github.com/li-langverse/lic/pull/1224",
-      "base": "main",
-      "ci": "pass",
-      "draft": false,
-      "ready": true
-    },
-    {
-      "repo": "lic",
-      "number": 1225,
-      "title": "docs(plan): Doc-c G-* phase 03/07 exit gates (#12)",
-      "url": "https://github.com/li-langverse/lic/pull/1225",
-      "base": "main",
-      "ci": "pass",
-      "draft": true,
-      "ready": false
-    },
-    {
-      "repo": "lic",
-      "number": 1226,
-      "title": "docs(hpc): Kokkos memory + execution spaces for tier-2 model (#110)",
-      "url": "https://github.com/li-langverse/lic/pull/1226",
-      "base": "main",
-      "ci": "pass",
-      "draft": false,
-      "ready": true
-    },
-    {
-      "repo": "lic",
-      "number": 1227,
-      "title": "docs(PH-7e): RAJA/Kokkos portability policy matrix (lic#109)",
-      "url": "https://github.com/li-langverse/lic/pull/1227",
-      "base": "main",
-      "ci": "pass",
-      "draft": false,
-      "ready": true
-    },
-    {
-      "repo": "lic",
-      "number": 1228,
-      "title": "feat(sim-scientific): WP-SCI-03 Phase 2 CFD/FEA tier-2 registry dispatch",
-      "url": "https://github.com/li-langverse/lic/pull/1228",
-      "base": "main",
-      "ci": "fail",
-      "draft": false,
-      "ready": false
-    },
-    {
-      "repo": "lic",
-      "number": 1229,
-      "title": "feat(bench): PDE PETSc+hypre external oracle stub (lic#108)",
-      "url": "https://github.com/li-langverse/lic/pull/1229",
-      "base": "main",
-      "ci": "pass",
-      "draft": false,
-      "ready": true
-    },
-    {
-      "repo": "lic",
-      "number": 1231,
-      "title": "docs(PH-7e): RAJA/Kokkos portability policy matrix (lic#109)",
-      "url": "https://github.com/li-langverse/lic/pull/1231",
-      "base": "main",
-      "ci": "pass",
-      "draft": false,
-      "ready": true
-    },
-    {
-      "repo": "lic",
-      "number": 1232,
-      "title": "feat(sim-scientific): WP-SCI-03 CFD/FEA tier-2 registry dispatch",
-      "url": "https://github.com/li-langverse/lic/pull/1232",
-      "base": "main",
-      "ci": "pass",
-      "draft": false,
-      "ready": true
-    },
-    {
-      "repo": "lic",
-      "number": 1233,
-      "title": "feat(sim-scientific): WP-SCI-03 Phase 2 CFD/FEA/QM tier-2 registry",
-      "url": "https://github.com/li-langverse/lic/pull/1233",
-      "base": "main",
-      "ci": "pass",
-      "draft": false,
-      "ready": true
-    },
-    {
-      "repo": "lic",
-      "number": 1234,
-      "title": "docs(hpc): Kokkos memory + execution spaces for tier-2 model (#110)",
-      "url": "https://github.com/li-langverse/lic/pull/1234",
-      "base": "main",
-      "ci": "pass",
-      "draft": false,
-      "ready": true
-    },
-    {
-      "repo": "lic",
-      "number": 1235,
-      "title": "docs(ecosystem): G-meta competitive safety matrix \u2014 Carbon/Mojo/Rust vs Li (#65)",
-      "url": "https://github.com/li-langverse/lic/pull/1235",
-      "base": "main",
-      "ci": "pending",
-      "draft": false,
-      "ready": false
-    },
-    {
-      "repo": "lic",
-      "number": 1236,
-      "title": "plan: PH-7e Horner pure-Li lowering slice (G-math / #11)",
-      "url": "https://github.com/li-langverse/lic/pull/1236",
-      "base": "main",
-      "ci": "pass",
-      "draft": true,
-      "ready": false
-    },
-    {
-      "repo": "lic",
-      "number": 1237,
-      "title": "feat(sim-scientific): WP-SCI-03 CFD/FEA tier-2 registry dispatch",
-      "url": "https://github.com/li-langverse/lic/pull/1237",
-      "base": "main",
-      "ci": "pass",
-      "draft": false,
-      "ready": true
-    },
-    {
-      "repo": "lic",
-      "number": 1238,
-      "title": "feat(execution): RAJA policy matrix + parallel policy telemetry (lic#109)",
-      "url": "https://github.com/li-langverse/lic/pull/1238",
-      "base": "main",
-      "ci": "pass",
-      "draft": false,
-      "ready": true
-    },
-    {
-      "repo": "lic",
-      "number": 1239,
-      "title": "feat(numerics): implicit PDE PETSc/hypre plan slice (lic#108)",
-      "url": "https://github.com/li-langverse/lic/pull/1239",
-      "base": "main",
-      "ci": "fail",
-      "draft": false,
-      "ready": false
-    },
-    {
-      "repo": "lic",
-      "number": 1240,
-      "title": "docs(PH-7e): RAJA/Kokkos portability policy matrix (lic#109)",
-      "url": "https://github.com/li-langverse/lic/pull/1240",
-      "base": "main",
-      "ci": "pass",
-      "draft": false,
-      "ready": true
-    },
-    {
-      "repo": "lic",
-      "number": 1241,
-      "title": "feat(sim-scientific): WP-SCI-03 CFD/FEA tier-2 registry dispatch",
-      "url": "https://github.com/li-langverse/lic/pull/1241",
-      "base": "main",
-      "ci": "pass",
-      "draft": false,
-      "ready": true
-    },
-    {
-      "repo": "lic",
-      "number": 1242,
-      "title": "docs(swarm): orch-r7 performance gap orchestration note",
-      "url": "https://github.com/li-langverse/lic/pull/1242",
-      "base": "main",
-      "ci": "pass",
-      "draft": false,
-      "ready": true
-    },
-    {
-      "repo": "lic",
-      "number": 1243,
-      "title": "feat(sim-scientific): WP-SCI-03 QM tier-2 registry dispatch (401\u2013432)",
-      "url": "https://github.com/li-langverse/lic/pull/1243",
-      "base": "main",
-      "ci": "pass",
-      "draft": false,
-      "ready": true
-    },
-    {
-      "repo": "lic",
-      "number": 1244,
-      "title": "feat(sim-scientific): WP-SCI-03 QM tier-2 registry dispatch (401\u2013432)",
-      "url": "https://github.com/li-langverse/lic/pull/1244",
-      "base": "main",
-      "ci": "pass",
-      "draft": false,
-      "ready": true
-    },
-    {
-      "repo": "lic",
-      "number": 1245,
-      "title": "feat(sim-scientific): WP-SCI-03 CFD tier-2 registry dispatch",
-      "url": "https://github.com/li-langverse/lic/pull/1245",
-      "base": "main",
-      "ci": "pass",
-      "draft": false,
-      "ready": true
-    },
-    {
-      "repo": "lic",
-      "number": 1246,
-      "title": "docs(hpc): Kokkos memory + execution spaces for tier-2 model (#110)",
-      "url": "https://github.com/li-langverse/lic/pull/1246",
-      "base": "main",
-      "ci": "pass",
-      "draft": false,
-      "ready": true
-    },
-    {
-      "repo": "lic",
-      "number": 1248,
-      "title": "docs(spec): foreign bindings reference policy (Chapel 2.3+ Python interop, G-ai)",
-      "url": "https://github.com/li-langverse/lic/pull/1248",
-      "base": "main",
-      "ci": "pass",
-      "draft": false,
-      "ready": true
-    },
-    {
-      "repo": "lic",
-      "number": 1249,
-      "title": "feat(bench): PDE PETSc+hypre external oracle stub (lic#108)",
-      "url": "https://github.com/li-langverse/lic/pull/1249",
-      "base": "main",
-      "ci": "pass",
-      "draft": false,
-      "ready": true
-    },
-    {
-      "repo": "lic",
-      "number": 1250,
-      "title": "fix(swarm): gap-ingest Path fallback; orch-r4 UX orchestration",
-      "url": "https://github.com/li-langverse/lic/pull/1250",
-      "base": "main",
-      "ci": "pass",
-      "draft": false,
-      "ready": true
-    },
-    {
-      "repo": "lic",
-      "number": 1251,
-      "title": "feat(sim-scientific): WP-SCI-03 CFD/FEA tier-2 registry dispatch",
-      "url": "https://github.com/li-langverse/lic/pull/1251",
-      "base": "main",
-      "ci": "pass",
-      "draft": false,
-      "ready": true
-    },
-    {
-      "repo": "lic",
-      "number": 1252,
-      "title": "docs(ecosystem): G-meta competitive safety matrix \u2014 Carbon/Mojo/Rust vs Li (#65)",
-      "url": "https://github.com/li-langverse/lic/pull/1252",
-      "base": "main",
-      "ci": "pass",
-      "draft": false,
-      "ready": true
-    },
-    {
-      "repo": "lic",
-      "number": 1253,
-      "title": "docs(hpc): Kokkos memory + execution spaces for tier-2 model (#110)",
-      "url": "https://github.com/li-langverse/lic/pull/1253",
-      "base": "main",
-      "ci": "pass",
-      "draft": false,
-      "ready": true
-    },
-    {
-      "repo": "lic",
-      "number": 1255,
-      "title": "feat(proof-explorer): phase14 discharge tranche \u2014 40 catalog rows proved",
-      "url": "https://github.com/li-langverse/lic/pull/1255",
-      "base": "main",
-      "ci": "pending",
-      "draft": false,
-      "ready": false
-    },
-    {
-      "repo": "lic",
-      "number": 1256,
-      "title": "feat(sim-scientific): WP-SCI-03 CFD/FEA tier-2 registry oracles",
-      "url": "https://github.com/li-langverse/lic/pull/1256",
-      "base": "main",
-      "ci": "pass",
-      "draft": false,
-      "ready": true
-    },
-    {
-      "repo": "lic",
-      "number": 1260,
-      "title": "docs(ecosystem): G-meta competitive safety matrix \u2014 Carbon/Mojo/Rust vs Li (#65)",
-      "url": "https://github.com/li-langverse/lic/pull/1260",
-      "base": "main",
-      "ci": "pass",
-      "draft": false,
-      "ready": true
-    },
-    {
-      "repo": "lic",
-      "number": 1261,
-      "title": "docs(hpc): Kokkos memory + execution spaces for tier-2 model (#110)",
-      "url": "https://github.com/li-langverse/lic/pull/1261",
-      "base": "main",
-      "ci": "pass",
-      "draft": false,
-      "ready": true
-    },
-    {
-      "repo": "lic",
-      "number": 1262,
-      "title": "feat(numerics): implicit PDE PETSc/hypre plan slice (lic#108)",
-      "url": "https://github.com/li-langverse/lic/pull/1262",
-      "base": "main",
-      "ci": "fail",
-      "draft": false,
-      "ready": false
-    },
-    {
-      "repo": "lic",
-      "number": 1263,
-      "title": "feat(sim-scientific): WP-SCI-03 CFD/FEA tier-2 registry dispatch",
-      "url": "https://github.com/li-langverse/lic/pull/1263",
-      "base": "main",
-      "ci": "pass",
-      "draft": false,
-      "ready": true
-    },
-    {
-      "repo": "lic",
-      "number": 1264,
-      "title": "docs(ecosystem): G-meta competitive safety matrix \u2014 Carbon/Mojo/Rust vs Li (#65)",
-      "url": "https://github.com/li-langverse/lic/pull/1264",
-      "base": "main",
-      "ci": "pending",
-      "draft": false,
-      "ready": false
-    },
-    {
-      "repo": "lic",
-      "number": 1265,
-      "title": "docs(verification): align G-math summary row with gap register (#49)",
-      "url": "https://github.com/li-langverse/lic/pull/1265",
-      "base": "main",
-      "ci": "pending",
-      "draft": false,
-      "ready": false
-    },
-    {
-      "repo": "lic",
-      "number": 1266,
-      "title": "docs(hpc): Kokkos memory + execution spaces for tier-2 model (#110)",
-      "url": "https://github.com/li-langverse/lic/pull/1266",
-      "base": "main",
-      "ci": "pending",
-      "draft": false,
-      "ready": false
-    },
-    {
-      "repo": "lic",
-      "number": 1267,
-      "title": "feat(sim-scientific): WP-SCI-03 CFD/FEA tier-2 registry dispatch",
-      "url": "https://github.com/li-langverse/lic/pull/1267",
-      "base": "main",
-      "ci": "pass",
-      "draft": false,
-      "ready": true
-    },
-    {
-      "repo": "lic",
-      "number": 1268,
-      "title": "fix(swarm): gap-ingest Path fallback + orch-r8 api-coverage orchestration",
-      "url": "https://github.com/li-langverse/lic/pull/1268",
-      "base": "main",
-      "ci": "pending",
-      "draft": false,
-      "ready": false
-    },
-    {
-      "repo": "lic",
-      "number": 1269,
+      "number": 1485,
       "title": "feat(sim-scientific): WP-SCI-03 CFD/FEA/QM tier-2 registry dispatch",
-      "url": "https://github.com/li-langverse/lic/pull/1269",
+      "url": "https://github.com/li-langverse/lic/pull/1485",
+      "base": "main",
+      "ci": "pass",
+      "draft": false,
+      "ready": true
+    },
+    {
+      "repo": "lic",
+      "number": 1486,
+      "title": "feat(sim-scientific): WP-SCI-03 CFD/FEA/QM tier-2 registry dispatch",
+      "url": "https://github.com/li-langverse/lic/pull/1486",
+      "base": "main",
+      "ci": "pass",
+      "draft": false,
+      "ready": true
+    },
+    {
+      "repo": "lic",
+      "number": 1487,
+      "title": "fix(swarm): gap-ingest Path fallback; orch-r4 UX orchestration",
+      "url": "https://github.com/li-langverse/lic/pull/1487",
+      "base": "main",
+      "ci": "pass",
+      "draft": false,
+      "ready": true
+    },
+    {
+      "repo": "lic",
+      "number": 1488,
+      "title": "feat(sim-scientific): WP-SCI-03 CFD/FEA/QM tier-2 registry dispatch",
+      "url": "https://github.com/li-langverse/lic/pull/1488",
+      "base": "main",
+      "ci": "pass",
+      "draft": false,
+      "ready": true
+    },
+    {
+      "repo": "lic",
+      "number": 1489,
+      "title": "docs(2e): Phase 2e / G-vc exit gates (lic#21)",
+      "url": "https://github.com/li-langverse/lic/pull/1489",
+      "base": "main",
+      "ci": "pass",
+      "draft": false,
+      "ready": true
+    },
+    {
+      "repo": "lic",
+      "number": 1490,
+      "title": "feat(7d): G-dec proc @vectorized \u2192 ArraySimdScope MIR (#22)",
+      "url": "https://github.com/li-langverse/lic/pull/1490",
+      "base": "main",
+      "ci": "pass",
+      "draft": false,
+      "ready": true
+    },
+    {
+      "repo": "lic",
+      "number": 1491,
+      "title": "docs(2e): Phase 2e v1 exit gates for G-vc partial (lic#21)",
+      "url": "https://github.com/li-langverse/lic/pull/1491",
+      "base": "main",
+      "ci": "pass",
+      "draft": false,
+      "ready": true
+    },
+    {
+      "repo": "lic",
+      "number": 1492,
+      "title": "feat(7d-b): @cpu MIR proc tag \u2014 close G-dec lowering slice (#22)",
+      "url": "https://github.com/li-langverse/lic/pull/1492",
+      "base": "main",
+      "ci": "pass",
+      "draft": false,
+      "ready": true
+    },
+    {
+      "repo": "lic",
+      "number": 1493,
+      "title": "feat(sim-scientific): WP-SCI-03 Phase 2 QM/CFD/FEA tier-2 registry dispatch",
+      "url": "https://github.com/li-langverse/lic/pull/1493",
+      "base": "main",
+      "ci": "pass",
+      "draft": false,
+      "ready": true
+    },
+    {
+      "repo": "lic",
+      "number": 1494,
+      "title": "feat(7d): G-dec @cpu MIR proc tag + 7d-b\u2013e exit gates (#22)",
+      "url": "https://github.com/li-langverse/lic/pull/1494",
+      "base": "main",
+      "ci": "pass",
+      "draft": false,
+      "ready": true
+    },
+    {
+      "repo": "lic",
+      "number": 1495,
+      "title": "feat(sim-scientific): WP-SCI-03 Phase 2 CFD/FEA/QM tier-2 registry dispatch",
+      "url": "https://github.com/li-langverse/lic/pull/1495",
+      "base": "main",
+      "ci": "pass",
+      "draft": false,
+      "ready": true
+    },
+    {
+      "repo": "lic",
+      "number": 1496,
+      "title": "feat(7d): G-dec MIR elaboration \u2014 @cpu + @vectorized def scope (#22)",
+      "url": "https://github.com/li-langverse/lic/pull/1496",
+      "base": "main",
+      "ci": "pass",
+      "draft": false,
+      "ready": true
+    },
+    {
+      "repo": "lic",
+      "number": 1497,
+      "title": "fix(swarm-gap): repair ingest path + competitor-gaps orchestrator note",
+      "url": "https://github.com/li-langverse/lic/pull/1497",
+      "base": "main",
+      "ci": "pass",
+      "draft": false,
+      "ready": true
+    },
+    {
+      "repo": "lic",
+      "number": 1498,
+      "title": "feat(7d): G-dec MIR elaboration \u2014 @cpu + @vectorized def scope (#22)",
+      "url": "https://github.com/li-langverse/lic/pull/1498",
+      "base": "main",
+      "ci": "pass",
+      "draft": false,
+      "ready": true
+    },
+    {
+      "repo": "lic",
+      "number": 1499,
+      "title": "docs(2e): Phase 2e exit gates + CI evidence wiring (lic#21)",
+      "url": "https://github.com/li-langverse/lic/pull/1499",
+      "base": "main",
+      "ci": "pass",
+      "draft": false,
+      "ready": true
+    },
+    {
+      "repo": "lic",
+      "number": 1500,
+      "title": "docs(2e): Phase 2e / G-vc v1 exit gates (lic#21)",
+      "url": "https://github.com/li-langverse/lic/pull/1500",
+      "base": "main",
+      "ci": "pass",
+      "draft": false,
+      "ready": true
+    },
+    {
+      "repo": "lic",
+      "number": 1501,
+      "title": "feat(7d): G-dec MIR elaboration \u2014 @cpu + @vectorized def scope (#22)",
+      "url": "https://github.com/li-langverse/lic/pull/1501",
+      "base": "main",
+      "ci": "pass",
+      "draft": false,
+      "ready": true
+    },
+    {
+      "repo": "lic",
+      "number": 1502,
+      "title": "docs(2e): Phase 2e G-vc exit gates + check-phase-2e-gates.sh (lic#21)",
+      "url": "https://github.com/li-langverse/lic/pull/1502",
+      "base": "main",
+      "ci": "pass",
+      "draft": false,
+      "ready": true
+    },
+    {
+      "repo": "lic",
+      "number": 1503,
+      "title": "feat(7d): @cpu MIR proc tag + G-dec exit gates (lic#22)",
+      "url": "https://github.com/li-langverse/lic/pull/1503",
+      "base": "dev",
+      "ci": "pass",
+      "draft": false,
+      "ready": true
+    },
+    {
+      "repo": "lic",
+      "number": 1504,
+      "title": "fix(swarm-gap): ingest verticals fallback + org-packages observer note",
+      "url": "https://github.com/li-langverse/lic/pull/1504",
+      "base": "main",
+      "ci": "fail",
+      "draft": false,
+      "ready": false
+    },
+    {
+      "repo": "lic",
+      "number": 1505,
+      "title": "docs(2e): Phase 2e / G-vc exit gates + CI wiring (lic#21)",
+      "url": "https://github.com/li-langverse/lic/pull/1505",
+      "base": "main",
+      "ci": "pass",
+      "draft": false,
+      "ready": true
+    },
+    {
+      "repo": "lic",
+      "number": 1506,
+      "title": "feat(7d): G-dec @cpu MIR proc tag + 7d-b\u2013e exit gates (#22)",
+      "url": "https://github.com/li-langverse/lic/pull/1506",
+      "base": "main",
+      "ci": "pass",
+      "draft": false,
+      "ready": true
+    },
+    {
+      "repo": "lic",
+      "number": 1507,
+      "title": "feat(7d): G-dec MIR elaboration \u2014 @cpu + @vectorized def scope (#22)",
+      "url": "https://github.com/li-langverse/lic/pull/1507",
+      "base": "main",
+      "ci": "pass",
+      "draft": false,
+      "ready": true
+    },
+    {
+      "repo": "lic",
+      "number": 1508,
+      "title": "feat(7d): G-dec MIR elaboration \u2014 @cpu + @vectorized def scope (#22)",
+      "url": "https://github.com/li-langverse/lic/pull/1508",
+      "base": "main",
+      "ci": "pass",
+      "draft": false,
+      "ready": true
+    },
+    {
+      "repo": "lic",
+      "number": 1509,
+      "title": "docs(2e): Phase 2e exit gates for G-vc (lic#21)",
+      "url": "https://github.com/li-langverse/lic/pull/1509",
+      "base": "main",
+      "ci": "pass",
+      "draft": false,
+      "ready": true
+    },
+    {
+      "repo": "lic",
+      "number": 1510,
+      "title": "docs(2e): Phase 2e / G-vc partial exit gates (lic#21)",
+      "url": "https://github.com/li-langverse/lic/pull/1510",
+      "base": "main",
+      "ci": "pass",
+      "draft": false,
+      "ready": true
+    },
+    {
+      "repo": "lic",
+      "number": 1511,
+      "title": "feat(7d): G-dec MIR elaboration \u2014 @cpu + @vectorized def scope (#22)",
+      "url": "https://github.com/li-langverse/lic/pull/1511",
+      "base": "main",
+      "ci": "pass",
+      "draft": false,
+      "ready": true
+    },
+    {
+      "repo": "lic",
+      "number": 1512,
+      "title": "docs(2e): Phase 2e v1 exit gates for G-vc (lic#21)",
+      "url": "https://github.com/li-langverse/lic/pull/1512",
+      "base": "main",
+      "ci": "pass",
+      "draft": false,
+      "ready": true
+    },
+    {
+      "repo": "lic",
+      "number": 1513,
+      "title": "feat(7d): @cpu MIR placement tag \u2014 G-dec closed slice (lic#22)",
+      "url": "https://github.com/li-langverse/lic/pull/1513",
+      "base": "main",
+      "ci": "pass",
+      "draft": false,
+      "ready": true
+    },
+    {
+      "repo": "lic",
+      "number": 1514,
+      "title": "docs(2e): Phase 2e v1 exit gates for G-vc (lic#21)",
+      "url": "https://github.com/li-langverse/lic/pull/1514",
+      "base": "main",
+      "ci": "pass",
+      "draft": false,
+      "ready": true
+    },
+    {
+      "repo": "lic",
+      "number": 1515,
+      "title": "feat(7d): @cpu MIR proc tag + G-dec exit gates (closes #22 slice)",
+      "url": "https://github.com/li-langverse/lic/pull/1515",
+      "base": "main",
+      "ci": "pass",
+      "draft": false,
+      "ready": true
+    },
+    {
+      "repo": "lic",
+      "number": 1516,
+      "title": "docs(2e): Phase 2e v1 exit gates for G-vc (lic#21)",
+      "url": "https://github.com/li-langverse/lic/pull/1516",
+      "base": "main",
+      "ci": "pass",
+      "draft": false,
+      "ready": true
+    },
+    {
+      "repo": "lic",
+      "number": 1517,
+      "title": "feat(7d): G-dec MIR elaboration \u2014 @cpu + @vectorized def scope (#22)",
+      "url": "https://github.com/li-langverse/lic/pull/1517",
+      "base": "main",
+      "ci": "pass",
+      "draft": false,
+      "ready": true
+    },
+    {
+      "repo": "lic",
+      "number": 1518,
+      "title": "feat(7d): G-dec MIR elaboration \u2014 @cpu + @vectorized def scope (#22)",
+      "url": "https://github.com/li-langverse/lic/pull/1518",
+      "base": "main",
+      "ci": "pass",
+      "draft": false,
+      "ready": true
+    },
+    {
+      "repo": "lic",
+      "number": 1519,
+      "title": "feat(7d): G-dec MIR elaboration \u2014 @cpu + @vectorized def scope (#22)",
+      "url": "https://github.com/li-langverse/lic/pull/1519",
+      "base": "main",
+      "ci": "pass",
+      "draft": false,
+      "ready": true
+    },
+    {
+      "repo": "lic",
+      "number": 1520,
+      "title": "feat(7d): G-dec MIR elaboration \u2014 @cpu + @vectorized def scope (#22)",
+      "url": "https://github.com/li-langverse/lic/pull/1520",
+      "base": "main",
+      "ci": "pass",
+      "draft": false,
+      "ready": true
+    },
+    {
+      "repo": "lic",
+      "number": 1521,
+      "title": "feat(7d): G-dec MIR elaboration \u2014 @cpu + @vectorized def scope (#22)",
+      "url": "https://github.com/li-langverse/lic/pull/1521",
+      "base": "main",
+      "ci": "pass",
+      "draft": false,
+      "ready": true
+    },
+    {
+      "repo": "lic",
+      "number": 1522,
+      "title": "feat(7d): G-dec MIR elaboration \u2014 @cpu + @vectorized def scope (#22)",
+      "url": "https://github.com/li-langverse/lic/pull/1522",
+      "base": "main",
+      "ci": "pass",
+      "draft": false,
+      "ready": true
+    },
+    {
+      "repo": "lic",
+      "number": 1523,
+      "title": "feat(7d): @cpu MIR proc tag + G-dec exit gates (closes #22)",
+      "url": "https://github.com/li-langverse/lic/pull/1523",
+      "base": "main",
+      "ci": "pass",
+      "draft": false,
+      "ready": true
+    },
+    {
+      "repo": "lic",
+      "number": 1524,
+      "title": "feat(7d): @cpu MIR proc tag + G-dec exit-gate docs (closes #22 slice)",
+      "url": "https://github.com/li-langverse/lic/pull/1524",
+      "base": "main",
+      "ci": "pass",
+      "draft": false,
+      "ready": true
+    },
+    {
+      "repo": "lic",
+      "number": 1525,
+      "title": "feat(7d): G-dec MIR elaboration \u2014 @cpu + @vectorized def scope (#22)",
+      "url": "https://github.com/li-langverse/lic/pull/1525",
+      "base": "main",
+      "ci": "pass",
+      "draft": false,
+      "ready": true
+    },
+    {
+      "repo": "lic",
+      "number": 1526,
+      "title": "feat(7d): G-dec MIR elaboration \u2014 @cpu + @vectorized def scope (#22)",
+      "url": "https://github.com/li-langverse/lic/pull/1526",
+      "base": "main",
+      "ci": "pass",
+      "draft": false,
+      "ready": true
+    },
+    {
+      "repo": "lic",
+      "number": 1527,
+      "title": "feat(7d): G-dec MIR elaboration \u2014 @cpu + @vectorized def scope (#22)",
+      "url": "https://github.com/li-langverse/lic/pull/1527",
       "base": "main",
       "ci": "pending",
       "draft": false,
@@ -1125,9 +1116,29 @@
     },
     {
       "repo": "lic",
-      "number": 1271,
-      "title": "docs(ecosystem): G-meta competitive safety matrix \u2014 Carbon/Mojo/Rust vs Li (#65)",
-      "url": "https://github.com/li-langverse/lic/pull/1271",
+      "number": 1528,
+      "title": "feat(2i): PH-2i matrix @ shape slice \u2014 tests + handbook (#20)",
+      "url": "https://github.com/li-langverse/lic/pull/1528",
+      "base": "main",
+      "ci": "pass",
+      "draft": false,
+      "ready": true
+    },
+    {
+      "repo": "lic",
+      "number": 1529,
+      "title": "feat(vision-llm): wire gen-li-agent-manifest in CI (lic#19)",
+      "url": "https://github.com/li-langverse/lic/pull/1529",
+      "base": "main",
+      "ci": "pass",
+      "draft": false,
+      "ready": true
+    },
+    {
+      "repo": "lic",
+      "number": 1530,
+      "title": "feat(7d): G-dec MIR elaboration \u2014 @cpu + @vectorized def scope (#22)",
+      "url": "https://github.com/li-langverse/lic/pull/1530",
       "base": "main",
       "ci": "pending",
       "draft": false,
@@ -1135,29 +1146,19 @@
     },
     {
       "repo": "lic",
-      "number": 1272,
-      "title": "docs(hpc): Kokkos memory + execution spaces for tier-2 model (#110)",
-      "url": "https://github.com/li-langverse/lic/pull/1272",
+      "number": 1533,
+      "title": "fix(runtime): export httpd_epoll_add_client_tls_i for li-httpd link",
+      "url": "https://github.com/li-langverse/lic/pull/1533",
       "base": "main",
-      "ci": "pending",
+      "ci": "fail",
       "draft": false,
       "ready": false
     },
     {
       "repo": "lic",
-      "number": 1273,
-      "title": "feat(ecosystem): publish 12 li-physics-* org mirrors (lic#50)",
-      "url": "https://github.com/li-langverse/lic/pull/1273",
-      "base": "main",
-      "ci": "pending",
-      "draft": false,
-      "ready": false
-    },
-    {
-      "repo": "lic",
-      "number": 1274,
-      "title": "feat(sim-scientific): WP-SCI-03 FEA/CFD tier-2 registry dispatch",
-      "url": "https://github.com/li-langverse/lic/pull/1274",
+      "number": 1534,
+      "title": "fix(runtime): export httpd_epoll_add_client_tls_i for Li linker",
+      "url": "https://github.com/li-langverse/lic/pull/1534",
       "base": "main",
       "ci": "pending",
       "draft": false,
@@ -1254,36 +1255,6 @@
       "ready": true
     },
     {
-      "repo": "lis",
-      "number": 40,
-      "title": "feat(edge): edge-lis-apply for Majico staging httpd",
-      "url": "https://github.com/li-langverse/lis/pull/40",
-      "base": "main",
-      "ci": "fail",
-      "draft": false,
-      "ready": false
-    },
-    {
-      "repo": "lis",
-      "number": 41,
-      "title": "feat(registry): agent-first capabilities, validate, MCP stub (P1\u2013P2)",
-      "url": "https://github.com/li-langverse/lis/pull/41",
-      "base": "main",
-      "ci": "fail",
-      "draft": false,
-      "ready": false
-    },
-    {
-      "repo": "lis",
-      "number": 42,
-      "title": "fix(registry): P5 liserver edge \u2014 PUT smoke via :80",
-      "url": "https://github.com/li-langverse/lis/pull/42",
-      "base": "main",
-      "ci": "fail",
-      "draft": false,
-      "ready": false
-    },
-    {
       "repo": "lit",
       "number": 25,
       "title": "Add GPL-3.0 license (Copyright 2026 Julian)",
@@ -1318,6 +1289,26 @@
       "number": 28,
       "title": "chore(ecosystem): bump lic pin to studio-demo-2026-05-24",
       "url": "https://github.com/li-langverse/lit/pull/28",
+      "base": "main",
+      "ci": "pass",
+      "draft": false,
+      "ready": true
+    },
+    {
+      "repo": "roadmap",
+      "number": 69,
+      "title": "chore: development overview LoC snapshot",
+      "url": "https://github.com/li-langverse/roadmap/pull/69",
+      "base": "main",
+      "ci": "pass",
+      "draft": false,
+      "ready": true
+    },
+    {
+      "repo": "roadmap",
+      "number": 70,
+      "title": "chore: development overview snapshot",
+      "url": "https://github.com/li-langverse/roadmap/pull/70",
       "base": "main",
       "ci": "pass",
       "draft": false,

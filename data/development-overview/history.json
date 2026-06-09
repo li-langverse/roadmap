@@ -197,6 +197,15 @@
       "issues_open": 41,
       "issues_closed": 143,
       "source": "refresh"
+    },
+    {
+      "at": "2026-06-09",
+      "open_prs": 127,
+      "ready_to_merge": 120,
+      "prs_closed": 1598,
+      "issues_open": 18,
+      "issues_closed": 166,
+      "source": "github"
     }
   ]
 }
