@@ -92,35 +92,56 @@ def gitlab_token() -> str | None:
     return token or None
 
 
+def gitlab_api_bases() -> list[str]:
+    """GitLab API base URLs — HTTPS first, HTTP fallback when edge TLS is still rolling out."""
+    explicit = os.environ.get("LI_GITLAB_API_URL", "").strip().rstrip("/")
+    if explicit:
+        return [explicit]
+    scheme = os.environ.get("LI_GITLAB_SCHEME", "https").strip().lower()
+    primary = f"https://{GITLAB_HOST}" if scheme != "http" else f"http://{GITLAB_HOST}"
+    bases = [primary]
+    alt = f"http://{GITLAB_HOST}" if primary.startswith("https://") else f"https://{GITLAB_HOST}"
+    if alt not in bases:
+        bases.append(alt)
+    return bases
+
+
 def gitlab_group_issue_count(state: str) -> int | None:
     """Count group issues (incl. subgroups). state: opened | closed."""
     token = gitlab_token()
     if not token:
         return None
     group = urllib.parse.quote(GITLAB_GROUP, safe="")
-    url = (
-        f"https://{GITLAB_HOST}/api/v4/groups/{group}/issues"
+    path = (
+        f"/api/v4/groups/{group}/issues"
         f"?state={state}&include_subgroups=true&scope=all&per_page=1&page=1"
     )
-    req = urllib.request.Request(
-        url,
-        headers={
-            "PRIVATE-TOKEN": token,
-            "Accept": "application/json",
-        },
-        method="GET",
-    )
-    try:
-        with urllib.request.urlopen(req, timeout=60) as resp:
-            total = resp.headers.get("X-Total") or resp.headers.get("x-total")
-            if total is not None:
-                return int(total)
-            payload = json.loads(resp.read().decode())
-            if isinstance(payload, list):
-                return len(payload)
-    except (urllib.error.HTTPError, urllib.error.URLError, ValueError, json.JSONDecodeError) as exc:
-        sys.stderr.write(f"gitlab issue count ({state}) failed: {exc}\n")
-    time.sleep(float(os.environ.get("ECOSYSTEM_STATS_SEARCH_GAP_SEC", "2")))
+    headers = {
+        "PRIVATE-TOKEN": token,
+        "Accept": "application/json",
+    }
+    last_exc: Exception | None = None
+    for base in gitlab_api_bases():
+        url = f"{base}{path}"
+        req = urllib.request.Request(url, headers=headers, method="GET")
+        try:
+            with urllib.request.urlopen(req, timeout=60) as resp:
+                ctype = (resp.headers.get("Content-Type") or "").lower()
+                if "text/html" in ctype:
+                    raise ValueError("GitLab returned HTML (check GITLAB_TOKEN / API routing)")
+                total = resp.headers.get("X-Total") or resp.headers.get("x-total")
+                if total is not None:
+                    return int(total)
+                raw = resp.read().decode()
+                payload = json.loads(raw)
+                if isinstance(payload, list):
+                    return len(payload)
+        except (urllib.error.HTTPError, urllib.error.URLError, ValueError, json.JSONDecodeError) as exc:
+            last_exc = exc
+            sys.stderr.write(f"gitlab issue count ({state}) via {base} failed: {exc}\n")
+        time.sleep(float(os.environ.get("ECOSYSTEM_STATS_SEARCH_GAP_SEC", "2")))
+    if last_exc is not None:
+        sys.stderr.write(f"gitlab issue count ({state}) exhausted bases\n")
     return None
 
 
