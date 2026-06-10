@@ -30,6 +30,7 @@ from pathlib import Path
 
 root = Path(os.environ["ROOT"])
 sys.path.insert(0, str(root / "scripts"))
+from _overview_history_metrics import history_point_metrics
 repos_file = Path(os.environ["REPOS_FILE"])
 out_json = Path(os.environ["OUT_JSON"])
 
@@ -234,14 +235,13 @@ def compact_daily(raw_points: list[dict]) -> list[dict]:
 
 today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
 issues_open = ecosystem.get("issues_open")
-issues_closed = ecosystem.get("issues_closed")
 if issues_open is None and ecosystem.get("issues_source") != "gitlab":
     issues_open = search_total(f"org:li-langverse+is:issue+is:open")
+cumulative = history_point_metrics(ecosystem)
+issues_closed = cumulative["issues_closed"]
 if issues_closed is None and ecosystem.get("issues_source") != "gitlab":
     issues_closed = search_total(f"org:li-langverse+is:issue+is:closed")
-mrs_closed = ecosystem.get("mrs_closed")
-if mrs_closed is None:
-    mrs_closed = ecosystem.get("prs_closed")
+mrs_closed = cumulative["prs_closed"]
 if mrs_closed is None and vcs_source != "gitlab":
     mrs_closed = search_total(f"org:li-langverse+is:pr+is:closed")
 new_point = {
@@ -250,7 +250,7 @@ new_point = {
     "open_mrs": open_count if vcs_source == "gitlab" else None,
     "ready_to_merge": ready,
     "prs_closed": mrs_closed,
-    "mrs_closed": mrs_closed,
+    "mrs_closed": ecosystem.get("mrs_closed") if vcs_source == "gitlab" else mrs_closed,
     "issues_open": issues_open,
     "issues_closed": issues_closed,
     "source": ecosystem.get("issues_source", vcs_source),

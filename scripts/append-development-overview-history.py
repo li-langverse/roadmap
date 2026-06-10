@@ -9,6 +9,9 @@ import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from _overview_history_metrics import history_point_metrics
+
 ORG = "li-langverse"
 METRIC_KEYS = (
     "open_prs",
@@ -81,18 +84,19 @@ def point_from_ecosystem(eco: dict, today: str, status: dict) -> dict:
     if open_prs is None:
         open_prs = search_total(f"org:{ORG}+is:pr+is:open")
 
+    cumulative = history_point_metrics(eco)
     point = {
         "at": today,
         "open_prs": open_prs,
         "ready_to_merge": metrics.get("ready_to_merge"),
-        "prs_closed": eco.get("prs_closed")
-        if eco.get("prs_closed") is not None
+        "prs_closed": cumulative["prs_closed"]
+        if cumulative["prs_closed"] is not None
         else search_total(f"org:{ORG}+is:pr+is:closed"),
         "issues_open": eco.get("issues_open")
         if eco.get("issues_open") is not None
         else search_total(f"org:{ORG}+is:issue+is:open"),
-        "issues_closed": eco.get("issues_closed")
-        if eco.get("issues_closed") is not None
+        "issues_closed": cumulative["issues_closed"]
+        if cumulative["issues_closed"] is not None
         else search_total(f"org:{ORG}+is:issue+is:closed"),
         "source": "scheduled-15m",
     }

@@ -31,6 +31,21 @@ function gitlabPrimary(snap) {
   );
 }
 
+/** Lifetime closed PR/MR count spanning GitHub mirror history + GitLab-primary era. */
+function cumulativeClosedPrs(snap) {
+  if (typeof snap?.github_prs_closed === "number") return snap.github_prs_closed;
+  return snap?.mrs_closed ?? snap?.prs_closed;
+}
+
+/** Lifetime closed issue count — monotonic across GitHub freeze + GitLab-primary era. */
+function cumulativeClosedIssues(snap) {
+  const gh = snap?.github_issues_closed;
+  const gl = snap?.issues_closed_gitlab ?? snap?.issues_closed;
+  if (typeof gh === "number" && typeof gl === "number") return Math.max(gh, gl);
+  if (typeof gl === "number") return gl;
+  return gh;
+}
+
 function metricLinks(snap) {
   const gl = gitlabPrimary(snap);
   return {
@@ -199,9 +214,12 @@ function renderEcosystemMetrics(live = {}) {
     merged.org_repositories ??
     orgReposFromSnapshot(snap);
   const issues = merged.issues_open ?? snap.issues_open;
-  const closedIssues = merged.issues_closed ?? snap.issues_closed;
+  const closedIssues =
+    merged.issues_closed_cumulative ??
+    cumulativeClosedIssues(snap);
   const openMrs = merged.mrs_open ?? snap.mrs_open ?? snap.prs_open;
-  const closedMrs = merged.mrs_closed ?? snap.mrs_closed ?? snap.prs_closed;
+  const closedMrs =
+    merged.prs_closed_cumulative ?? cumulativeClosedPrs(snap);
   const locAsOf = snap.generated_at;
   const issuesAsOf = merged.issues_at ?? snap.generated_at;
   const asOfEl = document.getElementById("eco-as-of");
@@ -329,16 +347,16 @@ async function refreshIssueCounts() {
     liveEcoCounts = {
       ...liveEcoCounts,
       issues_open: eco.issues_open ?? undefined,
-      issues_closed: eco.issues_closed ?? undefined,
+      issues_closed_cumulative: cumulativeClosedIssues(eco) ?? undefined,
+      prs_closed_cumulative: cumulativeClosedPrs(eco) ?? undefined,
       mrs_open: eco.mrs_open ?? eco.prs_open ?? undefined,
-      mrs_closed: eco.mrs_closed ?? eco.prs_closed ?? undefined,
       gitlab_projects: eco.gitlab_projects ?? undefined,
       issues_at: at,
       generated_at: at,
     };
     const got =
       (typeof eco.issues_open === "number" ? 1 : 0) +
-      (typeof eco.issues_closed === "number" ? 1 : 0) +
+      (typeof cumulativeClosedIssues(eco) === "number" ? 1 : 0) +
       (typeof eco.mrs_open === "number" ? 1 : 0);
     const status = got
       ? `GitLab snapshot · ${at}`
@@ -399,9 +417,17 @@ function pushHistoryFromEco(data, source) {
     new Date().toISOString().slice(0, 10);
   const historyPoint = { at, source };
   if (typeof data.open_prs === "number") historyPoint.open_prs = data.open_prs;
-  if (typeof data.prs_closed === "number") historyPoint.prs_closed = data.prs_closed;
+  if (typeof data.prs_closed_cumulative === "number") {
+    historyPoint.prs_closed = data.prs_closed_cumulative;
+  } else if (typeof data.prs_closed === "number") {
+    historyPoint.prs_closed = data.prs_closed;
+  }
   if (typeof data.issues_open === "number") historyPoint.issues_open = data.issues_open;
-  if (typeof data.issues_closed === "number") historyPoint.issues_closed = data.issues_closed;
+  if (typeof data.issues_closed_cumulative === "number") {
+    historyPoint.issues_closed = data.issues_closed_cumulative;
+  } else if (typeof data.issues_closed === "number") {
+    historyPoint.issues_closed = data.issues_closed;
+  }
   if (Object.keys(historyPoint).length > 2) {
     window.DevelopmentOverviewHistory?.updateLive(historyPoint);
   }

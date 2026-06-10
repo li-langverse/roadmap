@@ -14,6 +14,8 @@
     "issues_closed",
   ];
 
+  const CUMULATIVE_KEYS = ["prs_closed", "issues_closed"];
+
   const THEME = {
     grid: "#30363d",
     muted: "#8b949e",
@@ -91,10 +93,31 @@
       .map(([, p]) => p);
   }
 
+  /** Carry cumulative counters forward when GitLab-era snapshots reset totals. */
+  function applyMigrationOffsets(points) {
+    if (!points.length) return points;
+    const offsets = Object.fromEntries(CUMULATIVE_KEYS.map((key) => [key, 0]));
+    const repaired = [];
+    for (const point of points) {
+      const row = { ...point };
+      for (const key of CUMULATIVE_KEYS) {
+        const value = row[key];
+        if (typeof value !== "number") continue;
+        const prev = repaired.length ? repaired[repaired.length - 1][key] : null;
+        if (typeof prev === "number" && value + offsets[key] < prev) {
+          offsets[key] = prev - value;
+        }
+        if (offsets[key]) row[key] = value + offsets[key];
+      }
+      repaired.push(row);
+    }
+    return repaired;
+  }
+
   function mergedPoints() {
     const raw = [...(committed.points || [])];
     if (livePoint?.at) raw.push(livePoint);
-    return dailyPoints(raw);
+    return applyMigrationOffsets(dailyPoints(raw));
   }
 
   function ensureChartJs() {

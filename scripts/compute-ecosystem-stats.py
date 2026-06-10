@@ -22,6 +22,7 @@ from _gitlab_overview_api import (
     gitlab_project_count,
     gitlab_token,
 )
+from _overview_history_metrics import cumulative_issues_closed, cumulative_prs_closed
 
 ORG = "li-langverse"
 CODE_SUFFIXES = {
@@ -297,6 +298,19 @@ def main() -> int:
     # GitHub org repo count remains useful during mirror transition.
     gh_open_prs = search_total_count(f"org:{ORG}+is:pr+is:open")
     gh_closed_prs = search_total_count(f"org:{ORG}+is:pr+is:closed")
+    gh_open_issues = search_total_count(f"org:{ORG}+is:issue+is:open")
+    gh_closed_issues = search_total_count(f"org:{ORG}+is:issue+is:closed")
+
+    cumulative_closed_prs = cumulative_prs_closed(
+        mrs_source=mrs_source,
+        github_closed=gh_closed_prs,
+        gitlab_closed=closed_mrs,
+    )
+    cumulative_closed_issues = cumulative_issues_closed(
+        issues_source=issues_source,
+        github_closed=gh_closed_issues,
+        gitlab_closed=closed_issues,
+    )
 
     payload = {
         "generated_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%MZ"),
@@ -309,7 +323,8 @@ def main() -> int:
         "gitlab_projects": gitlab_projects,
         "issues_source": issues_source,
         "issues_open": open_issues,
-        "issues_closed": closed_issues,
+        "issues_closed": cumulative_closed_issues,
+        "issues_closed_gitlab": closed_issues,
         "issues_total": (open_issues or 0) + (closed_issues or 0)
         if open_issues is not None and closed_issues is not None
         else None,
@@ -318,9 +333,11 @@ def main() -> int:
         "mrs_closed": closed_mrs,
         "prs_source": mrs_source,
         "prs_open": open_mrs if mrs_source == "gitlab" else gh_open_prs,
-        "prs_closed": closed_mrs if mrs_source == "gitlab" else gh_closed_prs,
+        "prs_closed": cumulative_closed_prs,
         "github_prs_open": gh_open_prs,
         "github_prs_closed": gh_closed_prs,
+        "github_issues_open": gh_open_issues,
+        "github_issues_closed": gh_closed_issues,
     }
     if lines_total is not None:
         payload["lines_of_code"] = lines_total
