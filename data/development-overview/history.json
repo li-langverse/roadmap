@@ -197,6 +197,18 @@
       "issues_open": 41,
       "issues_closed": 143,
       "source": "refresh"
+    },
+    {
+      "at": "2026-06-10",
+      "open_prs": 161,
+      "open_mrs": 161,
+      "ready_to_merge": 34,
+      "prs_closed": 6,
+      "mrs_closed": 6,
+      "issues_open": 17,
+      "issues_closed": 168,
+      "source": "gitlab",
+      "vcs_source": "gitlab"
     }
   ]
 }
