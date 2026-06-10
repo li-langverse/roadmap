@@ -10,11 +10,11 @@ const GITLAB_ISSUES = (state) =>
 const GITLAB_MRS = (state) =>
   `https://${GITLAB_HOST}/groups/${GITLAB_GROUP}/-/merge_requests?state=${state}`;
 const SEARCH_MS = 120_000;
-const STATUS_MS = 300_000;
-const ECO_MS = 300_000;
+const STATUS_MS = 900_000;
+const ECO_MS = 900_000;
 const CI_TICK_MS = 90_000;
 const SEARCH_GAP_MS = 2_000;
-const ECO_CACHE_MS = 300_000;
+const ECO_CACHE_MS = 900_000;
 const ECO_CACHE_KEY = "li-dev-overview-eco-live-v3";
 const SEARCH_URL = `https://api.github.com/search/issues?q=org:${ORG}+is:open+is:pr&per_page=100&sort=updated`;
 const ECO_STATS_URL = "./ecosystem-stats.json";
@@ -368,7 +368,7 @@ async function refreshEcosystemLive(force = false) {
 
   await refreshIssueCounts();
   if (gitlabPrimary(ecosystemSnapshot)) {
-    paintEcosystem({ _status: `GitLab · snapshot refresh every 4h` });
+    paintEcosystem({ _status: `GitLab · snapshot refresh every 15m` });
     writeEcoCache(liveEcoCounts);
     return;
   }

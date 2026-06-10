@@ -1,10 +1,9 @@
-# Every 4h: refresh issue/PR metrics, open PR with JSON snapshots (main is branch-protected).
-name: Development overview refresh (4h)
+# Every 15m: refresh GitLab issue/MR metrics, open PR with JSON snapshots (main is branch-protected).
+name: Development overview refresh (15m)
 
 on:
   schedule:
-    # UTC: 00:00, 04:00, 08:00, 12:00, 16:00, 20:00
-    - cron: "0 */4 * * *"
+    - cron: "*/15 * * * *"
   workflow_dispatch:
 
 permissions:

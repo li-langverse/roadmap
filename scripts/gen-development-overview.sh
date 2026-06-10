@@ -299,7 +299,7 @@ html = f"""<!DOCTYPE html>
       <h2 id="eco-heading">Ecosystem statistics</h2>
       <p class="section-note">
         Committed baseline <span id="eco-as-of">{eco_as_of}</span>.
-        Issue and MR counts from <a href="https://gitlab.lilangverse.xyz/li-langverse">GitLab</a> snapshot (4h refresh); MR queue from <code>status.json</code> (~5min); LoC weekly — <span id="eco-live-status" class="live-status-badge"></span>
+        Issue and MR counts from <a href="https://gitlab.lilangverse.xyz/li-langverse">GitLab</a> snapshot (15m refresh); MR queue from <code>status.json</code> (~15m); LoC weekly — <span id="eco-live-status" class="live-status-badge"></span>
         <a href="https://github.com/li-langverse/roadmap/blob/main/.github/li-org-repos.txt" title="Lines of code sum only repos listed in li-org-repos.txt.">LoC scope</a>
         · <a href="https://github.com/li-langverse/roadmap/blob/main/scripts/compute-ecosystem-stats.py">Maintainer: recompute snapshot</a>
       </p>
@@ -314,7 +314,7 @@ html = f"""<!DOCTYPE html>
     </section>
     <section class="live-banner" aria-labelledby="live-heading">
       <h2 id="live-heading">Live merge queue</h2>
-      <p class="section-note">GitLab-primary: polls committed <code>status.json</code> (~5min, refreshed every 4h on main). GitHub mirror fallback uses Search API when GitLab snapshot is unavailable. Older tables are in <a href="#markdown-snapshot">snapshot tables</a>.</p>
+      <p class="section-note">GitLab-primary: polls committed <code>status.json</code> (~15m, refreshed every 15m on main). GitHub mirror fallback uses Search API when GitLab snapshot is unavailable. Older tables are in <a href="#markdown-snapshot">snapshot tables</a>.</p>
       <div class="live-metrics" id="live-metrics"></div>
       <div class="live-table-wrap">
         <table id="live-pr-table">
