@@ -10,14 +10,20 @@ import sys
 import tempfile
 import time
 import urllib.error
-import urllib.parse
 import urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
 
+from _gitlab_overview_api import (
+    GITLAB_GROUP,
+    GITLAB_HOST,
+    gitlab_group_issue_counts,
+    gitlab_group_mr_counts,
+    gitlab_project_count,
+    gitlab_token,
+)
+
 ORG = "li-langverse"
-GITLAB_HOST = os.environ.get("LI_GITLAB_HOST", "gitlab.lilangverse.xyz").strip()
-GITLAB_GROUP = os.environ.get("LI_GITLAB_GROUP", ORG).strip()
 CODE_SUFFIXES = {
     ".li",
     ".cpp",
@@ -87,75 +93,29 @@ def search_total_count(query: str) -> int | None:
     return None
 
 
-def gitlab_token() -> str | None:
-    token = os.environ.get("GITLAB_TOKEN", "").strip()
-    return token or None
-
-
-def gitlab_api_bases() -> list[str]:
-    """GitLab API base URLs — HTTPS first, HTTP fallback when edge TLS is still rolling out."""
-    explicit = os.environ.get("LI_GITLAB_API_URL", "").strip().rstrip("/")
-    if explicit:
-        return [explicit]
-    scheme = os.environ.get("LI_GITLAB_SCHEME", "https").strip().lower()
-    primary = f"https://{GITLAB_HOST}" if scheme != "http" else f"http://{GITLAB_HOST}"
-    bases = [primary]
-    alt = f"http://{GITLAB_HOST}" if primary.startswith("https://") else f"https://{GITLAB_HOST}"
-    if alt not in bases:
-        bases.append(alt)
-    return bases
-
-
-def gitlab_group_issue_count(state: str) -> int | None:
-    """Count group issues (incl. subgroups). state: opened | closed."""
-    token = gitlab_token()
-    if not token:
-        return None
-    group = urllib.parse.quote(GITLAB_GROUP, safe="")
-    path = (
-        f"/api/v4/groups/{group}/issues"
-        f"?state={state}&include_subgroups=true&scope=all&per_page=1&page=1"
-    )
-    headers = {
-        "PRIVATE-TOKEN": token,
-        "Accept": "application/json",
-    }
-    last_exc: Exception | None = None
-    for base in gitlab_api_bases():
-        url = f"{base}{path}"
-        req = urllib.request.Request(url, headers=headers, method="GET")
-        try:
-            with urllib.request.urlopen(req, timeout=60) as resp:
-                ctype = (resp.headers.get("Content-Type") or "").lower()
-                if "text/html" in ctype:
-                    raise ValueError("GitLab returned HTML (check GITLAB_TOKEN / API routing)")
-                total = resp.headers.get("X-Total") or resp.headers.get("x-total")
-                if total is not None:
-                    return int(total)
-                raw = resp.read().decode()
-                payload = json.loads(raw)
-                if isinstance(payload, list):
-                    return len(payload)
-        except (urllib.error.HTTPError, urllib.error.URLError, ValueError, json.JSONDecodeError) as exc:
-            last_exc = exc
-            sys.stderr.write(f"gitlab issue count ({state}) via {base} failed: {exc}\n")
-        time.sleep(float(os.environ.get("ECOSYSTEM_STATS_SEARCH_GAP_SEC", "2")))
-    if last_exc is not None:
-        sys.stderr.write(f"gitlab issue count ({state}) exhausted bases\n")
-    return None
-
-
 def issue_counts() -> tuple[int | None, int | None, str]:
     """(open, closed, source) — GitLab primary when GITLAB_TOKEN is set."""
     provider = os.environ.get("LI_VCS_PROVIDER", "gitlab").strip().lower()
     use_gitlab = provider != "github" and gitlab_token() is not None
     if use_gitlab:
-        open_n = gitlab_group_issue_count("opened")
-        closed_n = gitlab_group_issue_count("closed")
+        open_n, closed_n = gitlab_group_issue_counts()
         if open_n is not None or closed_n is not None:
             return open_n, closed_n, "gitlab"
     open_n = search_total_count(f"org:{ORG}+is:issue+is:open")
     closed_n = search_total_count(f"org:{ORG}+is:issue+is:closed")
+    return open_n, closed_n, "github"
+
+
+def mr_counts() -> tuple[int | None, int | None, str]:
+    """(open, closed/merged, source) — GitLab primary when GITLAB_TOKEN is set."""
+    provider = os.environ.get("LI_VCS_PROVIDER", "gitlab").strip().lower()
+    use_gitlab = provider != "github" and gitlab_token() is not None
+    if use_gitlab:
+        open_n, closed_n = gitlab_group_mr_counts()
+        if open_n is not None or closed_n is not None:
+            return open_n, closed_n, "gitlab"
+    open_n = search_total_count(f"org:{ORG}+is:pr+is:open")
+    closed_n = search_total_count(f"org:{ORG}+is:pr+is:closed")
     return open_n, closed_n, "github"
 
 
@@ -331,22 +291,36 @@ def main() -> int:
     org_repositories = count_org_repositories()
 
     open_issues, closed_issues, issues_source = issue_counts()
-    closed_prs = search_total_count(f"org:{ORG}+is:pr+is:closed")
-    open_prs = search_total_count(f"org:{ORG}+is:pr+is:open")
+    open_mrs, closed_mrs, mrs_source = mr_counts()
+    gitlab_projects = gitlab_project_count() if gitlab_token() else None
+
+    # GitHub org repo count remains useful during mirror transition.
+    gh_open_prs = search_total_count(f"org:{ORG}+is:pr+is:open")
+    gh_closed_prs = search_total_count(f"org:{ORG}+is:pr+is:closed")
 
     payload = {
         "generated_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%MZ"),
         "org": ORG,
+        "vcs_primary": issues_source,
+        "gitlab_host": GITLAB_HOST,
+        "gitlab_group": GITLAB_GROUP,
         "repos_tracked": len(repos),
         "org_repositories": org_repositories,
+        "gitlab_projects": gitlab_projects,
         "issues_source": issues_source,
         "issues_open": open_issues,
         "issues_closed": closed_issues,
         "issues_total": (open_issues or 0) + (closed_issues or 0)
         if open_issues is not None and closed_issues is not None
         else None,
-        "prs_closed": closed_prs,
-        "prs_open": open_prs,
+        "mrs_source": mrs_source,
+        "mrs_open": open_mrs,
+        "mrs_closed": closed_mrs,
+        "prs_source": mrs_source,
+        "prs_open": open_mrs if mrs_source == "gitlab" else gh_open_prs,
+        "prs_closed": closed_mrs if mrs_source == "gitlab" else gh_closed_prs,
+        "github_prs_open": gh_open_prs,
+        "github_prs_closed": gh_closed_prs,
     }
     if lines_total is not None:
         payload["lines_of_code"] = lines_total
@@ -357,8 +331,9 @@ def main() -> int:
     payload = merge_existing(payload, out_json)
     out_json.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
     print(
-        f"Wrote {out_json} — LoC {payload.get('lines_of_code', lines_total)}, org repos {org_repositories}, "
-        f"issues open {open_issues}, closed PRs {closed_prs}"
+        f"Wrote {out_json} — LoC {payload.get('lines_of_code', lines_total)}, "
+        f"gitlab projects {gitlab_projects}, issues ({issues_source}) open {open_issues}, "
+        f"MRs ({mrs_source}) open {open_mrs}"
     )
     return 0
 

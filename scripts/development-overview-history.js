@@ -23,8 +23,8 @@
   };
 
   const CHARTS = [
-    { key: "open_prs", label: "Open PRs", color: "#58a6ff" },
-    { key: "prs_closed", label: "Closed PRs (total)", color: "#3fb950" },
+    { key: "open_prs", label: "Open MRs / PRs", color: "#58a6ff" },
+    { key: "prs_closed", label: "Closed MRs / PRs (total)", color: "#3fb950" },
     { key: "issues_open", label: "Open issues", color: "#d29922" },
     { key: "issues_closed", label: "Closed issues (total)", color: "#a371f7" },
   ];

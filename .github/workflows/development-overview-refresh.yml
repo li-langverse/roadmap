@@ -27,7 +27,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN_OVERVIEW_PAGE }}
           GITLAB_TOKEN: ${{ secrets.GITLAB_TOKEN }}
           LI_VCS_PROVIDER: gitlab
-          LI_GITLAB_SCHEME: http
           ECOSYSTEM_STATS_SKIP_CLONE: "1"
         run: |
           chmod +x scripts/compute-ecosystem-stats.py

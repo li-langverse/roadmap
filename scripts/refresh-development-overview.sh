@@ -29,6 +29,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 root = Path(os.environ["ROOT"])
+sys.path.insert(0, str(root / "scripts"))
 repos_file = Path(os.environ["REPOS_FILE"])
 out_json = Path(os.environ["OUT_JSON"])
 
@@ -98,37 +99,50 @@ def live_docs_count() -> int:
     return n
 
 
+vcs_source = "github"
 pull_requests: list[dict] = []
-for repo in repos:
-    slug = f"li-langverse/{repo}"
-    rows = run_json(
-        [
-            "pr",
-            "list",
-            "--repo",
-            slug,
-            "--state",
-            "open",
-            "--json",
-            "number,title,url,baseRefName,isDraft,statusCheckRollup",
-            "--limit",
-            "50",
-        ]
-    )
-    for pr in rows:
-        ci = classify_ci(pr.get("statusCheckRollup"))
-        pull_requests.append(
-            {
-                "repo": repo,
-                "number": pr["number"],
-                "title": pr["title"],
-                "url": pr["url"],
-                "base": pr.get("baseRefName", "main"),
-                "ci": ci,
-                "draft": bool(pr.get("isDraft")),
-                "ready": ci == "pass" and not pr.get("isDraft"),
-            }
+if os.environ.get("GITLAB_TOKEN", "").strip():
+    try:
+        from _gitlab_overview_api import fetch_gitlab_open_merge_requests
+
+        pull_requests = fetch_gitlab_open_merge_requests(limit=250)
+        if pull_requests:
+            vcs_source = "gitlab"
+    except Exception as exc:
+        sys.stderr.write(f"gitlab MR fetch failed: {exc}\n")
+
+if not pull_requests:
+    for repo in repos:
+        slug = f"li-langverse/{repo}"
+        rows = run_json(
+            [
+                "pr",
+                "list",
+                "--repo",
+                slug,
+                "--state",
+                "open",
+                "--json",
+                "number,title,url,baseRefName,isDraft,statusCheckRollup",
+                "--limit",
+                "50",
+            ]
         )
+        for pr in rows:
+            ci = classify_ci(pr.get("statusCheckRollup"))
+            pull_requests.append(
+                {
+                    "repo": repo,
+                    "number": pr["number"],
+                    "title": pr["title"],
+                    "url": pr["url"],
+                    "base": pr.get("baseRefName", "main"),
+                    "ci": ci,
+                    "draft": bool(pr.get("isDraft")),
+                    "ready": ci == "pass" and not pr.get("isDraft"),
+                    "source": "github",
+                }
+            )
 
 pull_requests.sort(key=lambda p: (p["repo"], p["number"]))
 
@@ -151,14 +165,17 @@ if eco_path.is_file():
 payload = {
     "generated_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%MZ"),
     "pages_url": "https://li-langverse.github.io/roadmap/development-overview/",
+    "vcs_source": vcs_source,
     "metrics": {
         "ready_to_merge": ready,
         "open_prs": open_count,
+        "open_mrs": open_count if vcs_source == "gitlab" else None,
         "blocked": blocked,
         "repos_with_live_docs": live_docs_count(),
         "repos_total": len(repos),
     },
     "ecosystem": ecosystem,
+    "merge_requests": pull_requests if vcs_source == "gitlab" else [],
     "pull_requests": pull_requests,
 }
 
@@ -218,18 +235,26 @@ def compact_daily(raw_points: list[dict]) -> list[dict]:
 today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
 issues_open = ecosystem.get("issues_open")
 issues_closed = ecosystem.get("issues_closed")
-if issues_open is None:
+if issues_open is None and ecosystem.get("issues_source") != "gitlab":
     issues_open = search_total(f"org:li-langverse+is:issue+is:open")
-if issues_closed is None:
+if issues_closed is None and ecosystem.get("issues_source") != "gitlab":
     issues_closed = search_total(f"org:li-langverse+is:issue+is:closed")
+mrs_closed = ecosystem.get("mrs_closed")
+if mrs_closed is None:
+    mrs_closed = ecosystem.get("prs_closed")
+if mrs_closed is None and vcs_source != "gitlab":
+    mrs_closed = search_total(f"org:li-langverse+is:pr+is:closed")
 new_point = {
     "at": today,
     "open_prs": open_count,
+    "open_mrs": open_count if vcs_source == "gitlab" else None,
     "ready_to_merge": ready,
-    "prs_closed": search_total(f"org:li-langverse+is:pr+is:closed"),
+    "prs_closed": mrs_closed,
+    "mrs_closed": mrs_closed,
     "issues_open": issues_open,
     "issues_closed": issues_closed,
-    "source": ecosystem.get("issues_source", "refresh"),
+    "source": ecosystem.get("issues_source", vcs_source),
+    "vcs_source": vcs_source,
 }
 points = compact_daily(points + [new_point])
 if len(points) > 400:

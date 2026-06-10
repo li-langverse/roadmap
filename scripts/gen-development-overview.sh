@@ -299,8 +299,8 @@ html = f"""<!DOCTYPE html>
       <h2 id="eco-heading">Ecosystem statistics</h2>
       <p class="section-note">
         Committed baseline <span id="eco-as-of">{eco_as_of}</span>.
-        Issue counts from GitLab group snapshot (4h refresh); PR queue live (~120s); LoC weekly — <span id="eco-live-status" class="live-status-badge"></span>
-        <a href="https://github.com/li-langverse/roadmap/blob/main/.github/li-org-repos.txt" title="Lines of code sum only repos listed in li-org-repos.txt; org repo count is all GitHub repos under li-langverse.">LoC scope</a>
+        Issue and MR counts from <a href="https://gitlab.lilangverse.xyz/li-langverse">GitLab</a> snapshot (4h refresh); MR queue from <code>status.json</code> (~5min); LoC weekly — <span id="eco-live-status" class="live-status-badge"></span>
+        <a href="https://github.com/li-langverse/roadmap/blob/main/.github/li-org-repos.txt" title="Lines of code sum only repos listed in li-org-repos.txt.">LoC scope</a>
         · <a href="https://github.com/li-langverse/roadmap/blob/main/scripts/compute-ecosystem-stats.py">Maintainer: recompute snapshot</a>
       </p>
       <div class="live-metrics" id="ecosystem-metrics">{eco_cards_html}</div>
@@ -308,13 +308,13 @@ html = f"""<!DOCTYPE html>
 
     <section class="live-banner" aria-labelledby="history-heading">
       <h2 id="history-heading">Org activity history</h2>
-      <p>PR and issue trends from committed snapshots (<code>refresh-development-overview.sh</code>) plus live GitHub Search API points in your browser. One point per calendar day (UTC). Hover charts for values.</p>
+      <p>Issue and MR trends from GitLab snapshots (<code>refresh-development-overview.sh</code>) plus live status points in your browser. One point per calendar day (UTC). Hover charts for values.</p>
       <div class="history-grid" id="history-charts"></div>
       <p id="history-status" class="history-meta"></p>
     </section>
     <section class="live-banner" aria-labelledby="live-heading">
-      <h2 id="live-heading">Live PR merge queue</h2>
-      <p class="section-note">Polls the <a href="https://docs.github.com/en/rest/search">GitHub Search API</a> (~120s). CI status updates about one PR every 90s. Older merge-order tables are in <a href="#markdown-snapshot">snapshot tables</a> (collapsed when live data loads).</p>
+      <h2 id="live-heading">Live merge queue</h2>
+      <p class="section-note">GitLab-primary: polls committed <code>status.json</code> (~5min, refreshed every 4h on main). GitHub mirror fallback uses Search API when GitLab snapshot is unavailable. Older tables are in <a href="#markdown-snapshot">snapshot tables</a>.</p>
       <div class="live-metrics" id="live-metrics"></div>
       <div class="live-table-wrap">
         <table id="live-pr-table">
@@ -353,5 +353,9 @@ if [[ -f "$HIST_JSON" ]]; then
 fi
 if [[ -f "$ECO_JSON" ]]; then
   cp "$ECO_JSON" "$OUT_DIR/ecosystem-stats.json"
+fi
+STATUS_JSON="${ROOT}/data/development-overview/status.json"
+if [[ -f "$STATUS_JSON" ]]; then
+  cp "$STATUS_JSON" "$OUT_DIR/status.json"
 fi
 echo "Generated ${OUT_HTML}"

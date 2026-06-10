@@ -7,26 +7,48 @@ const GITLAB_HOST = "gitlab.lilangverse.xyz";
 const GITLAB_GROUP = "li-langverse";
 const GITLAB_ISSUES = (state) =>
   `https://${GITLAB_HOST}/groups/${GITLAB_GROUP}/-/issues?state=${state}&sort=created_date`;
+const GITLAB_MRS = (state) =>
+  `https://${GITLAB_HOST}/groups/${GITLAB_GROUP}/-/merge_requests?state=${state}`;
 const SEARCH_MS = 120_000;
-const ECO_MS = 600_000;
+const STATUS_MS = 300_000;
+const ECO_MS = 300_000;
 const CI_TICK_MS = 90_000;
-const SEARCH_GAP_MS = 7_000;
-const ECO_CACHE_MS = 600_000;
-const ECO_CACHE_KEY = "li-dev-overview-eco-live-v2";
+const SEARCH_GAP_MS = 2_000;
+const ECO_CACHE_MS = 300_000;
+const ECO_CACHE_KEY = "li-dev-overview-eco-live-v3";
 const SEARCH_URL = `https://api.github.com/search/issues?q=org:${ORG}+is:open+is:pr&per_page=100&sort=updated`;
 const ECO_STATS_URL = "./ecosystem-stats.json";
+const STATUS_JSON_URL = "./status.json";
 
 const GITHUB_SEARCH = (q) =>
   `https://github.com/search?q=${encodeURIComponent(q)}&type=issues`;
 
-const METRIC_LINKS = {
-  "Open issues": GITLAB_ISSUES("opened"),
-  "Closed issues": GITLAB_ISSUES("closed"),
-  "Closed PRs": GITHUB_SEARCH(`org:${ORG} is:pr is:closed`),
-  "Org repositories": `https://github.com/orgs/${ORG}/repositories`,
-  "Open PRs": GITHUB_SEARCH(`org:${ORG} is:pr is:open`),
-  "Ready to merge": GITHUB_SEARCH(`org:${ORG} is:pr is:open`),
-};
+function gitlabPrimary(snap) {
+  return (
+    snap?.vcs_primary === "gitlab" ||
+    snap?.issues_source === "gitlab" ||
+    snap?.mrs_source === "gitlab"
+  );
+}
+
+function metricLinks(snap) {
+  const gl = gitlabPrimary(snap);
+  return {
+    "GitLab projects": `https://${GITLAB_HOST}/${GITLAB_GROUP}`,
+    "Org repositories": gl
+      ? `https://${GITLAB_HOST}/${GITLAB_GROUP}`
+      : `https://github.com/orgs/${ORG}/repositories`,
+    "Open issues": GITLAB_ISSUES("opened"),
+    "Closed issues": GITLAB_ISSUES("closed"),
+    "Open MRs": GITLAB_MRS("opened"),
+    "Closed MRs": GITLAB_MRS("merged"),
+    "Open PRs": gl ? GITLAB_MRS("opened") : GITHUB_SEARCH(`org:${ORG} is:pr is:open`),
+    "Closed PRs": gl
+      ? GITLAB_MRS("merged")
+      : GITHUB_SEARCH(`org:${ORG} is:pr is:closed`),
+    "Ready to merge": gl ? GITLAB_MRS("opened") : GITHUB_SEARCH(`org:${ORG} is:pr is:open`),
+  };
+}
 
 /** @type {{ lines_of_code?: number, org_repositories?: number, packages?: number, issues_open?: number, issues_closed?: number, prs_closed?: number, generated_at?: string }} */
 let ecosystemSnapshot = {};
@@ -40,6 +62,8 @@ let prs = [];
 let ciIndex = 0;
 let openPrTotal = 0;
 let prQueueLive = false;
+let vcsPrimary = "gitlab";
+let statusSnapshot = {};
 
 const GH_HEADERS = { Accept: "application/vnd.github+json" };
 
@@ -164,17 +188,26 @@ function writeEcoCache(data) {
 
 function renderEcosystemMetrics(live = {}) {
   const merged = { ...liveEcoCounts, ...live };
-  const loc = ecosystemSnapshot.lines_of_code;
-  const orgRepos = merged.org_repositories ?? orgReposFromSnapshot(ecosystemSnapshot);
-  const issues = merged.issues_open ?? ecosystemSnapshot.issues_open;
-  const closedIssues = merged.issues_closed ?? ecosystemSnapshot.issues_closed;
-  const closedPrs = merged.prs_closed ?? ecosystemSnapshot.prs_closed;
-  const locAsOf = ecosystemSnapshot.generated_at;
-  const issuesAsOf = merged.issues_at ?? merged.generated_at;
+  const snap = { ...ecosystemSnapshot, ...merged };
+  const links = metricLinks(snap);
+  const gl = gitlabPrimary(snap);
+  vcsPrimary = gl ? "gitlab" : "github";
+  const loc = snap.lines_of_code;
+  const orgRepos =
+    merged.gitlab_projects ??
+    snap.gitlab_projects ??
+    merged.org_repositories ??
+    orgReposFromSnapshot(snap);
+  const issues = merged.issues_open ?? snap.issues_open;
+  const closedIssues = merged.issues_closed ?? snap.issues_closed;
+  const openMrs = merged.mrs_open ?? snap.mrs_open ?? snap.prs_open;
+  const closedMrs = merged.mrs_closed ?? snap.mrs_closed ?? snap.prs_closed;
+  const locAsOf = snap.generated_at;
+  const issuesAsOf = merged.issues_at ?? snap.generated_at;
   const asOfEl = document.getElementById("eco-as-of");
   if (asOfEl) {
     const parts = [];
-    if (issuesAsOf) parts.push(`issues ${issuesAsOf}`);
+    if (issuesAsOf) parts.push(`${gl ? "GitLab" : "snapshot"} ${issuesAsOf}`);
     if (locAsOf) parts.push(`LoC ${locAsOf}`);
     asOfEl.textContent = parts.length ? parts.join(" · ") : "—";
   }
@@ -183,13 +216,17 @@ function renderEcosystemMetrics(live = {}) {
 
   const locHint =
     loc != null && locAsOf ? `snapshot ${locAsOf}` : "recomputed weekly on main";
+  const repoLabel = gl ? "GitLab projects" : "Org repositories";
+  const openQueueLabel = gl ? "Open MRs" : "Open PRs";
+  const closedQueueLabel = gl ? "Closed MRs" : "Closed PRs";
 
   return [
     ["Lines of code", fmtNum(loc), null, locHint],
-    ["Org repositories", fmtNum(orgRepos), METRIC_LINKS["Org repositories"]],
-    ["Open issues", fmtNum(issues), METRIC_LINKS["Open issues"]],
-    ["Closed issues", fmtNum(closedIssues), METRIC_LINKS["Closed issues"]],
-    ["Closed PRs", fmtNum(closedPrs), METRIC_LINKS["Closed PRs"]],
+    [repoLabel, fmtNum(orgRepos), links[repoLabel]],
+    ["Open issues", fmtNum(issues), links["Open issues"], gl ? "GitLab group" : ""],
+    ["Closed issues", fmtNum(closedIssues), links["Closed issues"], gl ? "GitLab group" : ""],
+    [openQueueLabel, fmtNum(openMrs), links[openQueueLabel]],
+    [closedQueueLabel, fmtNum(closedMrs), links[closedQueueLabel]],
   ]
     .map(([label, value, href, hint]) => metricCard(label, value, href, hint))
     .join("");
@@ -282,32 +319,38 @@ async function loadEcosystemSnapshot() {
 }
 
 async function refreshIssueCounts() {
-  // GitLab issues require a token — use committed snapshot (refreshed every 4h on main).
   try {
     const res = await fetch(ECO_STATS_URL, { cache: "no-store" });
     if (!res.ok) throw new Error(`snapshot ${res.status}`);
     const eco = await res.json();
     ecosystemSnapshot = { ...ecosystemSnapshot, ...eco };
     const at = eco.generated_at || new Date().toISOString().slice(0, 16);
-    const source = eco.issues_source === "gitlab" ? "GitLab" : "snapshot";
+    const gl = gitlabPrimary(eco);
     liveEcoCounts = {
       ...liveEcoCounts,
       issues_open: eco.issues_open ?? undefined,
       issues_closed: eco.issues_closed ?? undefined,
+      mrs_open: eco.mrs_open ?? eco.prs_open ?? undefined,
+      mrs_closed: eco.mrs_closed ?? eco.prs_closed ?? undefined,
+      gitlab_projects: eco.gitlab_projects ?? undefined,
       issues_at: at,
+      generated_at: at,
     };
     const got =
       (typeof eco.issues_open === "number" ? 1 : 0) +
-      (typeof eco.issues_closed === "number" ? 1 : 0);
-    const status = got ? `issues · ${source} snapshot` : "issue counts unavailable";
-    paintEcosystem({ _status: status });
+      (typeof eco.issues_closed === "number" ? 1 : 0) +
+      (typeof eco.mrs_open === "number" ? 1 : 0);
+    const status = got
+      ? `GitLab snapshot · ${at}`
+      : "GitLab counts unavailable (check GITLAB_TOKEN in refresh workflow)";
+    paintEcosystem({ _status: gl ? status : `snapshot · ${at}` });
     if (got > 0) {
       writeEcoCache(liveEcoCounts);
       pushHistoryFromEco(liveEcoCounts, "snapshot");
     }
   } catch (e) {
     paintEcosystem({
-      _status: `issues snapshot unavailable: ${e instanceof Error ? e.message : String(e)}`,
+      _status: `snapshot unavailable: ${e instanceof Error ? e.message : String(e)}`,
     });
   }
 }
@@ -323,30 +366,29 @@ async function refreshEcosystemLive(force = false) {
     }
   }
 
-  setEcoStatus("refreshing GitHub counts…");
   await refreshIssueCounts();
+  if (gitlabPrimary(ecosystemSnapshot)) {
+    paintEcosystem({ _status: `GitLab · snapshot refresh every 4h` });
+    writeEcoCache(liveEcoCounts);
+    return;
+  }
 
+  setEcoStatus("refreshing GitHub counts…");
   const { out, errors } = await searchCountsSequential([
     ["prs_closed", `org:${ORG} is:pr is:closed`],
   ]);
   const orgRepos = await fetchOrgRepositoryCount();
-
   liveEcoCounts = {
     ...liveEcoCounts,
     prs_closed: out.prs_closed ?? undefined,
     org_repositories: orgRepos ?? undefined,
   };
-
   const got =
     (typeof liveEcoCounts.issues_open === "number" ? 1 : 0) +
-    (typeof liveEcoCounts.issues_closed === "number" ? 1 : 0) +
     (typeof out.prs_closed === "number" ? 1 : 0);
-  let status = got ? `live · ${got}/3 GitHub counts` : "live counts unavailable";
+  let status = got ? `live · GitHub fallback` : "live counts unavailable";
   if (errors.length) status = `${status} · ${errors[0]}`.trim();
-
   paintEcosystem({ _status: status });
-  pushHistoryFromEco(liveEcoCounts, got ? "live-api" : "partial-live");
-
   if (got > 0) writeEcoCache(liveEcoCounts);
 }
 
@@ -366,16 +408,18 @@ function pushHistoryFromEco(data, source) {
 }
 
 function renderMetrics(list) {
+  const links = metricLinks(ecosystemSnapshot);
   const open = openPrTotal || list.length;
   const drafts = list.filter((p) => p.draft).length;
   const ready = list.filter((p) => p.ready).length;
   const blocked = list.filter((p) => !p.ready && !p.draft && p.ci === "fail").length;
-  const pendingCi = list.filter((p) => !p.draft && p.ci === "…").length;
+  const pendingCi = list.filter((p) => !p.draft && (p.ci === "…" || p.ci === "pending")).length;
   const readyHint = ready === 0 && pendingCi > 0 ? "pending CI checks" : "";
+  const openLabel = vcsPrimary === "gitlab" ? "Open MRs" : "Open PRs";
 
   return [
-    ["Ready to merge", ready, METRIC_LINKS["Ready to merge"], readyHint],
-    ["Open PRs", open, METRIC_LINKS["Open PRs"]],
+    ["Ready to merge", ready, links["Ready to merge"], readyHint],
+    [openLabel, open, links[openLabel]],
     ["Drafts", drafts, null],
     ["CI failing", blocked, null],
   ]
@@ -410,16 +454,68 @@ function paint() {
   if (prQueueLive) updateFreshnessPr();
 }
 
+function mapStatusMr(row) {
+  const key = prKey(row.repo, row.number);
+  const cached = ciCache.get(key);
+  return {
+    repo: row.repo,
+    number: row.number,
+    title: row.title,
+    url: row.url,
+    base: row.base || "main",
+    draft: Boolean(row.draft),
+    ci: cached?.ci ?? row.ci ?? "…",
+    ready: cached?.ready ?? Boolean(row.ready),
+    _key: key,
+  };
+}
+
+async function refreshFromStatusJson() {
+  try {
+    const res = await fetch(STATUS_JSON_URL, { cache: "no-store" });
+    if (!res.ok) throw new Error(`status.json ${res.status}`);
+    statusSnapshot = await res.json();
+    vcsPrimary = statusSnapshot.vcs_source || vcsPrimary;
+    const rows =
+      statusSnapshot.merge_requests?.length
+        ? statusSnapshot.merge_requests
+        : statusSnapshot.pull_requests || [];
+    openPrTotal = statusSnapshot.metrics?.open_prs ?? rows.length;
+    prs = rows.map(mapStatusMr);
+    prQueueLive = true;
+    paint();
+    markLiveQueueReady();
+    const gen = statusSnapshot.generated_at || "";
+    updateFreshnessPr(`GitLab MR queue · status.json ${gen} · refresh ${STATUS_MS / 1000}s`);
+    const at = (gen || new Date().toISOString()).slice(0, 10);
+    window.DevelopmentOverviewHistory?.updateLive({
+      at,
+      source: "status-json",
+      open_prs: openPrTotal,
+      open_mrs: openPrTotal,
+      ready_to_merge: prs.filter((p) => p.ready).length,
+    });
+    refreshIssueCounts().catch(() => {});
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+
 async function refreshSearch() {
+  if (gitlabPrimary(ecosystemSnapshot)) {
+    const ok = await refreshFromStatusJson();
+    if (ok) return;
+  }
   try {
     const data = await ghGet(SEARCH_URL);
     openPrTotal = typeof data.total_count === "number" ? data.total_count : (data.items || []).length;
     prs = (data.items || []).map(mapSearchItem);
+    vcsPrimary = "github";
     prQueueLive = true;
     paint();
     markLiveQueueReady();
-    updateFreshnessPr(`search every ${SEARCH_MS / 1000}s`);
-
+    updateFreshnessPr(`GitHub PR queue · search every ${SEARCH_MS / 1000}s`);
     const at = new Date().toISOString().slice(0, 10);
     window.DevelopmentOverviewHistory?.updateLive({
       at,
@@ -427,11 +523,7 @@ async function refreshSearch() {
       open_prs: openPrTotal,
       ready_to_merge: prs.filter((p) => p.ready).length,
     });
-
-    // Refresh issue counts on the same cadence as PR stats (staggered to respect rate limits).
-    setTimeout(() => {
-      refreshIssueCounts().catch(() => {});
-    }, SEARCH_GAP_MS);
+    setTimeout(() => refreshIssueCounts().catch(() => {}), SEARCH_GAP_MS);
   } catch (e) {
     prQueueLive = false;
     updateFreshnessPr(`unavailable: ${e.message}`);
@@ -446,7 +538,7 @@ function statusToCi(state) {
 }
 
 async function refreshOneCi() {
-  if (!prs.length) return;
+  if (vcsPrimary === "gitlab" || !prs.length) return;
   const p = prs[ciIndex % prs.length];
   ciIndex += 1;
   if (p.draft) {
@@ -480,8 +572,10 @@ async function refreshOneCi() {
   }
 }
 
-loadEcosystemSnapshot().then(() => refreshEcosystemLive(true));
+loadEcosystemSnapshot().then(async () => {
+  await refreshEcosystemLive(true);
+  await refreshSearch();
+});
 setInterval(() => refreshEcosystemLive(true), ECO_MS);
-refreshSearch();
-setInterval(refreshSearch, SEARCH_MS);
+setInterval(refreshSearch, STATUS_MS);
 setInterval(refreshOneCi, CI_TICK_MS);
