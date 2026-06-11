@@ -1,5 +1,5 @@
-# Weekly: recompute lines-of-code across tracked org repos (requires shallow clones).
-name: Development overview LoC (weekly)
+# Weekly: recompute lines of Li (.li source) across all org repos (requires shallow clones).
+name: Development overview Li LoC (weekly)
 
 on:
   schedule:
@@ -21,7 +21,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Compute lines of code
+      - name: Compute lines of Li
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN_OVERVIEW_PAGE }}
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN_OVERVIEW_PAGE }}
@@ -33,12 +33,12 @@ jobs:
         uses: peter-evans/create-pull-request@v7
         with:
           token: ${{ secrets.GH_TOKEN_OVERVIEW_PAGE }}
-          commit-message: "chore: development overview LoC snapshot"
-          title: "chore: development overview LoC snapshot"
+          commit-message: "chore: development overview Li LoC snapshot"
+          title: "chore: development overview Li LoC snapshot"
           body: |
-            Weekly recomputation of lines-of-code across repos in `.github/li-org-repos.txt`.
+            Weekly recomputation of **lines of Li** (`.li` source files only) across all org repositories (GitHub + GitLab group census).
 
-            Merging updates the LoC figure on the [development overview](https://li-langverse.github.io/roadmap/development-overview/) Pages site.
+            Merging updates the figure on the [development overview](https://li-langverse.github.io/roadmap/development-overview/) Pages site.
           branch: automated/development-overview-loc
           delete-branch: false
           labels: |

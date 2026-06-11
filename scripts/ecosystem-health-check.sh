@@ -22,7 +22,7 @@ m = d['metrics']
 print(f\"Open PRs: {m['open_prs']}  Ready: {m['ready_to_merge']}  Blocked: {m['blocked']}\")
 eco = d.get('ecosystem') or {}
 if eco:
-    loc = eco.get('lines_of_code')
+    loc = eco.get('lines_of_li') or eco.get('lines_of_code')
     loc_s = f\"{loc:,}\" if isinstance(loc, int) else '?'
     nrepos = eco.get('org_repositories', eco.get('packages'))
     print(f\"LoC: {loc_s}  Org repos: {nrepos}  Issues: {eco.get('issues_open', '?')}  Closed PRs: {eco.get('prs_closed', '?')}\")

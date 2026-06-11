@@ -1,5 +1,6 @@
-# Optional policy hints (one name per line). The development overview discovers
-# all public org repos via the GitHub API — this file is NOT the repo census.
+# Optional policy hints (one name per line). LoC on the development overview
+# counts `.li` source across ALL org repos (GitHub + GitLab group list via API).
+# This file is a fallback census only when those APIs are unavailable.
 # CI policy: every repo should have .github/workflows/ci.yml
 lic
 li-language

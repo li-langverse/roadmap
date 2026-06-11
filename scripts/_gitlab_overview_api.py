@@ -127,6 +127,35 @@ def gitlab_project_count() -> int | None:
     )
 
 
+def gitlab_project_paths(*, archived: bool = False) -> list[str] | None:
+    """Return project path slugs (repo names) under the org group."""
+    token = gitlab_token()
+    if not token:
+        return None
+    group = urllib.parse.quote(GITLAB_GROUP, safe="")
+    archived_flag = "true" if archived else "false"
+    path = (
+        f"/api/v4/groups/{group}/projects"
+        f"?include_subgroups=true&archived={archived_flag}&per_page=100"
+    )
+    names: list[str] = []
+    page = 1
+    while page <= 50:
+        status, data, _ = _gitlab_get(f"{path}&page={page}", token=token)
+        if status != 200 or not isinstance(data, list):
+            return names if names else None
+        for proj in data:
+            if not isinstance(proj, dict):
+                continue
+            slug = str(proj.get("path") or proj.get("name") or "").strip()
+            if slug:
+                names.append(slug)
+        if len(data) < 100:
+            break
+        page += 1
+    return sorted(set(names))
+
+
 def _repo_from_mr(mr: dict) -> str:
     ref = str(mr.get("references", {}).get("full", ""))
     if "!" in ref:

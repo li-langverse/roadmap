@@ -89,7 +89,8 @@ def fmt_int(n) -> str:
 
 
 eco_as_of = eco.get("generated_at", "—")
-repos_tracked = eco.get("repos_tracked", 14)
+repos_loc_tracked = eco.get("repos_loc_tracked") or eco.get("repos_tracked") or eco.get("gitlab_projects") or "—"
+loc_file_types = ", ".join(eco.get("loc_file_types") or [".li"])
 gitlab_projects = eco.get("gitlab_projects", "—")
 def org_repos_val(e):
     v = e.get("org_repositories")
@@ -121,7 +122,7 @@ def cumulative_closed_issues(e):
 
 
 eco_cards = [
-    ("Lines of code", fmt_int(eco.get("lines_of_code"))),
+    ("Lines of Li", fmt_int(eco.get("lines_of_li") or eco.get("lines_of_code"))),
     ("Org repositories", fmt_int(org_repos_val(eco))),
     ("Open issues", fmt_int(eco.get("issues_open"))),
     ("Closed issues", fmt_int(cumulative_closed_issues(eco))),
@@ -324,8 +325,8 @@ html = f"""<!DOCTYPE html>
       <h2 id="eco-heading">Ecosystem statistics</h2>
       <p class="section-note">
         Committed baseline <span id="eco-as-of">{eco_as_of}</span>.
-        Issue and MR counts from <a href="https://gitlab.lilangverse.xyz/li-langverse">GitLab</a> snapshot (15m refresh); MR queue from <code>status.json</code> (~15m); LoC weekly ({repos_tracked} repos in <code>li-org-repos.txt</code>, not all {gitlab_projects} GitLab projects) — <span id="eco-live-status" class="live-status-badge"></span>
-        <a href="https://github.com/li-langverse/roadmap/blob/main/.github/li-org-repos.txt" title="Lines of code sum only repos listed in li-org-repos.txt.">LoC scope</a>
+        Issue and MR counts from <a href="https://gitlab.lilangverse.xyz/li-langverse">GitLab</a> snapshot (15m refresh); MR queue from <code>status.json</code> (~15m); <strong>Lines of Li</strong> weekly ({loc_file_types} across {repos_loc_tracked} org repos) — <span id="eco-live-status" class="live-status-badge"></span>
+        <a href="https://github.com/li-langverse/roadmap/blob/main/scripts/compute-ecosystem-stats.py" title="Counts physical lines in .li source files across all GitHub/GitLab org repositories; excludes C++, Python harness, docs, and other languages.">Li source scope</a>
         · <a href="https://github.com/li-langverse/roadmap/blob/main/scripts/compute-ecosystem-stats.py">Maintainer: recompute snapshot</a>
       </p>
       <div class="live-metrics" id="ecosystem-metrics">{eco_cards_html}</div>

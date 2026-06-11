@@ -66,7 +66,7 @@ function metricLinks(snap) {
   };
 }
 
-/** @type {{ lines_of_code?: number, org_repositories?: number, packages?: number, issues_open?: number, issues_closed?: number, prs_closed?: number, generated_at?: string }} */
+/** @type {{ lines_of_li?: number, lines_of_code?: number, org_repositories?: number, packages?: number, issues_open?: number, issues_closed?: number, prs_closed?: number, generated_at?: string }} */
 let ecosystemSnapshot = {};
 
 /** Live issue/PR totals fetched in-browser (updated with PR queue refresh). */
@@ -208,7 +208,7 @@ function renderEcosystemMetrics(live = {}) {
   const links = metricLinks(snap);
   const gl = gitlabPrimary(snap);
   vcsPrimary = gl ? "gitlab" : "github";
-  const loc = snap.lines_of_code;
+  const loc = snap.lines_of_li ?? snap.lines_of_code;
   const orgRepos =
     merged.gitlab_projects ??
     snap.gitlab_projects ??
@@ -227,22 +227,24 @@ function renderEcosystemMetrics(live = {}) {
   if (asOfEl) {
     const parts = [];
     if (issuesAsOf) parts.push(`${gl ? "GitLab" : "snapshot"} ${issuesAsOf}`);
-    if (locAsOf) parts.push(`LoC ${locAsOf}`);
+    if (locAsOf) parts.push(`Li LoC ${locAsOf}`);
     asOfEl.textContent = parts.length ? parts.join(" · ") : "—";
   }
 
   setEcoStatus(merged._status || "");
 
+  const reposLoc = snap.repos_loc_tracked ?? snap.repos_tracked ?? orgRepos;
+  const locTypes = (snap.loc_file_types || [".li"]).join(", ");
   const locHint =
     loc != null && locAsOf
-      ? `${snap.repos_tracked ?? 14} tracked repos · snapshot ${locAsOf}`
-      : "recomputed weekly on main (14 repos in li-org-repos.txt)";
+      ? `${locTypes} across ${reposLoc} org repos · snapshot ${locAsOf}`
+      : `recomputed weekly — ${locTypes} in all org repos`;
   const repoLabel = gl ? "GitLab projects" : "Org repositories";
   const openQueueLabel = gl ? "Open MRs" : "Open PRs";
   const closedQueueLabel = gl ? "Closed MRs" : "Closed PRs";
 
   return [
-    ["Lines of code", fmtNum(loc), null, locHint],
+    ["Lines of Li", fmtNum(loc), null, locHint],
     [repoLabel, fmtNum(orgRepos), links[repoLabel]],
     ["Open issues", fmtNum(issues), links["Open issues"], gl ? "GitLab group" : ""],
     ["Closed issues", fmtNum(closedIssues), links["Closed issues"], gl ? "GitLab group" : ""],

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Compute li-langverse ecosystem stats (LoC, org repo count) for the development overview."""
+"""Compute li-langverse ecosystem stats (lines of Li, org repo count) for the development overview."""
 from __future__ import annotations
 
 import json
@@ -20,28 +20,13 @@ from _gitlab_overview_api import (
     gitlab_group_issue_counts,
     gitlab_group_mr_counts,
     gitlab_project_count,
+    gitlab_project_paths,
     gitlab_token,
 )
 from _overview_history_metrics import cumulative_issues_closed, cumulative_prs_closed
 
 ORG = "li-langverse"
-CODE_SUFFIXES = {
-    ".li",
-    ".cpp",
-    ".h",
-    ".hpp",
-    ".c",
-    ".py",
-    ".rs",
-    ".toml",
-    ".lean",
-    ".sh",
-    ".md",
-    ".yml",
-    ".yaml",
-    ".jl",
-    ".lock",
-}
+LI_SOURCE_SUFFIXES = {".li"}
 SKIP_DIR_NAMES = {
     ".git",
     "build",
@@ -120,26 +105,24 @@ def mr_counts() -> tuple[int | None, int | None, str]:
     return open_n, closed_n, "github"
 
 
+def list_github_repo_names() -> list[str] | None:
+    data = gh_json(["repo", "list", ORG, "--limit", "10000", "--json", "name"])
+    if not isinstance(data, list):
+        return None
+    names = sorted({str(row.get("name", "")).strip() for row in data if row.get("name")})
+    return names or None
+
+
 def count_org_repositories() -> int | None:
     """All repositories visible to `gh` under the org (public + private for the token)."""
-    proc = subprocess.run(
-        ["gh", "repo", "list", ORG, "--limit", "10000", "--json", "name"],
-        capture_output=True,
-        text=True,
-        check=False,
-    )
-    if proc.returncode == 0 and proc.stdout.strip():
-        data = json.loads(proc.stdout)
-        if isinstance(data, list):
-            return len(data)
+    names = list_github_repo_names()
+    if names is not None:
+        return len(names)
     return count_org_repositories_via_token()
 
 
 def count_org_repositories_via_token() -> int | None:
     """Fallback when `gh repo list` fails: paginate org repos with GITHUB_TOKEN (e.g. Actions)."""
-    import urllib.error
-    import urllib.request
-
     token = (
         os.environ.get("GH_TOKEN_OVERVIEW_PAGE")
         or os.environ.get("GH_TOKEN")
@@ -173,12 +156,29 @@ def count_org_repositories_via_token() -> int | None:
     return total
 
 
-def count_lines(repo_path: Path) -> int:
+def list_org_repo_names(root: Path) -> list[str]:
+    """Union GitHub org repos and GitLab group projects (GitLab-primary census)."""
+    names: set[str] = set()
+    gh_names = list_github_repo_names()
+    if gh_names:
+        names.update(gh_names)
+    gl_names = gitlab_project_paths()
+    if gl_names:
+        names.update(gl_names)
+    if not names:
+        repos_file = root / ".github" / "li-org-repos.txt"
+        if repos_file.is_file():
+            names.update(load_repo_list(repos_file))
+    return sorted(names)
+
+
+def count_li_lines(repo_path: Path) -> int:
+    """Count physical lines in `.li` source files only."""
     total = 0
     for root, dirs, files in os.walk(repo_path):
         dirs[:] = [d for d in dirs if d not in SKIP_DIR_NAMES and not d.startswith(".")]
         for name in files:
-            if Path(name).suffix.lower() not in CODE_SUFFIXES:
+            if Path(name).suffix.lower() not in LI_SOURCE_SUFFIXES:
                 continue
             fp = Path(root) / name
             try:
@@ -189,7 +189,7 @@ def count_lines(repo_path: Path) -> int:
     return total
 
 
-def clone_repo(name: str, dest: Path) -> bool:
+def clone_repo_github(name: str, dest: Path) -> bool:
     slug = f"{ORG}/{name}"
     proc = subprocess.run(
         ["gh", "repo", "clone", slug, str(dest / name), "--", "--depth", "1"],
@@ -198,6 +198,27 @@ def clone_repo(name: str, dest: Path) -> bool:
         check=False,
     )
     return proc.returncode == 0 and (dest / name).is_dir()
+
+
+def clone_repo_gitlab(name: str, dest: Path) -> bool:
+    token = gitlab_token()
+    if not token:
+        return False
+    target = dest / name
+    url = f"https://oauth2:{token}@{GITLAB_HOST}/{GITLAB_GROUP}/{name}.git"
+    proc = subprocess.run(
+        ["git", "clone", "--depth", "1", url, str(target)],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    return proc.returncode == 0 and target.is_dir()
+
+
+def clone_repo(name: str, dest: Path) -> bool:
+    if clone_repo_github(name, dest):
+        return True
+    return clone_repo_gitlab(name, dest)
 
 
 def resolve_local_clone(name: str, parent: Path) -> Path | None:
@@ -212,8 +233,11 @@ def resolve_local_clone(name: str, parent: Path) -> Path | None:
     return None
 
 
-def compute_loc(repos: list[str], workdir: Path, clone_missing: bool) -> tuple[int, dict[str, int]]:
+def compute_lines_of_li(
+    repos: list[str], workdir: Path, clone_missing: bool
+) -> tuple[int, dict[str, int], int]:
     per_repo: dict[str, int] = {}
+    missing = 0
     tmp_clone: Path | None = None
     if clone_missing:
         tmp_clone = Path(tempfile.mkdtemp(prefix="li-ecosystem-loc-"))
@@ -221,21 +245,21 @@ def compute_loc(repos: list[str], workdir: Path, clone_missing: bool) -> tuple[i
         for name in repos:
             local = resolve_local_clone(name, repo_root())
             if local is not None:
-                per_repo[name] = count_lines(local)
+                per_repo[name] = count_li_lines(local)
                 continue
             if tmp_clone is None:
                 per_repo[name] = 0
+                missing += 1
                 continue
             if clone_repo(name, tmp_clone):
-                per_repo[name] = count_lines(tmp_clone / name)
+                per_repo[name] = count_li_lines(tmp_clone / name)
             else:
                 per_repo[name] = 0
+                missing += 1
     finally:
         if tmp_clone is not None:
             shutil.rmtree(tmp_clone, ignore_errors=True)
-    return sum(per_repo.values()), per_repo
-
-
+    return sum(per_repo.values()), per_repo, missing
 
 
 def merge_existing(payload: dict, path: Path) -> dict:
@@ -252,15 +276,27 @@ def merge_existing(payload: dict, path: Path) -> dict:
         if key not in payload or payload.get(key) is None:
             if value is not None:
                 payload[key] = value
-    existing_loc = existing.get("lines_of_code") or 0
-    new_loc = payload.get("lines_of_code") or 0
-    if existing_loc and (new_loc == 0 or new_loc < existing_loc * 0.75):
-        payload["lines_of_code"] = existing_loc
-        payload["lines_per_repo"] = existing.get("lines_per_repo", {})
-    elif not payload.get("lines_of_code") and existing.get("lines_of_code"):
-        payload["lines_of_code"] = existing["lines_of_code"]
-        payload["lines_per_repo"] = existing.get("lines_per_repo", {})
+    new_loc = payload.get("lines_of_li")
+    if new_loc is not None and new_loc > 0:
+        # Fresh `.li` census from this run — never substitute legacy mixed-language totals.
+        pass
+    else:
+        existing_loc = existing.get("lines_of_li")
+        if existing_loc is None and existing.get("loc_metric") != "lines_of_li":
+            existing_loc = existing.get("lines_of_code")
+        existing_loc = existing_loc or 0
+        if existing_loc and (new_loc == 0 or new_loc is None):
+            payload["lines_of_li"] = existing_loc
+            payload["lines_per_repo"] = existing.get("lines_per_repo", {})
+            payload["repos_loc_missing"] = existing.get("repos_loc_missing")
+        elif existing_loc and new_loc is not None and new_loc < existing_loc * 0.75:
+            payload["lines_of_li"] = existing_loc
+            payload["lines_per_repo"] = existing.get("lines_per_repo", {})
+            payload["repos_loc_missing"] = existing.get("repos_loc_missing")
+    if payload.get("org_swarm") is None and existing.get("org_swarm"):
+        payload["org_swarm"] = existing["org_swarm"]
     return payload
+
 
 def main() -> int:
     overview = os.environ.get("GH_TOKEN_OVERVIEW_PAGE", "").strip()
@@ -269,33 +305,33 @@ def main() -> int:
         os.environ.setdefault("GITHUB_TOKEN", overview)
 
     root = repo_root()
-    repos_file = root / ".github" / "li-org-repos.txt"
     out_dir = root / "data" / "development-overview"
     out_json = out_dir / "ecosystem-stats.json"
 
-    if not repos_file.is_file():
-        sys.stderr.write(f"missing {repos_file}\n")
-        return 1
     if shutil.which("gh") is None:
         sys.stderr.write("error: gh CLI required\n")
         return 1
 
-    repos = load_repo_list(repos_file)
+    repos = list_org_repo_names(root)
     skip_clone = os.environ.get("ECOSYSTEM_STATS_SKIP_CLONE", "") == "1"
     clone_missing = not skip_clone
 
+    lines_total: int | None = None
+    lines_per_repo: dict[str, int] | None = None
+    repos_loc_missing: int | None = None
     if skip_clone:
-        # Pages/CI only checks out roadmap — counting LoC here yields ~6k not ~67k.
-        lines_total, lines_per_repo = None, None
+        # Pages/CI only checks out roadmap — LoC needs shallow clones of all org repos.
+        pass
     else:
-        lines_total, lines_per_repo = compute_loc(repos, root, clone_missing)
-    org_repositories = count_org_repositories()
+        lines_total, lines_per_repo, repos_loc_missing = compute_lines_of_li(
+            repos, root, clone_missing
+        )
 
+    org_repositories = count_org_repositories()
     open_issues, closed_issues, issues_source = issue_counts()
     open_mrs, closed_mrs, mrs_source = mr_counts()
     gitlab_projects = gitlab_project_count() if gitlab_token() else None
 
-    # GitHub org repo count remains useful during mirror transition.
     gh_open_prs = search_total_count(f"org:{ORG}+is:pr+is:open")
     gh_closed_prs = search_total_count(f"org:{ORG}+is:pr+is:closed")
     gh_open_issues = search_total_count(f"org:{ORG}+is:issue+is:open")
@@ -318,7 +354,10 @@ def main() -> int:
         "vcs_primary": issues_source,
         "gitlab_host": GITLAB_HOST,
         "gitlab_group": GITLAB_GROUP,
-        "repos_tracked": len(repos),
+        "repos_loc_tracked": len(repos),
+        "repos_loc_missing": repos_loc_missing,
+        "loc_metric": "lines_of_li",
+        "loc_file_types": sorted(LI_SOURCE_SUFFIXES),
         "org_repositories": org_repositories,
         "gitlab_projects": gitlab_projects,
         "issues_source": issues_source,
@@ -340,15 +379,18 @@ def main() -> int:
         "github_issues_closed": gh_closed_issues,
     }
     if lines_total is not None:
-        payload["lines_of_code"] = lines_total
+        payload["lines_of_li"] = lines_total
         payload["lines_per_repo"] = lines_per_repo
-
 
     out_dir.mkdir(parents=True, exist_ok=True)
     payload = merge_existing(payload, out_json)
+    payload.pop("lines_of_code", None)
+    payload.pop("repos_tracked", None)
     out_json.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
     print(
-        f"Wrote {out_json} — LoC {payload.get('lines_of_code', lines_total)}, "
+        f"Wrote {out_json} — lines of Li {payload.get('lines_of_li', lines_total)} "
+        f"({payload.get('repos_loc_tracked', len(repos))} repos, "
+        f"missing {payload.get('repos_loc_missing', repos_loc_missing)}), "
         f"gitlab projects {gitlab_projects}, issues ({issues_source}) open {open_issues}, "
         f"MRs ({mrs_source}) open {open_mrs}"
     )
