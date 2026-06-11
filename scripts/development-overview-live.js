@@ -234,7 +234,9 @@ function renderEcosystemMetrics(live = {}) {
   setEcoStatus(merged._status || "");
 
   const locHint =
-    loc != null && locAsOf ? `snapshot ${locAsOf}` : "recomputed weekly on main";
+    loc != null && locAsOf
+      ? `${snap.repos_tracked ?? 14} tracked repos · snapshot ${locAsOf}`
+      : "recomputed weekly on main (14 repos in li-org-repos.txt)";
   const repoLabel = gl ? "GitLab projects" : "Org repositories";
   const openQueueLabel = gl ? "Open MRs" : "Open PRs";
   const closedQueueLabel = gl ? "Closed MRs" : "Closed PRs";

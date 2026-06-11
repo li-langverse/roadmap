@@ -89,6 +89,8 @@ def fmt_int(n) -> str:
 
 
 eco_as_of = eco.get("generated_at", "—")
+repos_tracked = eco.get("repos_tracked", 14)
+gitlab_projects = eco.get("gitlab_projects", "—")
 def org_repos_val(e):
     v = e.get("org_repositories")
     if v is not None:
@@ -322,7 +324,7 @@ html = f"""<!DOCTYPE html>
       <h2 id="eco-heading">Ecosystem statistics</h2>
       <p class="section-note">
         Committed baseline <span id="eco-as-of">{eco_as_of}</span>.
-        Issue and MR counts from <a href="https://gitlab.lilangverse.xyz/li-langverse">GitLab</a> snapshot (15m refresh); MR queue from <code>status.json</code> (~15m); LoC weekly — <span id="eco-live-status" class="live-status-badge"></span>
+        Issue and MR counts from <a href="https://gitlab.lilangverse.xyz/li-langverse">GitLab</a> snapshot (15m refresh); MR queue from <code>status.json</code> (~15m); LoC weekly ({repos_tracked} repos in <code>li-org-repos.txt</code>, not all {gitlab_projects} GitLab projects) — <span id="eco-live-status" class="live-status-badge"></span>
         <a href="https://github.com/li-langverse/roadmap/blob/main/.github/li-org-repos.txt" title="Lines of code sum only repos listed in li-org-repos.txt.">LoC scope</a>
         · <a href="https://github.com/li-langverse/roadmap/blob/main/scripts/compute-ecosystem-stats.py">Maintainer: recompute snapshot</a>
       </p>

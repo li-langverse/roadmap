@@ -232,7 +232,7 @@ def compute_loc(repos: list[str], workdir: Path, clone_missing: bool) -> tuple[i
                 per_repo[name] = 0
     finally:
         if tmp_clone is not None:
-            subprocess.run(["rm", "-rf", str(tmp_clone)], check=False)
+            shutil.rmtree(tmp_clone, ignore_errors=True)
     return sum(per_repo.values()), per_repo
 
 
