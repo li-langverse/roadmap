@@ -9,11 +9,14 @@ def cumulative_prs_closed(
     *,
     mrs_source: str,
     github_closed: int | None,
-    gitlab_closed: int | None,
+    prs_closed: int | None = None,
+    gitlab_closed: int | None = None,
 ) -> int | None:
     """Lifetime closed PR/MR count. GitHub search retains full mirror history."""
     if github_closed is not None:
         return github_closed
+    if prs_closed is not None:
+        return prs_closed
     return gitlab_closed
 
 
@@ -37,15 +40,12 @@ def history_point_metrics(eco: dict) -> dict[str, int | None]:
     issues_source = str(eco.get("issues_source") or eco.get("vcs_primary") or "")
     mrs_source = str(eco.get("mrs_source") or eco.get("prs_source") or issues_source)
     gitlab_issues_closed = eco.get("issues_closed")
-    gitlab_mrs_closed = eco.get("mrs_closed")
-    if gitlab_mrs_closed is None:
-        gitlab_mrs_closed = eco.get("prs_closed")
-
     return {
         "prs_closed": cumulative_prs_closed(
             mrs_source=mrs_source,
             github_closed=eco.get("github_prs_closed"),
-            gitlab_closed=gitlab_mrs_closed,
+            prs_closed=eco.get("prs_closed"),
+            gitlab_closed=eco.get("mrs_closed"),
         ),
         "issues_closed": cumulative_issues_closed(
             issues_source=issues_source,

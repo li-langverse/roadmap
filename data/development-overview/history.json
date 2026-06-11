@@ -197,6 +197,14 @@
       "issues_open": 41,
       "issues_closed": 143,
       "source": "refresh"
+    },
+    {
+      "at": "2026-06-11",
+      "open_prs": 161,
+      "prs_closed": 1653,
+      "issues_open": 17,
+      "issues_closed": 168,
+      "source": "fix-cumulative-prs"
     }
   ]
 }

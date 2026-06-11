@@ -28,6 +28,17 @@ class OverviewHistoryMetricsTests(unittest.TestCase):
             1653,
         )
 
+    def test_cumulative_prs_prefers_prs_closed_over_gitlab_only(self) -> None:
+        self.assertEqual(
+            cumulative_prs_closed(
+                mrs_source="gitlab",
+                github_closed=None,
+                prs_closed=1653,
+                gitlab_closed=6,
+            ),
+            1653,
+        )
+
     def test_cumulative_issues_monotonic_across_sources(self) -> None:
         self.assertEqual(
             cumulative_issues_closed(

@@ -15,7 +15,7 @@ const ECO_MS = 900_000;
 const CI_TICK_MS = 90_000;
 const SEARCH_GAP_MS = 2_000;
 const ECO_CACHE_MS = 900_000;
-const ECO_CACHE_KEY = "li-dev-overview-eco-live-v3";
+const ECO_CACHE_KEY = "li-dev-overview-eco-live-v4";
 const SEARCH_URL = `https://api.github.com/search/issues?q=org:${ORG}+is:open+is:pr&per_page=100&sort=updated`;
 const ECO_STATS_URL = "./ecosystem-stats.json";
 const STATUS_JSON_URL = "./status.json";
@@ -34,7 +34,8 @@ function gitlabPrimary(snap) {
 /** Lifetime closed PR/MR count spanning GitHub mirror history + GitLab-primary era. */
 function cumulativeClosedPrs(snap) {
   if (typeof snap?.github_prs_closed === "number") return snap.github_prs_closed;
-  return snap?.mrs_closed ?? snap?.prs_closed;
+  if (typeof snap?.prs_closed === "number") return snap.prs_closed;
+  return snap?.mrs_closed;
 }
 
 /** Lifetime closed issue count — monotonic across GitHub freeze + GitLab-primary era. */

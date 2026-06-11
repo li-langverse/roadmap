@@ -95,12 +95,35 @@ def org_repos_val(e):
         return v
     return e.get("packages")
 
+
+def cumulative_closed_prs(e):
+  gh = e.get("github_prs_closed")
+  if isinstance(gh, int):
+    return gh
+  prs = e.get("prs_closed")
+  if isinstance(prs, int):
+    return prs
+  return e.get("mrs_closed")
+
+
+def cumulative_closed_issues(e):
+  gh = e.get("github_issues_closed")
+  gl = e.get("issues_closed_gitlab")
+  if gl is None:
+    gl = e.get("issues_closed")
+  if isinstance(gh, int) and isinstance(gl, int):
+    return max(gh, gl)
+  if isinstance(gl, int):
+    return gl
+  return gh
+
+
 eco_cards = [
     ("Lines of code", fmt_int(eco.get("lines_of_code"))),
     ("Org repositories", fmt_int(org_repos_val(eco))),
     ("Open issues", fmt_int(eco.get("issues_open"))),
-    ("Closed issues", fmt_int(eco.get("issues_closed"))),
-    ("Closed PRs", fmt_int(eco.get("prs_closed"))),
+    ("Closed issues", fmt_int(cumulative_closed_issues(eco))),
+    ("Closed PRs", fmt_int(cumulative_closed_prs(eco))),
 ]
 eco_cards_html = "".join(
     f'<div class="metric-card"><p class="label">{label}</p><p class="value">{value}</p></div>'
