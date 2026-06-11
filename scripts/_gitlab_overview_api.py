@@ -21,12 +21,14 @@ def gitlab_api_bases() -> list[str]:
     explicit = os.environ.get("GITLAB_API_URL", "").strip().rstrip("/")
     if explicit:
         return [explicit]
+    scheme = os.environ.get("LI_GITLAB_SCHEME", "https").strip().lower()
     internal = os.environ.get("LI_GIT_INTERNAL_SVC", "").strip()
     bases: list[str] = []
     if internal and "lilangverse.xyz" in GITLAB_HOST:
         bases.append(f"http://{internal}")
-    bases.append(f"https://{GITLAB_HOST}")
-    if f"http://{GITLAB_HOST}" not in bases:
+    if scheme != "http":
+        bases.append(f"https://{GITLAB_HOST}")
+    if scheme == "http":
         bases.append(f"http://{GITLAB_HOST}")
     out: list[str] = []
     for base in bases:
