@@ -14,6 +14,7 @@ Product requirement (2026-06-12):
 - **Fully decentralized** — no canonical registry URL required
 - **Open publish** — no censorship, gatekeeping, invites, or global blocklists
 - **Account-based identity** — scoped `@handle/package` so official org releases (`@li-langverse/…`) are distinguishable from squatters without namespace police
+- **Default peer hosting** — `lic` install enables capped seeding of packages already on disk; opt-out at install or via `lip peer off`
 
 ## Decision
 
@@ -24,6 +25,7 @@ Adopt **federated registry v3** as the long-term package index model:
 3. **Optional proofs** — dns/git/vouch badges for “official” clarity (not publish gates)
 4. **Federation gossip** — many `lis` nodes replicate signed catalog events
 5. **P2P overlay** (later) — optional `lip daemon` / DHT; same trust model
+6. **Default seeding on install** — `lic` installer prompts; `peer.hosting = true` by default; bandwidth caps; `--no-peer-hosting` / `lip peer off`
 
 PH-DB-4 central deployment becomes **one federation peer**, not a protocol requirement.
 
