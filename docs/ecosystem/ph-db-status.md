@@ -104,6 +104,7 @@ gh repo view li-langverse/lidb --json defaultBranchRef
 
 ## Related
 
+- **Decentralized registry v3 (spec):** [lip `registry-decentralized.md`](https://github.com/li-langverse/lip/blob/main/docs/registry-decentralized.md) · [roadmap `lip-decentralized-registry.md`](../../proposals/lip-decentralized-registry.md) — extends PH-DB-4; central URL becomes optional federation peer
 - Swarm plan todos: `lic/docs/superpowers/plans/ph-db-swarm-plan.md`
 - Execution tracker (WP-A…K): `lic/docs/superpowers/plans/ph-db-execution-tracker.md`
 - Battle plan: `lic/docs/superpowers/plans/ph-db-battle-plan.md`

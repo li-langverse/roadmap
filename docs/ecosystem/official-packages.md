@@ -32,7 +32,11 @@ Until a package moves to its own repo, it may live under `packages/<name>/` in *
 3. Ensure `PUBLISH.md` lists the same `PKG-*` id.
 4. Link `PH-*` and `T-*` in `docs/traceability.md`.
 
-Third-party packages are **not** listed here; they appear in the public `lip` index (phase 8d).
+Third-party packages are **not** listed here; they publish under their own scope (e.g. `@alice/my-lib`) in the [decentralized registry](https://github.com/li-langverse/lip/blob/main/docs/registry-decentralized.md).
+
+## Registry scope (decentralized v3)
+
+Official org packages SHOULD publish as **`@li-langverse/<package-name>`** with optional **dns** and **git** verification proofs. The registry does not reserve names or block third-party publishes — consumers distinguish official releases by account handle and proofs, not by central moderation. See [lip `registry-decentralized.md`](https://github.com/li-langverse/lip/blob/main/docs/registry-decentralized.md) and [roadmap `lip-decentralized-registry.md`](../../proposals/lip-decentralized-registry.md).
 
 
 **Upstream notifications:** [Master plan § Cross-repo notifications](https://github.com/li-langverse/lic/blob/main/docs/superpowers/plans/2026-05-14-li-master-plan.md#cross-repo-dependency-notifications-every-official-package) — every row must receive GitHub dispatch / Dependabot when a `depends_on` repo releases.
