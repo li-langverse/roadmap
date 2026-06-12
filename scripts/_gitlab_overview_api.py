@@ -120,6 +120,27 @@ def gitlab_group_mr_counts() -> tuple[int | None, int | None]:
     return open_n, closed_n
 
 
+def _gitlab_get_anonymous(path: str) -> tuple[int, object, dict[str, str]]:
+    """Public GitLab API (no token) — works for public group/project listings."""
+    headers = {"Accept": "application/json"}
+    last: tuple[int, object, dict[str, str]] = (0, {"message": "no bases"}, {})
+    for base in gitlab_api_bases():
+        url = path if path.startswith("http") else f"{base}{path}"
+        req = urllib.request.Request(url, headers=headers, method="GET")
+        try:
+            with urllib.request.urlopen(req, timeout=90) as resp:
+                raw = resp.read().decode()
+                hdrs = {k: v for k, v in resp.headers.items()}
+                ctype = (hdrs.get("Content-Type") or "").lower()
+                if "text/html" in ctype:
+                    raise ValueError("GitLab returned HTML")
+                payload = json.loads(raw) if raw else None
+                return resp.status, payload, hdrs
+        except (urllib.error.HTTPError, urllib.error.URLError, ValueError, json.JSONDecodeError) as exc:
+            last = (getattr(exc, "code", 0) or 0, {"message": str(exc)}, {})
+    return last
+
+
 def gitlab_project_count() -> int | None:
     group = urllib.parse.quote(GITLAB_GROUP, safe="")
     return gitlab_header_total(
@@ -129,31 +150,47 @@ def gitlab_project_count() -> int | None:
 
 def gitlab_project_paths(*, archived: bool = False) -> list[str] | None:
     """Return project path slugs (repo names) under the org group."""
-    token = gitlab_token()
-    if not token:
-        return None
     group = urllib.parse.quote(GITLAB_GROUP, safe="")
     archived_flag = "true" if archived else "false"
     path = (
         f"/api/v4/groups/{group}/projects"
         f"?include_subgroups=true&archived={archived_flag}&per_page=100"
     )
-    names: list[str] = []
-    page = 1
-    while page <= 50:
-        status, data, _ = _gitlab_get(f"{path}&page={page}", token=token)
+    names: set[str] = set()
+
+    def collect(status: int, data: object) -> None:
         if status != 200 or not isinstance(data, list):
-            return names if names else None
+            return
         for proj in data:
             if not isinstance(proj, dict):
                 continue
             slug = str(proj.get("path") or proj.get("name") or "").strip()
             if slug:
-                names.append(slug)
-        if len(data) < 100:
+                names.add(slug)
+
+    page = 1
+    while page <= 50:
+        status, data, _ = _gitlab_get_anonymous(f"{path}&page={page}")
+        if status != 200:
+            break
+        collect(status, data)
+        if not isinstance(data, list) or len(data) < 100:
             break
         page += 1
-    return sorted(set(names))
+
+    token = gitlab_token()
+    if token:
+        page = 1
+        while page <= 50:
+            status, data, _ = _gitlab_get(f"{path}&page={page}", token=token)
+            if status != 200:
+                break
+            collect(status, data)
+            if not isinstance(data, list) or len(data) < 100:
+                break
+            page += 1
+
+    return sorted(names) if names else None
 
 
 def _repo_from_mr(mr: dict) -> str:

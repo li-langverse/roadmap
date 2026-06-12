@@ -328,9 +328,9 @@ html = f"""<!DOCTYPE html>
       <h2 id="eco-heading">Ecosystem statistics</h2>
       <p class="section-note">
         Committed baseline <span id="eco-as-of">{eco_as_of}</span>.
-        Issue and MR counts from <a href="https://gitlab.lilangverse.xyz/li-langverse">GitLab</a> snapshot (15m refresh); MR queue from <code>status.json</code> (~15m); <strong>Lines of Li</strong> weekly ({loc_file_types} across {repos_loc_tracked} org repos) — <span id="eco-live-status" class="live-status-badge"></span>
-        <a href="https://github.com/li-langverse/roadmap/blob/main/scripts/compute-ecosystem-stats.py" title="Counts physical lines in .li source files across all GitHub/GitLab org repositories; excludes C++, Python harness, docs, and other languages.">Li source scope</a>
-        · <a href="https://github.com/li-langverse/roadmap/blob/main/scripts/compute-ecosystem-stats.py">Maintainer: recompute snapshot</a>
+        Issue and MR counts from <a href="https://gitlab.lilangverse.xyz/li-langverse">GitLab</a> snapshot (15m refresh); MR queue from <code>status.json</code> (~15m); <strong>Lines of Li</strong> weekly ({loc_file_types} across {repos_loc_tracked} GitLab projects) — <span id="eco-live-status" class="live-status-badge"></span>
+        <a href="https://gitlab.lilangverse.xyz/li-langverse/roadmap/-/blob/main/scripts/compute-ecosystem-stats.py" title="Counts physical lines in .li source files across GitLab org projects; GitHub is GHCR-only.">Li source scope</a>
+        · <a href="https://gitlab.lilangverse.xyz/li-langverse/roadmap/-/blob/main/scripts/compute-ecosystem-stats.py">Maintainer: recompute snapshot</a>
       </p>
       <div class="live-metrics" id="ecosystem-metrics">{eco_cards_html}</div>
     </section>
@@ -343,7 +343,7 @@ html = f"""<!DOCTYPE html>
     </section>
     <section class="live-banner" aria-labelledby="live-heading">
       <h2 id="live-heading">Live merge queue</h2>
-      <p class="section-note">GitLab-primary: polls committed <code>status.json</code> (~15m, refreshed every 15m on main). GitHub mirror fallback uses Search API when GitLab snapshot is unavailable. Older tables are in <a href="#markdown-snapshot">snapshot tables</a>.</p>
+      <p class="section-note">GitLab-primary: polls committed <code>status.json</code> (~15m). GitHub org is GHCR-only — no git mirror fallback. Older tables are in <a href="#markdown-snapshot">snapshot tables</a>.</p>
       <div class="live-metrics" id="live-metrics"></div>
       <div class="live-table-wrap">
         <table id="live-pr-table">

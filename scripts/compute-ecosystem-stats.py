@@ -157,19 +157,14 @@ def count_org_repositories_via_token() -> int | None:
 
 
 def list_org_repo_names(root: Path) -> list[str]:
-    """Union GitHub org repos and GitLab group projects (GitLab-primary census)."""
-    names: set[str] = set()
-    gh_names = list_github_repo_names()
-    if gh_names:
-        names.update(gh_names)
+    """GitLab group project census (GitHub org is GHCR-only; not used for git)."""
     gl_names = gitlab_project_paths()
     if gl_names:
-        names.update(gl_names)
-    if not names:
-        repos_file = root / ".github" / "li-org-repos.txt"
-        if repos_file.is_file():
-            names.update(load_repo_list(repos_file))
-    return sorted(names)
+        return gl_names
+    repos_file = root / ".github" / "li-org-repos.txt"
+    if repos_file.is_file():
+        return load_repo_list(repos_file)
+    return []
 
 
 def count_li_lines(repo_path: Path) -> int:
@@ -229,9 +224,11 @@ def clone_repo_gitlab(name: str, dest: Path) -> bool:
 
 
 def clone_repo(name: str, dest: Path) -> bool:
-    if clone_repo_github(name, dest):
+    if clone_repo_gitlab(name, dest):
         return True
-    return clone_repo_gitlab(name, dest)
+    if os.environ.get("ECOSYSTEM_STATS_ALLOW_GITHUB_CLONE", "") == "1":
+        return clone_repo_github(name, dest)
+    return False
 
 
 def resolve_local_clone(name: str, parent: Path) -> Path | None:
@@ -326,6 +323,12 @@ def main() -> int:
         return 1
 
     repos = list_org_repo_names(root)
+    gitlab_projects = len(repos) if repos else None
+    if gitlab_token():
+        counted = gitlab_project_count()
+        if counted is not None:
+            gitlab_projects = counted
+
     skip_clone = os.environ.get("ECOSYSTEM_STATS_SKIP_CLONE", "") == "1"
     clone_missing = not skip_clone
 
@@ -340,10 +343,9 @@ def main() -> int:
             repos, root, clone_missing
         )
 
-    org_repositories = count_org_repositories()
+    org_repositories = gitlab_projects
     open_issues, closed_issues, issues_source = issue_counts()
     open_mrs, closed_mrs, mrs_source = mr_counts()
-    gitlab_projects = gitlab_project_count() if gitlab_token() else None
 
     gh_open_prs = search_total_count(f"org:{ORG}+is:pr+is:open")
     gh_closed_prs = search_total_count(f"org:{ORG}+is:pr+is:closed")
