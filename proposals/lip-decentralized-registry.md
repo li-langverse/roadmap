@@ -26,6 +26,7 @@ Adopt **federated registry v3** as the long-term package index model:
 4. **Federation gossip** — many `lis` nodes replicate signed catalog events
 5. **P2P overlay** (later) — optional `lip daemon` / DHT; same trust model
 6. **Default seeding on install** — `lic` installer prompts; `peer.hosting = true` by default; bandwidth caps; `--no-peer-hosting` / `lip peer off`
+7. **Multi-peer supply-chain verify** — `lip install` polls up to **500** hosters for digest quorum; mismatch → `SUPPLY_CHAIN_ALERT` / abort
 
 PH-DB-4 central deployment becomes **one federation peer**, not a protocol requirement.
 
@@ -74,6 +75,7 @@ flowchart TB
 | Scoped name | Disambiguates publishers |
 | Proofs (dns/git/vouch) | **Labels** for official clarity — never blocks publish |
 | Client `prefer` / `ignore` | Consumer policy — not network censorship |
+| Digest quorum (≤500 peers) | Detect swapped tarballs / poisoned mirrors before install |
 
 ## Official org packages
 
