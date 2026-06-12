@@ -41,7 +41,7 @@ for line in repos_file.read_text(encoding="utf-8").splitlines():
         repos.append(line)
 
 LIVE_DOCS = {
-    "benchmarks": "https://li-langverse.github.io/benchmarks/",
+    "benchmarks": "https://benchmarks.lilangverse.xyz/",
     "li-language": "https://li-langverse.github.io/li-language/",
 }
 
@@ -165,7 +165,7 @@ if eco_path.is_file():
 
 payload = {
     "generated_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%MZ"),
-    "pages_url": "https://li-langverse.github.io/roadmap/development-overview/",
+    "pages_url": "https://progress.lilangverse.xyz/",
     "vcs_source": vcs_source,
     "metrics": {
         "ready_to_merge": ready,

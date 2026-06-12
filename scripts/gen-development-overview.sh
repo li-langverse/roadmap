@@ -3,6 +3,9 @@
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+if [[ -f "${ROOT}/data/development-overview/status.json" ]]; then
+  python3 "${ROOT}/scripts/regenerate-development-overview-md-from-status.py" || true
+fi
 SRC="${ROOT}/docs/development-overview.md"
 ECO_JSON="${ROOT}/data/development-overview/ecosystem-stats.json"
 OUT_DIR="${ROOT}/site/development-overview"
@@ -20,7 +23,7 @@ cat >"${ROOT}/site/index.html" <<'HTML'
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Li roadmap</title>
   <meta http-equiv="refresh" content="0; url=./development-overview/">
-  <link rel="canonical" href="https://li-langverse.github.io/roadmap/development-overview/">
+  <link rel="canonical" href="https://progress.lilangverse.xyz/">
 </head>
 <body>
   <p>Redirecting to <a href="./development-overview/">development overview</a>…</p>
@@ -316,7 +319,7 @@ html = f"""<!DOCTYPE html>
         <a href="#markdown-snapshot">Snapshot tables</a>
       </nav>
       <nav class="nav" aria-label="Related">
-        <a href="https://li-langverse.github.io/benchmarks/">Benchmarks</a>
+        <a href="https://benchmarks.lilangverse.xyz/">Benchmarks</a>
         <a href="https://li-langverse.github.io/li-language/">Language docs</a>
         <a href="https://github.com/li-langverse/roadmap">roadmap repo</a>
       </nav>
@@ -352,7 +355,7 @@ html = f"""<!DOCTYPE html>
       </div>
     </section>
     <main>
-      <details id="markdown-snapshot" class="snapshot-details" open>
+      <details id="markdown-snapshot" class="snapshot-details">
         <summary>Markdown snapshot tables (<time id="snapshot-as-of-summary">{as_of}</time>)</summary>
         <div class="snapshot-body">
 {body}

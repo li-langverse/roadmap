@@ -1,0 +1,111 @@
+# GitLab-primary CI for progress.lilangverse.xyz (development overview).
+# Schedule: */15 * * * *  variable SCHEDULE_KIND=development-overview-refresh
+#
+# Variables: GITLAB_TOKEN (required), GH_TOKEN or GH_TOKEN_OVERVIEW_PAGE (optional GitHub fallback)
+
+stages:
+  - test
+  - refresh
+  - publish
+
+default:
+  tags:
+    - homelab-k8s
+  interruptible: true
+
+variables:
+  LI_VCS_PROVIDER: gitlab
+  LI_GITLAB_SCHEME: https
+  LI_GITLAB_HOST: gitlab.lilangverse.xyz
+  ECOSYSTEM_STATS_SKIP_CLONE: "1"
+  GIT_SSL_NO_VERIFY: "true"
+  CI_SERVER_HOST: gitlab.gitlab.svc.cluster.local
+
+overview-refresh:
+  stage: refresh
+  image: ubuntu:24.04
+  timeout: 20m
+  before_script:
+    - apt-get update -qq
+    - apt-get install -y -qq git curl ca-certificates python3
+    - |
+      if ! command -v gh >/dev/null 2>&1; then
+        curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg 2>/dev/null
+        echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" > /etc/apt/sources.list.d/github-cli.list
+        apt-get update -qq && apt-get install -y -qq gh || true
+      fi
+  script:
+    - chmod +x scripts/compute-ecosystem-stats.py scripts/refresh-development-overview.sh
+    - python3 scripts/compute-ecosystem-stats.py
+    - ./scripts/refresh-development-overview.sh
+    - python3 scripts/regenerate-development-overview-md-from-status.py
+    - |
+      if [[ "$CI_COMMIT_BRANCH" == "main" && -n "${GITLAB_TOKEN:-}" ]]; then
+        git config user.email "overview-refresh@lilangverse.xyz"
+        git config user.name "development-overview-refresh"
+        git add data/development-overview/ docs/development-overview.md || true
+        git diff --staged --quiet || git commit -m "chore(overview): refresh GitLab metrics snapshot"
+        git push "https://oauth2:${GITLAB_TOKEN}@${CI_SERVER_HOST}/${CI_PROJECT_PATH}.git" "HEAD:${CI_COMMIT_BRANCH}"
+      fi
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule" && $SCHEDULE_KIND == "development-overview-refresh"
+    - if: $CI_PIPELINE_SOURCE == "web" && $CI_COMMIT_BRANCH == "main"
+    - if: $CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == "main"
+      changes:
+        - scripts/refresh-development-overview.sh
+        - scripts/compute-ecosystem-stats.py
+        - scripts/_gitlab_overview_api.py
+
+pages:
+  stage: publish
+  image: ubuntu:24.04
+  timeout: 25m
+  needs:
+    - job: overview-refresh
+      optional: true
+  before_script:
+    - apt-get update -qq
+    - apt-get install -y -qq git curl python3
+    - python3 -m pip install -q markdown
+    - |
+      if [[ -n "${GITLAB_TOKEN:-}" && "${CI_COMMIT_BRANCH:-}" == "main" ]]; then
+        git fetch "https://oauth2:${GITLAB_TOKEN}@${CI_SERVER_HOST}/${CI_PROJECT_PATH}.git" main || true
+        git checkout -B main FETCH_HEAD || true
+      fi
+  script:
+    - python3 scripts/regenerate-development-overview-md-from-status.py || true
+    - chmod +x scripts/gen-development-overview.sh
+    - ./scripts/gen-development-overview.sh
+    - test -f site/development-overview/index.html
+    - test -f site/development-overview/status.json
+    - rm -rf public && mkdir -p public
+    - cp -a site/development-overview/. public/
+    - cp site/index.html public/redirect-root.html
+    - echo "progress.lilangverse.xyz" > public/CNAME
+  artifacts:
+    paths:
+      - public
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule" && $SCHEDULE_KIND == "development-overview-refresh" && $CI_COMMIT_BRANCH == "main"
+    - if: $CI_PIPELINE_SOURCE == "web" && $CI_COMMIT_BRANCH == "main"
+    - if: $CI_COMMIT_BRANCH == "main" && $CI_PIPELINE_SOURCE == "push"
+      changes:
+        - data/development-overview/**
+        - docs/development-overview.md
+        - scripts/gen-development-overview.sh
+        - scripts/development-overview-live.js
+        - scripts/development-overview-history.js
+        - .gitlab-ci.yml
+
+dashboard-build:
+  stage: test
+  image: ubuntu:24.04
+  script:
+    - apt-get update -qq && apt-get install -y -qq python3
+    - python3 -m pip install -q markdown
+    - python3 scripts/regenerate-development-overview-md-from-status.py || true
+    - chmod +x scripts/gen-development-overview.sh
+    - ./scripts/gen-development-overview.sh
+    - test -f site/development-overview/index.html
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
