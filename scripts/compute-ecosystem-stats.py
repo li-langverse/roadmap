@@ -201,13 +201,26 @@ def clone_repo_github(name: str, dest: Path) -> bool:
 
 
 def clone_repo_gitlab(name: str, dest: Path) -> bool:
+    """Clone from GitLab — anonymous HTTPS first, then token if the project is private."""
+    target = dest / name
+    public_url = f"https://{GITLAB_HOST}/{GITLAB_GROUP}/{name}.git"
+    proc = subprocess.run(
+        ["git", "clone", "--depth", "1", public_url, str(target)],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    if proc.returncode == 0 and target.is_dir():
+        return True
+    if target.exists():
+        shutil.rmtree(target, ignore_errors=True)
+
     token = gitlab_token()
     if not token:
         return False
-    target = dest / name
-    url = f"https://oauth2:{token}@{GITLAB_HOST}/{GITLAB_GROUP}/{name}.git"
+    auth_url = f"https://oauth2:{token}@{GITLAB_HOST}/{GITLAB_GROUP}/{name}.git"
     proc = subprocess.run(
-        ["git", "clone", "--depth", "1", url, str(target)],
+        ["git", "clone", "--depth", "1", auth_url, str(target)],
         capture_output=True,
         text=True,
         check=False,
