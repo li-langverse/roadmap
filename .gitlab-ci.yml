@@ -17,9 +17,10 @@ variables:
   LI_VCS_PROVIDER: gitlab
   LI_GITLAB_SCHEME: https
   LI_GITLAB_HOST: gitlab.lilangverse.xyz
+  # Public host for git fetch/push from homelab runners (cluster DNS is not always reachable).
+  GIT_REMOTE_HOST: gitlab.lilangverse.xyz
   ECOSYSTEM_STATS_SKIP_CLONE: "1"
   GIT_SSL_NO_VERIFY: "true"
-  CI_SERVER_HOST: gitlab.gitlab.svc.cluster.local
 
 overview-refresh:
   stage: refresh
@@ -45,7 +46,7 @@ overview-refresh:
         git config user.name "development-overview-refresh"
         git add data/development-overview/ docs/development-overview.md || true
         git diff --staged --quiet || git commit -m "chore(overview): refresh GitLab metrics snapshot"
-        git push "https://oauth2:${GITLAB_TOKEN}@${CI_SERVER_HOST}/${CI_PROJECT_PATH}.git" "HEAD:${CI_COMMIT_BRANCH}"
+        git push "https://oauth2:${GITLAB_TOKEN}@${GIT_REMOTE_HOST}/${CI_PROJECT_PATH}.git" "HEAD:${CI_COMMIT_BRANCH}" || echo "warn: metrics push failed; pages will build from checkout"
       fi
   rules:
     - if: $CI_PIPELINE_SOURCE == "schedule" && $SCHEDULE_KIND == "development-overview-refresh"
@@ -55,16 +56,13 @@ pages:
   stage: publish
   image: ubuntu:24.04
   timeout: 25m
-  needs:
-    - job: overview-refresh
-      optional: true
   before_script:
     - apt-get update -qq
     - apt-get install -y -qq git curl python3
     - python3 -m pip install -q markdown
     - |
       if [[ -n "${GITLAB_TOKEN:-}" && "${CI_COMMIT_BRANCH:-}" == "main" ]]; then
-        git fetch "https://oauth2:${GITLAB_TOKEN}@${CI_SERVER_HOST}/${CI_PROJECT_PATH}.git" main || true
+        git fetch "https://oauth2:${GITLAB_TOKEN}@${GIT_REMOTE_HOST}/${CI_PROJECT_PATH}.git" main || true
         git checkout -B main FETCH_HEAD || true
       fi
   script:
@@ -74,8 +72,7 @@ pages:
     - test -f site/development-overview/index.html
     - test -f site/development-overview/status.json
     - rm -rf public && mkdir -p public
-    - cp -a site/development-overview/. public/
-    - cp site/index.html public/redirect-root.html
+    - cp -a site/. public/
     - echo "progress.lilangverse.xyz" > public/CNAME
   artifacts:
     paths:
