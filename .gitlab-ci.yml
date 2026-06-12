@@ -49,12 +49,7 @@ overview-refresh:
       fi
   rules:
     - if: $CI_PIPELINE_SOURCE == "schedule" && $SCHEDULE_KIND == "development-overview-refresh"
-    - if: $CI_PIPELINE_SOURCE == "web" && $CI_COMMIT_BRANCH == "main"
-    - if: $CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == "main"
-      changes:
-        - scripts/refresh-development-overview.sh
-        - scripts/compute-ecosystem-stats.py
-        - scripts/_gitlab_overview_api.py
+    - if: $CI_COMMIT_BRANCH == "main" && $CI_PIPELINE_SOURCE =~ /^(web|api|push)$/
 
 pages:
   stage: publish
@@ -86,16 +81,7 @@ pages:
     paths:
       - public
   rules:
-    - if: $CI_PIPELINE_SOURCE == "schedule" && $SCHEDULE_KIND == "development-overview-refresh" && $CI_COMMIT_BRANCH == "main"
-    - if: $CI_PIPELINE_SOURCE == "web" && $CI_COMMIT_BRANCH == "main"
-    - if: $CI_COMMIT_BRANCH == "main" && $CI_PIPELINE_SOURCE == "push"
-      changes:
-        - data/development-overview/**
-        - docs/development-overview.md
-        - scripts/gen-development-overview.sh
-        - scripts/development-overview-live.js
-        - scripts/development-overview-history.js
-        - .gitlab-ci.yml
+    - if: $CI_COMMIT_BRANCH == "main" && $CI_PIPELINE_SOURCE =~ /^(schedule|web|api|push)$/
 
 dashboard-build:
   stage: test
