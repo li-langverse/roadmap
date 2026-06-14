@@ -208,14 +208,14 @@
     },
     {
       "at": "2026-06-14",
-      "open_prs": 38,
-      "ready_to_merge": 12,
+      "open_prs": 39,
+      "ready_to_merge": 10,
       "prs_closed": 1654,
       "issues_open": 66,
       "issues_closed": 179,
       "source": "gitlab",
       "vcs_source": "gitlab",
-      "open_mrs": 38,
+      "open_mrs": 39,
       "mrs_closed": 263
     }
   ]

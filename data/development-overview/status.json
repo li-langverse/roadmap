@@ -1,17 +1,17 @@
 {
-  "generated_at": "2026-06-14T09:16Z",
+  "generated_at": "2026-06-14T09:22Z",
   "pages_url": "https://progress.lilangverse.xyz/",
   "vcs_source": "gitlab",
   "metrics": {
-    "ready_to_merge": 12,
-    "open_prs": 38,
-    "open_mrs": 38,
+    "ready_to_merge": 10,
+    "open_prs": 39,
+    "open_mrs": 39,
     "blocked": 0,
     "repos_with_live_docs": 2,
     "repos_total": 14
   },
   "ecosystem": {
-    "generated_at": "2026-06-14T09:16Z",
+    "generated_at": "2026-06-14T09:22Z",
     "org": "li-langverse",
     "vcs_primary": "gitlab",
     "gitlab_host": "gitlab.lilangverse.xyz",
@@ -30,10 +30,10 @@
     "issues_closed_gitlab": 179,
     "issues_total": 245,
     "mrs_source": "gitlab",
-    "mrs_open": 38,
+    "mrs_open": 39,
     "mrs_closed": 263,
     "prs_source": "gitlab",
-    "prs_open": 38,
+    "prs_open": 39,
     "prs_closed": 263,
     "github_prs_open": 913,
     "github_prs_closed": 1654,
@@ -259,8 +259,8 @@
       "url": "https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/304",
       "base": "main",
       "draft": false,
-      "ci": "pass",
-      "ready": true,
+      "ci": "none",
+      "ready": false,
       "source": "gitlab"
     },
     {
@@ -380,8 +380,8 @@
       "url": "https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/340",
       "base": "main",
       "draft": false,
-      "ci": "pass",
-      "ready": true,
+      "ci": "none",
+      "ready": false,
       "source": "gitlab"
     },
     {
@@ -389,6 +389,17 @@
       "number": 341,
       "title": "feat(libernetes/livm): Wave 8 disk persist across reboot",
       "url": "https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/341",
+      "base": "main",
+      "draft": false,
+      "ci": "none",
+      "ready": false,
+      "source": "gitlab"
+    },
+    {
+      "repo": "lic",
+      "number": 342,
+      "title": "docs(guide): extend getting-started CLI table for agent commands (lic#129)",
+      "url": "https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/342",
       "base": "main",
       "draft": false,
       "ci": "pass",
@@ -679,8 +690,8 @@
       "url": "https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/304",
       "base": "main",
       "draft": false,
-      "ci": "pass",
-      "ready": true,
+      "ci": "none",
+      "ready": false,
       "source": "gitlab"
     },
     {
@@ -800,8 +811,8 @@
       "url": "https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/340",
       "base": "main",
       "draft": false,
-      "ci": "pass",
-      "ready": true,
+      "ci": "none",
+      "ready": false,
       "source": "gitlab"
     },
     {
@@ -809,6 +820,17 @@
       "number": 341,
       "title": "feat(libernetes/livm): Wave 8 disk persist across reboot",
       "url": "https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/341",
+      "base": "main",
+      "draft": false,
+      "ci": "none",
+      "ready": false,
+      "source": "gitlab"
+    },
+    {
+      "repo": "lic",
+      "number": 342,
+      "title": "docs(guide): extend getting-started CLI table for agent commands (lic#129)",
+      "url": "https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/342",
       "base": "main",
       "draft": false,
       "ci": "pass",
