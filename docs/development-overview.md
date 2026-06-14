@@ -1,12 +1,12 @@
 # Li development overview
 
-**li-langverse org** · scanned **2026-06-14T08:37Z** · gitlab snapshot · live queue via status.json
+**li-langverse org** · scanned **2026-06-14T08:39Z** · gitlab snapshot · live queue via status.json
 
 | Metric | Value |
 |--------|------:|
-| Open issues (GitLab) | 64 |
-| Ready to merge (CI green) | 11 |
-| Open MRs / PRs | 39 |
+| Open issues (GitLab) | 65 |
+| Ready to merge (CI green) | 13 |
+| Open MRs / PRs | 41 |
 | Blocked / needs work | 0 |
 | Repos with live docs | 2 / 14 |
 
@@ -16,29 +16,32 @@
 2. [li-research-ingest #1](https://gitlab.lilangverse.xyz/li-langverse/li-research-ingest/-/merge_requests/1) — fix(research): R1b ingest state blocker diagnostics + S2 key gate verifi
 3. [lic #334](https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/334) — feat(libernetes): Wave 7 container restart policy (LB-C16–C17)
 4. [lic #335](https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/335) — feat(libernetes/livm): Wave 7 VM restart policy
-5. [lit #7](https://gitlab.lilangverse.xyz/li-langverse/lit/-/merge_requests/7) — fix(pages): apply org Li brand tokens to site landing (lit#8)
-6. [lit #9](https://gitlab.lilangverse.xyz/li-langverse/lit/-/merge_requests/9) — feat(lit): add li-tests shell_ok smoke for documented CLI flows
-7. [lit #11](https://gitlab.lilangverse.xyz/li-langverse/lit/-/merge_requests/11) — feat(li-tests): shell_ok manifest and GitLab CI for lit CLI (lit#6)
-8. [lit #12](https://gitlab.lilangverse.xyz/li-langverse/lit/-/merge_requests/12) — feat(lit): add li-tests shell_ok CLI smoke and GitLab CI (lit#6)
-9. [lit #13](https://gitlab.lilangverse.xyz/li-langverse/lit/-/merge_requests/13) — feat(lit): add li-tests CLI smoke and GitLab CI (lit#6)
-10. [lit #15](https://gitlab.lilangverse.xyz/li-langverse/lit/-/merge_requests/15) — chore(agent-kit): sync org-ga-enforcement.mdc from roadmap v1.3.6
-11. [lit #16](https://gitlab.lilangverse.xyz/li-langverse/lit/-/merge_requests/16) — chore(agent-kit): sync org-ga-enforcement.mdc from roadmap v1.3.6
+5. [lic #338](https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/338) — feat(libernetes): Wave 6 cluster-bench harness (LB-P17-P18)
+6. [lic #339](https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/339) — feat(libernetes): Wave 7 node controller + self-heal integration
+7. [lit #7](https://gitlab.lilangverse.xyz/li-langverse/lit/-/merge_requests/7) — fix(pages): apply org Li brand tokens to site landing (lit#8)
+8. [lit #9](https://gitlab.lilangverse.xyz/li-langverse/lit/-/merge_requests/9) — feat(lit): add li-tests shell_ok smoke for documented CLI flows
+9. [lit #11](https://gitlab.lilangverse.xyz/li-langverse/lit/-/merge_requests/11) — feat(li-tests): shell_ok manifest and GitLab CI for lit CLI (lit#6)
+10. [lit #12](https://gitlab.lilangverse.xyz/li-langverse/lit/-/merge_requests/12) — feat(lit): add li-tests shell_ok CLI smoke and GitLab CI (lit#6)
+11. [lit #13](https://gitlab.lilangverse.xyz/li-langverse/lit/-/merge_requests/13) — feat(lit): add li-tests CLI smoke and GitLab CI (lit#6)
+12. [lit #15](https://gitlab.lilangverse.xyz/li-langverse/lit/-/merge_requests/15) — chore(agent-kit): sync org-ga-enforcement.mdc from roadmap v1.3.6
 
 ## Merge when reviewed
 
 | Priority | MR/PR | CI | Action | Notes |
 |----------|-------|-----|--------|-------|
-| P0 | [li-os#5](https://gitlab.lilangverse.xyz/li-langverse/li-os/-/merge_requests/5) | pass | Merge when approved | snapshot 2026-06-14T08:37Z |
-| P0 | [li-research-ingest#1](https://gitlab.lilangverse.xyz/li-langverse/li-research-ingest/-/merge_requests/1) | pass | Merge when approved | snapshot 2026-06-14T08:37Z |
-| P0 | [lic#334](https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/334) | pass | Merge when approved | snapshot 2026-06-14T08:37Z |
-| P0 | [lic#335](https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/335) | pass | Merge when approved | snapshot 2026-06-14T08:37Z |
-| P0 | [lit#7](https://gitlab.lilangverse.xyz/li-langverse/lit/-/merge_requests/7) | pass | Merge when approved | snapshot 2026-06-14T08:37Z |
-| P0 | [lit#9](https://gitlab.lilangverse.xyz/li-langverse/lit/-/merge_requests/9) | pass | Merge when approved | snapshot 2026-06-14T08:37Z |
-| P0 | [lit#11](https://gitlab.lilangverse.xyz/li-langverse/lit/-/merge_requests/11) | pass | Merge when approved | snapshot 2026-06-14T08:37Z |
-| P0 | [lit#12](https://gitlab.lilangverse.xyz/li-langverse/lit/-/merge_requests/12) | pass | Merge when approved | snapshot 2026-06-14T08:37Z |
-| P0 | [lit#13](https://gitlab.lilangverse.xyz/li-langverse/lit/-/merge_requests/13) | pass | Merge when approved | snapshot 2026-06-14T08:37Z |
-| P0 | [lit#15](https://gitlab.lilangverse.xyz/li-langverse/lit/-/merge_requests/15) | pass | Merge when approved | snapshot 2026-06-14T08:37Z |
-| P0 | [lit#16](https://gitlab.lilangverse.xyz/li-langverse/lit/-/merge_requests/16) | pass | Merge when approved | snapshot 2026-06-14T08:37Z |
+| P0 | [li-os#5](https://gitlab.lilangverse.xyz/li-langverse/li-os/-/merge_requests/5) | pass | Merge when approved | snapshot 2026-06-14T08:39Z |
+| P0 | [li-research-ingest#1](https://gitlab.lilangverse.xyz/li-langverse/li-research-ingest/-/merge_requests/1) | pass | Merge when approved | snapshot 2026-06-14T08:39Z |
+| P0 | [lic#334](https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/334) | pass | Merge when approved | snapshot 2026-06-14T08:39Z |
+| P0 | [lic#335](https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/335) | pass | Merge when approved | snapshot 2026-06-14T08:39Z |
+| P0 | [lic#338](https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/338) | pass | Merge when approved | snapshot 2026-06-14T08:39Z |
+| P0 | [lic#339](https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/339) | pass | Merge when approved | snapshot 2026-06-14T08:39Z |
+| P0 | [lit#7](https://gitlab.lilangverse.xyz/li-langverse/lit/-/merge_requests/7) | pass | Merge when approved | snapshot 2026-06-14T08:39Z |
+| P0 | [lit#9](https://gitlab.lilangverse.xyz/li-langverse/lit/-/merge_requests/9) | pass | Merge when approved | snapshot 2026-06-14T08:39Z |
+| P0 | [lit#11](https://gitlab.lilangverse.xyz/li-langverse/lit/-/merge_requests/11) | pass | Merge when approved | snapshot 2026-06-14T08:39Z |
+| P0 | [lit#12](https://gitlab.lilangverse.xyz/li-langverse/lit/-/merge_requests/12) | pass | Merge when approved | snapshot 2026-06-14T08:39Z |
+| P0 | [lit#13](https://gitlab.lilangverse.xyz/li-langverse/lit/-/merge_requests/13) | pass | Merge when approved | snapshot 2026-06-14T08:39Z |
+| P0 | [lit#15](https://gitlab.lilangverse.xyz/li-langverse/lit/-/merge_requests/15) | pass | Merge when approved | snapshot 2026-06-14T08:39Z |
+| P0 | [lit#16](https://gitlab.lilangverse.xyz/li-langverse/lit/-/merge_requests/16) | pass | Merge when approved | snapshot 2026-06-14T08:39Z |
 
 ## Do not merge yet
 
@@ -76,6 +79,8 @@
 | lic | 333 | [fix(ci): homelab-k8s dind for lishare-container-e2e](https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/333) | main | none | no |
 | lic | 334 | [feat(libernetes): Wave 7 container restart policy (LB-C16–C17)](https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/334) | main | pass | yes |
 | lic | 335 | [feat(libernetes/livm): Wave 7 VM restart policy](https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/335) | main | pass | yes |
+| lic | 338 | [feat(libernetes): Wave 6 cluster-bench harness (LB-P17-P18)](https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/338) | main | pass | yes |
+| lic | 339 | [feat(libernetes): Wave 7 node controller + self-heal integration](https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/339) | main | pass | yes |
 | lis | 1 | [feat(registry): homelab lip-registry - agent-first auth, blobs, edge](https://gitlab.lilangverse.xyz/li-langverse/lis/-/merge_requests/1) | main | none | no |
 | lit | 7 | [fix(pages): apply org Li brand tokens to site landing (lit#8)](https://gitlab.lilangverse.xyz/li-langverse/lit/-/merge_requests/7) | main | pass | yes |
 | lit | 8 | [feat(lit): add li-tests CLI smoke and GitLab CI (lit#6)](https://gitlab.lilangverse.xyz/li-langverse/lit/-/merge_requests/8) | main | none | no |
