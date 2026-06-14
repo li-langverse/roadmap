@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-06-14T09:46Z",
+  "generated_at": "2026-06-14T09:48Z",
   "pages_url": "https://progress.lilangverse.xyz/",
   "vcs_source": "gitlab",
   "metrics": {
-    "ready_to_merge": 13,
+    "ready_to_merge": 12,
     "open_prs": 41,
     "open_mrs": 41,
     "blocked": 0,
@@ -11,7 +11,7 @@
     "repos_total": 14
   },
   "ecosystem": {
-    "generated_at": "2026-06-14T09:46Z",
+    "generated_at": "2026-06-14T09:48Z",
     "org": "li-langverse",
     "vcs_primary": "gitlab",
     "gitlab_host": "gitlab.lilangverse.xyz",
@@ -134,7 +134,7 @@
     {
       "repo": "li-browser",
       "number": 1,
-      "title": "feat(ph-br-4): BR4-3 renderer spawn seam + PH-BR-2/3/4 gates",
+      "title": "feat(ph-br-4): BR4-4 cross-process IPC + PH-BR-2/3/4 gates",
       "url": "https://gitlab.lilangverse.xyz/li-langverse/li-browser/-/merge_requests/1",
       "base": "main",
       "draft": false,
@@ -424,8 +424,8 @@
       "url": "https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/346",
       "base": "main",
       "draft": false,
-      "ci": "pass",
-      "ready": true,
+      "ci": "none",
+      "ready": false,
       "source": "gitlab"
     },
     {
@@ -587,7 +587,7 @@
     {
       "repo": "li-browser",
       "number": 1,
-      "title": "feat(ph-br-4): BR4-3 renderer spawn seam + PH-BR-2/3/4 gates",
+      "title": "feat(ph-br-4): BR4-4 cross-process IPC + PH-BR-2/3/4 gates",
       "url": "https://gitlab.lilangverse.xyz/li-langverse/li-browser/-/merge_requests/1",
       "base": "main",
       "draft": false,
@@ -877,8 +877,8 @@
       "url": "https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/346",
       "base": "main",
       "draft": false,
-      "ci": "pass",
-      "ready": true,
+      "ci": "none",
+      "ready": false,
       "source": "gitlab"
     },
     {
