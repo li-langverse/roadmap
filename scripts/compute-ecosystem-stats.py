@@ -308,6 +308,27 @@ def merge_existing(payload: dict, path: Path) -> dict:
     return payload
 
 
+def recompute_cumulative_metrics(payload: dict) -> dict:
+    """Re-apply cumulative totals after merge_existing fills GitHub mirror baselines."""
+    mrs_source = str(payload.get("mrs_source") or payload.get("prs_source") or "")
+    issues_source = str(payload.get("issues_source") or payload.get("vcs_primary") or "")
+    gitlab_issues_closed = payload.get("issues_closed_gitlab")
+    if gitlab_issues_closed is None and issues_source == "gitlab":
+        gitlab_issues_closed = payload.get("issues_closed")
+    payload["prs_closed"] = cumulative_prs_closed(
+        mrs_source=mrs_source,
+        github_closed=payload.get("github_prs_closed"),
+        gitlab_merged=payload.get("gitlab_mrs_merged") or payload.get("mrs_merged"),
+        gitlab_closed=payload.get("mrs_closed"),
+    )
+    payload["issues_closed"] = cumulative_issues_closed(
+        issues_source=issues_source,
+        github_closed=payload.get("github_issues_closed"),
+        gitlab_closed=gitlab_issues_closed,
+    )
+    return payload
+
+
 def main() -> int:
     overview = os.environ.get("GH_TOKEN_OVERVIEW_PAGE", "").strip()
     if overview:
@@ -318,8 +339,8 @@ def main() -> int:
     out_dir = root / "data" / "development-overview"
     out_json = out_dir / "ecosystem-stats.json"
 
-    if shutil.which("gh") is None:
-        sys.stderr.write("error: gh CLI required\n")
+    if shutil.which("gh") is None and gitlab_token() is None:
+        sys.stderr.write("error: gh CLI or GITLAB_TOKEN required\n")
         return 1
 
     repos = list_org_repo_names(root)
@@ -347,10 +368,10 @@ def main() -> int:
     open_issues, closed_issues, issues_source = issue_counts()
     open_mrs, merged_mrs, closed_mrs, mrs_source = mr_counts()
 
-    gh_open_prs = search_total_count(f"org:{ORG}+is:pr+is:open")
-    gh_closed_prs = search_total_count(f"org:{ORG}+is:pr+is:closed")
-    gh_open_issues = search_total_count(f"org:{ORG}+is:issue+is:open")
-    gh_closed_issues = search_total_count(f"org:{ORG}+is:issue+is:closed")
+    gh_open_prs = search_total_count(f"org:{ORG}+is:pr+is:open") if shutil.which("gh") else None
+    gh_closed_prs = search_total_count(f"org:{ORG}+is:pr+is:closed") if shutil.which("gh") else None
+    gh_open_issues = search_total_count(f"org:{ORG}+is:issue+is:open") if shutil.which("gh") else None
+    gh_closed_issues = search_total_count(f"org:{ORG}+is:issue+is:closed") if shutil.which("gh") else None
 
     cumulative_closed_prs = cumulative_prs_closed(
         mrs_source=mrs_source,
@@ -402,6 +423,7 @@ def main() -> int:
 
     out_dir.mkdir(parents=True, exist_ok=True)
     payload = merge_existing(payload, out_json)
+    payload = recompute_cumulative_metrics(payload)
     payload.pop("lines_of_code", None)
     payload.pop("repos_tracked", None)
     out_json.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
