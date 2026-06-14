@@ -1,11 +1,11 @@
 # Li development overview
 
-**li-langverse org** · scanned **2026-06-14T08:57Z** · gitlab snapshot · live queue via status.json
+**li-langverse org** · scanned **2026-06-14T08:59Z** · gitlab snapshot · live queue via status.json
 
 | Metric | Value |
 |--------|------:|
 | Open issues (GitLab) | 66 |
-| Ready to merge (CI green) | 10 |
+| Ready to merge (CI green) | 11 |
 | Open MRs / PRs | 38 |
 | Blocked / needs work | 0 |
 | Repos with live docs | 2 / 14 |
@@ -13,30 +13,32 @@
 ## Recommended merge order
 
 1. [li-research-ingest #1](https://gitlab.lilangverse.xyz/li-langverse/li-research-ingest/-/merge_requests/1) — fix(research): R1b ingest state blocker diagnostics + S2 key gate verifi
-2. [lic #338](https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/338) — feat(libernetes): Wave 6 cluster-bench harness (LB-P17-P18)
-3. [lic #339](https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/339) — feat(libernetes): Wave 7 node controller + self-heal integration
-4. [lit #7](https://gitlab.lilangverse.xyz/li-langverse/lit/-/merge_requests/7) — fix(pages): apply org Li brand tokens to site landing (lit#8)
-5. [lit #9](https://gitlab.lilangverse.xyz/li-langverse/lit/-/merge_requests/9) — feat(lit): add li-tests shell_ok smoke for documented CLI flows
-6. [lit #11](https://gitlab.lilangverse.xyz/li-langverse/lit/-/merge_requests/11) — feat(li-tests): shell_ok manifest and GitLab CI for lit CLI (lit#6)
-7. [lit #12](https://gitlab.lilangverse.xyz/li-langverse/lit/-/merge_requests/12) — feat(lit): add li-tests shell_ok CLI smoke and GitLab CI (lit#6)
-8. [lit #13](https://gitlab.lilangverse.xyz/li-langverse/lit/-/merge_requests/13) — feat(lit): add li-tests CLI smoke and GitLab CI (lit#6)
-9. [lit #15](https://gitlab.lilangverse.xyz/li-langverse/lit/-/merge_requests/15) — chore(agent-kit): sync org-ga-enforcement.mdc from roadmap v1.3.6
-10. [lit #16](https://gitlab.lilangverse.xyz/li-langverse/lit/-/merge_requests/16) — chore(agent-kit): sync org-ga-enforcement.mdc from roadmap v1.3.6
+2. [lic #304](https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/304) — proof-explorer(phase15): honest catalog prove — Erdős terminal sweep
+3. [lic #338](https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/338) — feat(libernetes): Wave 6 cluster-bench harness (LB-P17-P18)
+4. [lic #339](https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/339) — feat(libernetes): Wave 7 node controller + self-heal integration
+5. [lit #7](https://gitlab.lilangverse.xyz/li-langverse/lit/-/merge_requests/7) — fix(pages): apply org Li brand tokens to site landing (lit#8)
+6. [lit #9](https://gitlab.lilangverse.xyz/li-langverse/lit/-/merge_requests/9) — feat(lit): add li-tests shell_ok smoke for documented CLI flows
+7. [lit #11](https://gitlab.lilangverse.xyz/li-langverse/lit/-/merge_requests/11) — feat(li-tests): shell_ok manifest and GitLab CI for lit CLI (lit#6)
+8. [lit #12](https://gitlab.lilangverse.xyz/li-langverse/lit/-/merge_requests/12) — feat(lit): add li-tests shell_ok CLI smoke and GitLab CI (lit#6)
+9. [lit #13](https://gitlab.lilangverse.xyz/li-langverse/lit/-/merge_requests/13) — feat(lit): add li-tests CLI smoke and GitLab CI (lit#6)
+10. [lit #15](https://gitlab.lilangverse.xyz/li-langverse/lit/-/merge_requests/15) — chore(agent-kit): sync org-ga-enforcement.mdc from roadmap v1.3.6
+11. [lit #16](https://gitlab.lilangverse.xyz/li-langverse/lit/-/merge_requests/16) — chore(agent-kit): sync org-ga-enforcement.mdc from roadmap v1.3.6
 
 ## Merge when reviewed
 
 | Priority | MR/PR | CI | Action | Notes |
 |----------|-------|-----|--------|-------|
-| P0 | [li-research-ingest#1](https://gitlab.lilangverse.xyz/li-langverse/li-research-ingest/-/merge_requests/1) | pass | Merge when approved | snapshot 2026-06-14T08:57Z |
-| P0 | [lic#338](https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/338) | pass | Merge when approved | snapshot 2026-06-14T08:57Z |
-| P0 | [lic#339](https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/339) | pass | Merge when approved | snapshot 2026-06-14T08:57Z |
-| P0 | [lit#7](https://gitlab.lilangverse.xyz/li-langverse/lit/-/merge_requests/7) | pass | Merge when approved | snapshot 2026-06-14T08:57Z |
-| P0 | [lit#9](https://gitlab.lilangverse.xyz/li-langverse/lit/-/merge_requests/9) | pass | Merge when approved | snapshot 2026-06-14T08:57Z |
-| P0 | [lit#11](https://gitlab.lilangverse.xyz/li-langverse/lit/-/merge_requests/11) | pass | Merge when approved | snapshot 2026-06-14T08:57Z |
-| P0 | [lit#12](https://gitlab.lilangverse.xyz/li-langverse/lit/-/merge_requests/12) | pass | Merge when approved | snapshot 2026-06-14T08:57Z |
-| P0 | [lit#13](https://gitlab.lilangverse.xyz/li-langverse/lit/-/merge_requests/13) | pass | Merge when approved | snapshot 2026-06-14T08:57Z |
-| P0 | [lit#15](https://gitlab.lilangverse.xyz/li-langverse/lit/-/merge_requests/15) | pass | Merge when approved | snapshot 2026-06-14T08:57Z |
-| P0 | [lit#16](https://gitlab.lilangverse.xyz/li-langverse/lit/-/merge_requests/16) | pass | Merge when approved | snapshot 2026-06-14T08:57Z |
+| P0 | [li-research-ingest#1](https://gitlab.lilangverse.xyz/li-langverse/li-research-ingest/-/merge_requests/1) | pass | Merge when approved | snapshot 2026-06-14T08:59Z |
+| P0 | [lic#304](https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/304) | pass | Merge when approved | snapshot 2026-06-14T08:59Z |
+| P0 | [lic#338](https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/338) | pass | Merge when approved | snapshot 2026-06-14T08:59Z |
+| P0 | [lic#339](https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/339) | pass | Merge when approved | snapshot 2026-06-14T08:59Z |
+| P0 | [lit#7](https://gitlab.lilangverse.xyz/li-langverse/lit/-/merge_requests/7) | pass | Merge when approved | snapshot 2026-06-14T08:59Z |
+| P0 | [lit#9](https://gitlab.lilangverse.xyz/li-langverse/lit/-/merge_requests/9) | pass | Merge when approved | snapshot 2026-06-14T08:59Z |
+| P0 | [lit#11](https://gitlab.lilangverse.xyz/li-langverse/lit/-/merge_requests/11) | pass | Merge when approved | snapshot 2026-06-14T08:59Z |
+| P0 | [lit#12](https://gitlab.lilangverse.xyz/li-langverse/lit/-/merge_requests/12) | pass | Merge when approved | snapshot 2026-06-14T08:59Z |
+| P0 | [lit#13](https://gitlab.lilangverse.xyz/li-langverse/lit/-/merge_requests/13) | pass | Merge when approved | snapshot 2026-06-14T08:59Z |
+| P0 | [lit#15](https://gitlab.lilangverse.xyz/li-langverse/lit/-/merge_requests/15) | pass | Merge when approved | snapshot 2026-06-14T08:59Z |
+| P0 | [lit#16](https://gitlab.lilangverse.xyz/li-langverse/lit/-/merge_requests/16) | pass | Merge when approved | snapshot 2026-06-14T08:59Z |
 
 ## Do not merge yet
 
@@ -60,7 +62,7 @@
 | lic | 267 | [feat(physics): domain APIs for hep/chem/aero/particles (lic#7)](https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/267) | main | none | no |
 | lic | 272 | [feat(execution): Kokkos-class @parallel(space=host) portable lowering …](https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/272) | main | none | no |
 | lic | 273 | [feat(7e): @cpu host memory-space + portable parallel decorator lowerin…](https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/273) | main | none | no |
-| lic | 304 | [proof-explorer(phase15): honest catalog prove — Erdős terminal sweep](https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/304) | main | none | no |
+| lic | 304 | [proof-explorer(phase15): honest catalog prove — Erdős terminal sweep](https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/304) | main | pass | yes |
 | lic | 309 | [feat(aimd): wire GPU DFT queue through chem layer in batch loop](https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/309) | main | none | no |
 | lic | 310 | [feat(crypto): lip-installable crypto stack (M1–M4 gates green)](https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/310) | main | none | no |
 | lic | 320 | [proof(proof-explorer): phase16 — prove target catalog rows](https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/320) | main | none | no |
