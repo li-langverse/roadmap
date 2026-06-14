@@ -2,6 +2,17 @@
 # Schedule: */15 * * * *  variable SCHEDULE_KIND=development-overview-refresh
 #
 # Variables: GITLAB_TOKEN (required), GH_TOKEN or GH_TOKEN_OVERVIEW_PAGE (optional GitHub fallback)
+#
+# overview-refresh may commit snapshot JSON to main with [skip ci] so Pages is not re-triggered.
+# pages is non-interruptible so a in-flight deploy is not canceled by the next schedule tick.
+
+workflow:
+  rules:
+    - if: $CI_COMMIT_MESSAGE =~ /\[skip ci\]/i
+      when: never
+    - if: $CI_COMMIT_MESSAGE =~ /chore\(overview\): refresh GitLab metrics snapshot/
+      when: never
+    - when: always
 
 stages:
   - test
@@ -46,17 +57,18 @@ overview-refresh:
         git config user.email "overview-refresh@lilangverse.xyz"
         git config user.name "development-overview-refresh"
         git add data/development-overview/ docs/development-overview.md || true
-        git diff --staged --quiet || git commit -m "chore(overview): refresh GitLab metrics snapshot"
-        git push "https://oauth2:${GITLAB_TOKEN}@${GIT_REMOTE_HOST}/${CI_PROJECT_PATH}.git" "HEAD:${CI_COMMIT_BRANCH}" || echo "warn: metrics push failed; pages will build from checkout"
+        git diff --staged --quiet || git commit -m "chore(overview): refresh GitLab metrics snapshot [skip ci]"
+        git push "https://oauth2:${GITLAB_TOKEN}@${GIT_REMOTE_HOST}/${CI_PROJECT_PATH}.git" "HEAD:${CI_COMMIT_BRANCH}" || echo "warn: metrics push failed; pages builds from live refresh"
       fi
   rules:
     - if: $CI_PIPELINE_SOURCE == "schedule" && $SCHEDULE_KIND == "development-overview-refresh"
-    - if: $CI_COMMIT_BRANCH == "main" && $CI_PIPELINE_SOURCE =~ /^(web|api|push)$/
 
 pages:
   stage: publish
   image: ubuntu:24.04
   timeout: 25m
+  interruptible: false
+  resource_group: development-overview-pages
   needs:
     - job: overview-refresh
       optional: true
