@@ -609,8 +609,8 @@ async function refreshOneCi() {
 }
 
 loadEcosystemSnapshot().then(async () => {
-  const historyReady = window.DevelopmentOverviewHistory?.ready;
-  if (historyReady) await historyReady.catch(() => {});
+  const baseline = window.DevelopmentOverviewHistory?.baselineReady;
+  if (baseline) await baseline.catch(() => {});
   await refreshEcosystemLive(true);
   await refreshSearch();
 });

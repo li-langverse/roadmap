@@ -19,22 +19,23 @@ def gitlab_token() -> str | None:
 
 def gitlab_api_bases() -> list[str]:
     explicit = os.environ.get("GITLAB_API_URL", "").strip().rstrip("/")
-    if explicit:
-        return [explicit]
     scheme = os.environ.get("LI_GITLAB_SCHEME", "https").strip().lower()
     internal = os.environ.get("LI_GIT_INTERNAL_SVC", "").strip()
     bases: list[str] = []
+    if explicit:
+        bases.append(explicit)
     if internal and "lilangverse.xyz" in GITLAB_HOST:
-        bases.append(f"http://{internal}")
-    if scheme != "http":
-        bases.append(f"https://{GITLAB_HOST}")
+        internal_base = f"http://{internal}"
+        if internal_base not in bases:
+            bases.append(internal_base)
+    public = f"https://{GITLAB_HOST}" if scheme != "http" else f"http://{GITLAB_HOST}"
+    if public not in bases:
+        bases.append(public)
     if scheme == "http":
-        bases.append(f"http://{GITLAB_HOST}")
-    out: list[str] = []
-    for base in bases:
-        if base not in out:
-            out.append(base)
-    return out
+        http_public = f"http://{GITLAB_HOST}"
+        if http_public not in bases:
+            bases.append(http_public)
+    return bases
 
 
 def _gitlab_get(path: str, *, token: str) -> tuple[int, object, dict[str, str]]:
@@ -93,11 +94,12 @@ def _gitlab_paginate_count(path: str, *, token: str) -> int | None:
 
 def gitlab_group_issue_counts() -> tuple[int | None, int | None]:
     group = urllib.parse.quote(GITLAB_GROUP, safe="")
+    # scope=all triggers 502 on homelab GitLab CE — use default group scope.
     open_n = gitlab_header_total(
-        f"/api/v4/groups/{group}/issues?state=opened&include_subgroups=true&scope=all"
+        f"/api/v4/groups/{group}/issues?state=opened&include_subgroups=true"
     )
     closed_n = gitlab_header_total(
-        f"/api/v4/groups/{group}/issues?state=closed&include_subgroups=true&scope=all"
+        f"/api/v4/groups/{group}/issues?state=closed&include_subgroups=true"
     )
     return open_n, closed_n
 

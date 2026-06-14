@@ -1,7 +1,7 @@
 {
   "version": 1,
   "org": "li-langverse",
-  "generated_at": "2026-06-06T09:12Z",
+  "generated_at": "2026-06-14T08:04Z",
   "backfill": {
     "repos": 37,
     "prs_total": 1343,
@@ -205,6 +205,18 @@
       "issues_open": 17,
       "issues_closed": 168,
       "source": "fix-cumulative-prs"
+    },
+    {
+      "at": "2026-06-14",
+      "open_prs": 39,
+      "ready_to_merge": 11,
+      "prs_closed": 1654,
+      "issues_open": 64,
+      "issues_closed": 179,
+      "source": "gitlab",
+      "vcs_source": "gitlab",
+      "open_mrs": 39,
+      "mrs_closed": 263
     }
   ]
 }

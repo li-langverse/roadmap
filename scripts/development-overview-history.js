@@ -41,6 +41,12 @@
   let chartReady = null;
   /** Serialize chart paints — concurrent loadCommitted + updateLive caused empty first paint. */
   let paintChain = Promise.resolve();
+  /** Resolves after committed history.json is loaded and painted once (no live overlay). */
+  let baselineResolve;
+  const baselineReady = new Promise((resolve) => {
+    baselineResolve = resolve;
+  });
+  let baselineDone = false;
   const HISTORY_REFRESH_MS = 900_000;
 
   function cacheBustUrl(url) {
@@ -325,6 +331,10 @@
       }
     }
     scheduleChartResize();
+    if (!baselineDone && !livePoint) {
+      baselineDone = true;
+      baselineResolve();
+    }
   }
 
   function scheduleChartResize() {
@@ -360,14 +370,21 @@
 
   function updateLive(point) {
     if (!point) return;
-    const day = dayKey(point.at) || new Date().toISOString().slice(0, 10);
-    const next = { ...(livePoint || {}), at: day };
-    for (const key of METRIC_KEYS) {
-      if (typeof point[key] === "number") next[key] = point[key];
+    const apply = () => {
+      const day = dayKey(point.at) || new Date().toISOString().slice(0, 10);
+      const next = { ...(livePoint || {}), at: day };
+      for (const key of METRIC_KEYS) {
+        if (typeof point[key] === "number") next[key] = point[key];
+      }
+      if (point.source) next.source = point.source;
+      livePoint = next;
+      enqueuePaint();
+    };
+    if (!baselineDone) {
+      baselineReady.then(apply);
+      return;
     }
-    if (point.source) next.source = point.source;
-    livePoint = next;
-    enqueuePaint();
+    apply();
   }
 
   window.DevelopmentOverviewHistory = {
@@ -378,13 +395,13 @@
     get ready() {
       return paintChain;
     },
+    get baselineReady() {
+      return baselineReady;
+    },
   };
 
   loadCommitted();
   window.setInterval(() => {
     loadCommitted();
   }, HISTORY_REFRESH_MS);
-  window.addEventListener("load", () => {
-    enqueuePaint();
-  });
 })();
