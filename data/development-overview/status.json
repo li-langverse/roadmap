@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-14T09:41Z",
+  "generated_at": "2026-06-14T09:42Z",
   "pages_url": "https://progress.lilangverse.xyz/",
   "vcs_source": "gitlab",
   "metrics": {
@@ -11,7 +11,7 @@
     "repos_total": 14
   },
   "ecosystem": {
-    "generated_at": "2026-06-14T09:41Z",
+    "generated_at": "2026-06-14T09:42Z",
     "org": "li-langverse",
     "vcs_primary": "gitlab",
     "gitlab_host": "gitlab.lilangverse.xyz",
@@ -134,7 +134,7 @@
     {
       "repo": "li-browser",
       "number": 1,
-      "title": "feat(ph-br-4): BR4-1 browser process IPC split seam + PH-BR-2/3 gates",
+      "title": "feat(ph-br-4): BR4-2 browser process launch hook + PH-BR-2/3/4 gates",
       "url": "https://gitlab.lilangverse.xyz/li-langverse/li-browser/-/merge_requests/1",
       "base": "main",
       "draft": false,
@@ -565,7 +565,7 @@
     {
       "repo": "li-browser",
       "number": 1,
-      "title": "feat(ph-br-4): BR4-1 browser process IPC split seam + PH-BR-2/3 gates",
+      "title": "feat(ph-br-4): BR4-2 browser process launch hook + PH-BR-2/3/4 gates",
       "url": "https://gitlab.lilangverse.xyz/li-langverse/li-browser/-/merge_requests/1",
       "base": "main",
       "draft": false,
