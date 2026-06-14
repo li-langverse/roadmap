@@ -8,8 +8,11 @@ OUT_DIR="${ROOT}/data/development-overview"
 OUT_JSON="${OUT_DIR}/status.json"
 
 if ! command -v gh >/dev/null 2>&1; then
-  echo "error: gh CLI required" >&2
-  exit 1
+  if [[ -z "${GITLAB_TOKEN:-}" ]]; then
+    echo "error: gh CLI required (or set GITLAB_TOKEN for GitLab-primary refresh)" >&2
+    exit 1
+  fi
+  echo "warn: gh missing — GitLab-primary refresh only (MR queue via GITLAB_TOKEN)"
 fi
 
 mkdir -p "$OUT_DIR"

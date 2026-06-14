@@ -39,6 +39,14 @@
   const instances = new Map();
   /** @type {Promise<void> | null} */
   let chartReady = null;
+  /** Serialize chart paints — concurrent loadCommitted + updateLive caused empty first paint. */
+  let paintChain = Promise.resolve();
+  const HISTORY_REFRESH_MS = 900_000;
+
+  function cacheBustUrl(url) {
+    const sep = url.includes("?") ? "&" : "?";
+    return `${url}${sep}t=${Date.now()}`;
+  }
 
   function esc(s) {
     const el = document.createElement("span");
@@ -316,16 +324,38 @@
         console.error(`history chart ${spec.key}:`, err);
       }
     }
+    scheduleChartResize();
+  }
+
+  function scheduleChartResize() {
+    const resize = () => {
+      for (const chart of instances.values()) {
+        try {
+          chart.resize();
+        } catch {
+          /* destroyed */
+        }
+      }
+    };
+    requestAnimationFrame(resize);
+    window.setTimeout(resize, 50);
+  }
+
+  function enqueuePaint() {
+    paintChain = paintChain
+      .then(() => paintCharts())
+      .catch((err) => console.error("history paint:", err));
+    return paintChain;
   }
 
   async function loadCommitted() {
     try {
-      const res = await fetch(HISTORY_URL, { cache: "no-store" });
+      const res = await fetch(cacheBustUrl(HISTORY_URL), { cache: "no-store" });
       if (res.ok) committed = await res.json();
     } catch {
       committed = { points: [] };
     }
-    await paintCharts();
+    await enqueuePaint();
   }
 
   function updateLive(point) {
@@ -337,10 +367,24 @@
     }
     if (point.source) next.source = point.source;
     livePoint = next;
-    paintCharts();
+    enqueuePaint();
   }
 
-  window.DevelopmentOverviewHistory = { updateLive, paint: paintCharts, mergedPoints, dailyPoints };
+  window.DevelopmentOverviewHistory = {
+    updateLive,
+    paint: enqueuePaint,
+    mergedPoints,
+    dailyPoints,
+    get ready() {
+      return paintChain;
+    },
+  };
 
   loadCommitted();
+  window.setInterval(() => {
+    loadCommitted();
+  }, HISTORY_REFRESH_MS);
+  window.addEventListener("load", () => {
+    enqueuePaint();
+  });
 })();
