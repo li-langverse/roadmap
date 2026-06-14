@@ -1,37 +1,7 @@
 name: Development overview (Pages)
 
+# Retired — GitLab CI publishes to progress.lilangverse.xyz (see homelab-k3s/docs/public-edge-progress-pages.md).
 on:
-  push:
-    branches: [main]
-    paths:
-      - "docs/development-overview.md"
-      - "scripts/gen-development-overview.sh"
-      - "scripts/development-overview-live.js"
-      - "scripts/development-overview-history.js"
-      - "scripts/_gitlab_overview_api.py"
-      - "data/development-overview/status.json"
-      - "data/development-overview/ecosystem-stats.json"
-      - "data/development-overview/history.json"
-      - ".github/workflows/development-overview-refresh.yml"
-      - ".github/workflows/development-overview-loc.yml"
-      - "scripts/append-development-overview-history.py"
-      - "scripts/development-overview-history.js"
-      - ".github/workflows/pages.yml"
-  pull_request:
-    paths:
-      - "docs/development-overview.md"
-      - "scripts/gen-development-overview.sh"
-      - "scripts/development-overview-live.js"
-      - "scripts/development-overview-history.js"
-      - "scripts/_gitlab_overview_api.py"
-      - "data/development-overview/status.json"
-      - "data/development-overview/ecosystem-stats.json"
-      - "data/development-overview/history.json"
-      - ".github/workflows/development-overview-refresh.yml"
-      - ".github/workflows/development-overview-loc.yml"
-      - "scripts/append-development-overview-history.py"
-      - "scripts/development-overview-history.js"
-      - ".github/workflows/pages.yml"
   workflow_dispatch:
 
 permissions:
