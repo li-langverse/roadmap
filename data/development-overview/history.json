@@ -205,6 +205,18 @@
       "issues_open": 17,
       "issues_closed": 168,
       "source": "fix-cumulative-prs"
+    },
+    {
+      "at": "2026-06-14",
+      "open_prs": 127,
+      "open_mrs": null,
+      "ready_to_merge": 118,
+      "prs_closed": 1654,
+      "mrs_closed": 1654,
+      "issues_open": 18,
+      "issues_closed": 164,
+      "source": "github",
+      "vcs_source": "github"
     }
   ]
 }
