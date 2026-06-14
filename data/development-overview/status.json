@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-06-14T09:25Z",
+  "generated_at": "2026-06-14T09:27Z",
   "pages_url": "https://progress.lilangverse.xyz/",
   "vcs_source": "gitlab",
   "metrics": {
-    "ready_to_merge": 11,
+    "ready_to_merge": 12,
     "open_prs": 39,
     "open_mrs": 39,
     "blocked": 0,
@@ -11,7 +11,7 @@
     "repos_total": 14
   },
   "ecosystem": {
-    "generated_at": "2026-06-14T09:25Z",
+    "generated_at": "2026-06-14T09:27Z",
     "org": "li-langverse",
     "vcs_primary": "gitlab",
     "gitlab_host": "gitlab.lilangverse.xyz",
@@ -134,12 +134,12 @@
     {
       "repo": "li-browser",
       "number": 1,
-      "title": "feat(ph-br-2): renderer, chrome UI & parity harness complete (BR2-1..7)",
+      "title": "feat(ph-br-3): BR3-1 GPU compositing gate stub + PH-BR-3 progress gates",
       "url": "https://gitlab.lilangverse.xyz/li-langverse/li-browser/-/merge_requests/1",
       "base": "main",
       "draft": false,
-      "ci": "none",
-      "ready": false,
+      "ci": "pass",
+      "ready": true,
       "source": "gitlab"
     },
     {
@@ -565,12 +565,12 @@
     {
       "repo": "li-browser",
       "number": 1,
-      "title": "feat(ph-br-2): renderer, chrome UI & parity harness complete (BR2-1..7)",
+      "title": "feat(ph-br-3): BR3-1 GPU compositing gate stub + PH-BR-3 progress gates",
       "url": "https://gitlab.lilangverse.xyz/li-langverse/li-browser/-/merge_requests/1",
       "base": "main",
       "draft": false,
-      "ci": "none",
-      "ready": false,
+      "ci": "pass",
+      "ready": true,
       "source": "gitlab"
     },
     {
