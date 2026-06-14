@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-14T09:29Z",
+  "generated_at": "2026-06-14T09:32Z",
   "pages_url": "https://progress.lilangverse.xyz/",
   "vcs_source": "gitlab",
   "metrics": {
@@ -11,7 +11,7 @@
     "repos_total": 14
   },
   "ecosystem": {
-    "generated_at": "2026-06-14T09:29Z",
+    "generated_at": "2026-06-14T09:32Z",
     "org": "li-langverse",
     "vcs_primary": "gitlab",
     "gitlab_host": "gitlab.lilangverse.xyz",
@@ -134,7 +134,7 @@
     {
       "repo": "li-browser",
       "number": 1,
-      "title": "feat(ph-br-3): BR3-2 live GPU compositing seam + li-gpu hook",
+      "title": "feat(ph-br-3): BR3-2 GPU + BR3-3 live sandbox fuzz seams",
       "url": "https://gitlab.lilangverse.xyz/li-langverse/li-browser/-/merge_requests/1",
       "base": "main",
       "draft": false,
@@ -565,7 +565,7 @@
     {
       "repo": "li-browser",
       "number": 1,
-      "title": "feat(ph-br-3): BR3-2 live GPU compositing seam + li-gpu hook",
+      "title": "feat(ph-br-3): BR3-2 GPU + BR3-3 live sandbox fuzz seams",
       "url": "https://gitlab.lilangverse.xyz/li-langverse/li-browser/-/merge_requests/1",
       "base": "main",
       "draft": false,

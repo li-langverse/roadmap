@@ -1,6 +1,6 @@
 # Li development overview
 
-**li-langverse org** · scanned **2026-06-14T09:29Z** · gitlab snapshot · live queue via status.json
+**li-langverse org** · scanned **2026-06-14T09:32Z** · gitlab snapshot · live queue via status.json
 
 | Metric | Value |
 |--------|------:|
@@ -12,7 +12,7 @@
 
 ## Recommended merge order
 
-1. [li-browser #1](https://gitlab.lilangverse.xyz/li-langverse/li-browser/-/merge_requests/1) — feat(ph-br-3): BR3-2 live GPU compositing seam + li-gpu hook
+1. [li-browser #1](https://gitlab.lilangverse.xyz/li-langverse/li-browser/-/merge_requests/1) — feat(ph-br-3): BR3-2 GPU + BR3-3 live sandbox fuzz seams
 2. [li-research-ingest #1](https://gitlab.lilangverse.xyz/li-langverse/li-research-ingest/-/merge_requests/1) — fix(research): R1b ingest state blocker diagnostics + S2 key gate verifi
 3. [lic #340](https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/340) — feat(libernetes/licontainers): Wave 8 volume persist across reboot (LB-C
 4. [lic #341](https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/341) — feat(libernetes/livm): Wave 8 disk persist across reboot
@@ -29,18 +29,18 @@
 
 | Priority | MR/PR | CI | Action | Notes |
 |----------|-------|-----|--------|-------|
-| P0 | [li-browser#1](https://gitlab.lilangverse.xyz/li-langverse/li-browser/-/merge_requests/1) | pass | Merge when approved | snapshot 2026-06-14T09:29Z |
-| P0 | [li-research-ingest#1](https://gitlab.lilangverse.xyz/li-langverse/li-research-ingest/-/merge_requests/1) | pass | Merge when approved | snapshot 2026-06-14T09:29Z |
-| P0 | [lic#340](https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/340) | pass | Merge when approved | snapshot 2026-06-14T09:29Z |
-| P0 | [lic#341](https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/341) | pass | Merge when approved | snapshot 2026-06-14T09:29Z |
-| P0 | [lic#342](https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/342) | pass | Merge when approved | snapshot 2026-06-14T09:29Z |
-| P0 | [lit#7](https://gitlab.lilangverse.xyz/li-langverse/lit/-/merge_requests/7) | pass | Merge when approved | snapshot 2026-06-14T09:29Z |
-| P0 | [lit#9](https://gitlab.lilangverse.xyz/li-langverse/lit/-/merge_requests/9) | pass | Merge when approved | snapshot 2026-06-14T09:29Z |
-| P0 | [lit#11](https://gitlab.lilangverse.xyz/li-langverse/lit/-/merge_requests/11) | pass | Merge when approved | snapshot 2026-06-14T09:29Z |
-| P0 | [lit#12](https://gitlab.lilangverse.xyz/li-langverse/lit/-/merge_requests/12) | pass | Merge when approved | snapshot 2026-06-14T09:29Z |
-| P0 | [lit#13](https://gitlab.lilangverse.xyz/li-langverse/lit/-/merge_requests/13) | pass | Merge when approved | snapshot 2026-06-14T09:29Z |
-| P0 | [lit#15](https://gitlab.lilangverse.xyz/li-langverse/lit/-/merge_requests/15) | pass | Merge when approved | snapshot 2026-06-14T09:29Z |
-| P0 | [lit#16](https://gitlab.lilangverse.xyz/li-langverse/lit/-/merge_requests/16) | pass | Merge when approved | snapshot 2026-06-14T09:29Z |
+| P0 | [li-browser#1](https://gitlab.lilangverse.xyz/li-langverse/li-browser/-/merge_requests/1) | pass | Merge when approved | snapshot 2026-06-14T09:32Z |
+| P0 | [li-research-ingest#1](https://gitlab.lilangverse.xyz/li-langverse/li-research-ingest/-/merge_requests/1) | pass | Merge when approved | snapshot 2026-06-14T09:32Z |
+| P0 | [lic#340](https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/340) | pass | Merge when approved | snapshot 2026-06-14T09:32Z |
+| P0 | [lic#341](https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/341) | pass | Merge when approved | snapshot 2026-06-14T09:32Z |
+| P0 | [lic#342](https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/342) | pass | Merge when approved | snapshot 2026-06-14T09:32Z |
+| P0 | [lit#7](https://gitlab.lilangverse.xyz/li-langverse/lit/-/merge_requests/7) | pass | Merge when approved | snapshot 2026-06-14T09:32Z |
+| P0 | [lit#9](https://gitlab.lilangverse.xyz/li-langverse/lit/-/merge_requests/9) | pass | Merge when approved | snapshot 2026-06-14T09:32Z |
+| P0 | [lit#11](https://gitlab.lilangverse.xyz/li-langverse/lit/-/merge_requests/11) | pass | Merge when approved | snapshot 2026-06-14T09:32Z |
+| P0 | [lit#12](https://gitlab.lilangverse.xyz/li-langverse/lit/-/merge_requests/12) | pass | Merge when approved | snapshot 2026-06-14T09:32Z |
+| P0 | [lit#13](https://gitlab.lilangverse.xyz/li-langverse/lit/-/merge_requests/13) | pass | Merge when approved | snapshot 2026-06-14T09:32Z |
+| P0 | [lit#15](https://gitlab.lilangverse.xyz/li-langverse/lit/-/merge_requests/15) | pass | Merge when approved | snapshot 2026-06-14T09:32Z |
+| P0 | [lit#16](https://gitlab.lilangverse.xyz/li-langverse/lit/-/merge_requests/16) | pass | Merge when approved | snapshot 2026-06-14T09:32Z |
 
 ## Do not merge yet
 
@@ -53,7 +53,7 @@
 | Repo | # | Title | Base | CI | Ready |
 |------|---|-------|------|-----|-------|
 | benchmarks | 3 | [fix(catalog): PH-5b audit honesty — repo field + vertical stubs (#266)](https://gitlab.lilangverse.xyz/li-langverse/benchmarks/-/merge_requests/3) | main | none | no |
-| li-browser | 1 | [feat(ph-br-3): BR3-2 live GPU compositing seam + li-gpu hook](https://gitlab.lilangverse.xyz/li-langverse/li-browser/-/merge_requests/1) | main | pass | yes |
+| li-browser | 1 | [feat(ph-br-3): BR3-2 GPU + BR3-3 live sandbox fuzz seams](https://gitlab.lilangverse.xyz/li-langverse/li-browser/-/merge_requests/1) | main | pass | yes |
 | li-cursor-agents | 12 | [chore(k8s): production sprint configmap](https://gitlab.lilangverse.xyz/li-langverse/li-cursor-agents/-/merge_requests/12) | main | none | no |
 | li-research-ingest | 1 | [fix(research): R1b ingest state blocker diagnostics + S2 key gate veri…](https://gitlab.lilangverse.xyz/li-langverse/li-research-ingest/-/merge_requests/1) | main | pass | yes |
 | lic | 257 | [feat(physics): expand hep/aero/chem domain APIs (lic#7)](https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/257) | main | none | no |
