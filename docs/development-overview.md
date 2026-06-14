@@ -1,6 +1,6 @@
 # Li development overview
 
-**li-langverse org** · scanned **2026-06-14T13:14Z** · gitlab snapshot · live queue via status.json
+**li-langverse org** · scanned **2026-06-14T13:17Z** · gitlab snapshot · live queue via status.json
 
 | Metric | Value |
 |--------|------:|
@@ -29,20 +29,20 @@
 
 | Priority | MR/PR | CI | Action | Notes |
 |----------|-------|-----|--------|-------|
-| P0 | [li-browser#1](https://gitlab.lilangverse.xyz/li-langverse/li-browser/-/merge_requests/1) | pass | Merge when approved | snapshot 2026-06-14T13:14Z |
-| P0 | [li-research-ingest#1](https://gitlab.lilangverse.xyz/li-langverse/li-research-ingest/-/merge_requests/1) | pass | Merge when approved | snapshot 2026-06-14T13:14Z |
-| P0 | [lic#304](https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/304) | pass | Merge when approved | snapshot 2026-06-14T13:14Z |
-| P0 | [lic#320](https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/320) | pass | Merge when approved | snapshot 2026-06-14T13:14Z |
-| P0 | [lic#344](https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/344) | pass | Merge when approved | snapshot 2026-06-14T13:14Z |
-| P0 | [lic#347](https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/347) | pass | Merge when approved | snapshot 2026-06-14T13:14Z |
-| P0 | [lik#6](https://gitlab.lilangverse.xyz/li-langverse/lik/-/merge_requests/6) | pass | Merge when approved | snapshot 2026-06-14T13:14Z |
-| P0 | [lit#7](https://gitlab.lilangverse.xyz/li-langverse/lit/-/merge_requests/7) | pass | Merge when approved | snapshot 2026-06-14T13:14Z |
-| P0 | [lit#9](https://gitlab.lilangverse.xyz/li-langverse/lit/-/merge_requests/9) | pass | Merge when approved | snapshot 2026-06-14T13:14Z |
-| P0 | [lit#11](https://gitlab.lilangverse.xyz/li-langverse/lit/-/merge_requests/11) | pass | Merge when approved | snapshot 2026-06-14T13:14Z |
-| P0 | [lit#12](https://gitlab.lilangverse.xyz/li-langverse/lit/-/merge_requests/12) | pass | Merge when approved | snapshot 2026-06-14T13:14Z |
-| P0 | [lit#13](https://gitlab.lilangverse.xyz/li-langverse/lit/-/merge_requests/13) | pass | Merge when approved | snapshot 2026-06-14T13:14Z |
-| P0 | [lit#15](https://gitlab.lilangverse.xyz/li-langverse/lit/-/merge_requests/15) | pass | Merge when approved | snapshot 2026-06-14T13:14Z |
-| P0 | [lit#16](https://gitlab.lilangverse.xyz/li-langverse/lit/-/merge_requests/16) | pass | Merge when approved | snapshot 2026-06-14T13:14Z |
+| P0 | [li-browser#1](https://gitlab.lilangverse.xyz/li-langverse/li-browser/-/merge_requests/1) | pass | Merge when approved | snapshot 2026-06-14T13:17Z |
+| P0 | [li-research-ingest#1](https://gitlab.lilangverse.xyz/li-langverse/li-research-ingest/-/merge_requests/1) | pass | Merge when approved | snapshot 2026-06-14T13:17Z |
+| P0 | [lic#304](https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/304) | pass | Merge when approved | snapshot 2026-06-14T13:17Z |
+| P0 | [lic#320](https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/320) | pass | Merge when approved | snapshot 2026-06-14T13:17Z |
+| P0 | [lic#344](https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/344) | pass | Merge when approved | snapshot 2026-06-14T13:17Z |
+| P0 | [lic#347](https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/347) | pass | Merge when approved | snapshot 2026-06-14T13:17Z |
+| P0 | [lik#6](https://gitlab.lilangverse.xyz/li-langverse/lik/-/merge_requests/6) | pass | Merge when approved | snapshot 2026-06-14T13:17Z |
+| P0 | [lit#7](https://gitlab.lilangverse.xyz/li-langverse/lit/-/merge_requests/7) | pass | Merge when approved | snapshot 2026-06-14T13:17Z |
+| P0 | [lit#9](https://gitlab.lilangverse.xyz/li-langverse/lit/-/merge_requests/9) | pass | Merge when approved | snapshot 2026-06-14T13:17Z |
+| P0 | [lit#11](https://gitlab.lilangverse.xyz/li-langverse/lit/-/merge_requests/11) | pass | Merge when approved | snapshot 2026-06-14T13:17Z |
+| P0 | [lit#12](https://gitlab.lilangverse.xyz/li-langverse/lit/-/merge_requests/12) | pass | Merge when approved | snapshot 2026-06-14T13:17Z |
+| P0 | [lit#13](https://gitlab.lilangverse.xyz/li-langverse/lit/-/merge_requests/13) | pass | Merge when approved | snapshot 2026-06-14T13:17Z |
+| P0 | [lit#15](https://gitlab.lilangverse.xyz/li-langverse/lit/-/merge_requests/15) | pass | Merge when approved | snapshot 2026-06-14T13:17Z |
+| P0 | [lit#16](https://gitlab.lilangverse.xyz/li-langverse/lit/-/merge_requests/16) | pass | Merge when approved | snapshot 2026-06-14T13:17Z |
 
 ## Do not merge yet
 
