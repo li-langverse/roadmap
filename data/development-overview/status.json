@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-14T10:06Z",
+  "generated_at": "2026-06-14T10:09Z",
   "pages_url": "https://progress.lilangverse.xyz/",
   "vcs_source": "gitlab",
   "metrics": {
@@ -11,7 +11,7 @@
     "repos_total": 14
   },
   "ecosystem": {
-    "generated_at": "2026-06-14T10:06Z",
+    "generated_at": "2026-06-14T10:09Z",
     "org": "li-langverse",
     "vcs_primary": "gitlab",
     "gitlab_host": "gitlab.lilangverse.xyz",
@@ -134,7 +134,7 @@
     {
       "repo": "li-browser",
       "number": 1,
-      "title": "feat(ph-br-6): BR6-2 live Playwright parity bench + PH-BR-0..6 gates",
+      "title": "feat(ph-br-7): live Playwright CDP runner seam + PH-BR-0..7 gates",
       "url": "https://gitlab.lilangverse.xyz/li-langverse/li-browser/-/merge_requests/1",
       "base": "main",
       "draft": false,
@@ -587,7 +587,7 @@
     {
       "repo": "li-browser",
       "number": 1,
-      "title": "feat(ph-br-6): BR6-2 live Playwright parity bench + PH-BR-0..6 gates",
+      "title": "feat(ph-br-7): live Playwright CDP runner seam + PH-BR-0..7 gates",
       "url": "https://gitlab.lilangverse.xyz/li-langverse/li-browser/-/merge_requests/1",
       "base": "main",
       "draft": false,
