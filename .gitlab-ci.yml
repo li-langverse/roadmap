@@ -67,7 +67,6 @@ pages:
   image: ubuntu:24.04
   timeout: 25m
   interruptible: false
-  resource_group: development-overview-pages
   needs:
     - job: overview-refresh
       optional: true
