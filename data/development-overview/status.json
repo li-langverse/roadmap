@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-14T09:37Z",
+  "generated_at": "2026-06-14T09:41Z",
   "pages_url": "https://progress.lilangverse.xyz/",
   "vcs_source": "gitlab",
   "metrics": {
@@ -11,7 +11,7 @@
     "repos_total": 14
   },
   "ecosystem": {
-    "generated_at": "2026-06-14T09:37Z",
+    "generated_at": "2026-06-14T09:41Z",
     "org": "li-langverse",
     "vcs_primary": "gitlab",
     "gitlab_host": "gitlab.lilangverse.xyz",
@@ -25,10 +25,10 @@
     "org_repositories": 74,
     "gitlab_projects": 74,
     "issues_source": "gitlab",
-    "issues_open": 67,
+    "issues_open": 75,
     "issues_closed": 179,
     "issues_closed_gitlab": 179,
-    "issues_total": 246,
+    "issues_total": 254,
     "mrs_source": "gitlab",
     "mrs_open": 39,
     "mrs_closed": 263,
@@ -134,7 +134,7 @@
     {
       "repo": "li-browser",
       "number": 1,
-      "title": "feat(ph-br-3): BR3-4 multi-renderer site isolation seam",
+      "title": "feat(ph-br-4): BR4-1 browser process IPC split seam + PH-BR-2/3 gates",
       "url": "https://gitlab.lilangverse.xyz/li-langverse/li-browser/-/merge_requests/1",
       "base": "main",
       "draft": false,
@@ -565,7 +565,7 @@
     {
       "repo": "li-browser",
       "number": 1,
-      "title": "feat(ph-br-3): BR3-4 multi-renderer site isolation seam",
+      "title": "feat(ph-br-4): BR4-1 browser process IPC split seam + PH-BR-2/3 gates",
       "url": "https://gitlab.lilangverse.xyz/li-langverse/li-browser/-/merge_requests/1",
       "base": "main",
       "draft": false,
