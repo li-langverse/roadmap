@@ -1,17 +1,17 @@
 {
-  "generated_at": "2026-06-14T08:59Z",
+  "generated_at": "2026-06-14T09:03Z",
   "pages_url": "https://progress.lilangverse.xyz/",
   "vcs_source": "gitlab",
   "metrics": {
-    "ready_to_merge": 11,
+    "ready_to_merge": 9,
     "open_prs": 38,
     "open_mrs": 38,
-    "blocked": 0,
+    "blocked": 1,
     "repos_with_live_docs": 2,
     "repos_total": 14
   },
   "ecosystem": {
-    "generated_at": "2026-06-14T08:59Z",
+    "generated_at": "2026-06-14T09:03Z",
     "org": "li-langverse",
     "vcs_primary": "gitlab",
     "gitlab_host": "gitlab.lilangverse.xyz",
@@ -138,8 +138,8 @@
       "url": "https://gitlab.lilangverse.xyz/li-langverse/li-browser/-/merge_requests/1",
       "base": "main",
       "draft": false,
-      "ci": "none",
-      "ready": false,
+      "ci": "pass",
+      "ready": true,
       "source": "gitlab"
     },
     {
@@ -259,8 +259,8 @@
       "url": "https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/304",
       "base": "main",
       "draft": false,
-      "ci": "pass",
-      "ready": true,
+      "ci": "none",
+      "ready": false,
       "source": "gitlab"
     },
     {
@@ -380,8 +380,8 @@
       "url": "https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/338",
       "base": "main",
       "draft": false,
-      "ci": "pass",
-      "ready": true,
+      "ci": "pending",
+      "ready": false,
       "source": "gitlab"
     },
     {
@@ -391,8 +391,8 @@
       "url": "https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/339",
       "base": "main",
       "draft": false,
-      "ci": "pass",
-      "ready": true,
+      "ci": "none",
+      "ready": false,
       "source": "gitlab"
     },
     {
@@ -558,8 +558,8 @@
       "url": "https://gitlab.lilangverse.xyz/li-langverse/li-browser/-/merge_requests/1",
       "base": "main",
       "draft": false,
-      "ci": "none",
-      "ready": false,
+      "ci": "pass",
+      "ready": true,
       "source": "gitlab"
     },
     {
@@ -679,8 +679,8 @@
       "url": "https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/304",
       "base": "main",
       "draft": false,
-      "ci": "pass",
-      "ready": true,
+      "ci": "none",
+      "ready": false,
       "source": "gitlab"
     },
     {
@@ -800,8 +800,8 @@
       "url": "https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/338",
       "base": "main",
       "draft": false,
-      "ci": "pass",
-      "ready": true,
+      "ci": "pending",
+      "ready": false,
       "source": "gitlab"
     },
     {
@@ -811,8 +811,8 @@
       "url": "https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/339",
       "base": "main",
       "draft": false,
-      "ci": "pass",
-      "ready": true,
+      "ci": "none",
+      "ready": false,
       "source": "gitlab"
     },
     {
