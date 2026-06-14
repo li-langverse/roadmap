@@ -4,7 +4,7 @@
 
 1. **GHCR** — `ghcr.io/li-langverse/*` container images  
 2. **Org profile** — repository [`.github`](https://github.com/li-langverse/.github) (this README on github.com/li-langverse)  
-3. **Legacy Pages** (retiring) — some `*.github.io` URLs until DNS moves to `*.lilangverse.xyz`
+3. **Legacy Pages** (retiring) — remaining `*.github.io` URLs until DNS moves to `*.lilangverse.xyz` (benchmarks + progress **done** on GitLab)
 
 Do **not** clone, branch, or merge on `github.com/li-langverse/*` except `.github` maintenance.
 
@@ -15,6 +15,7 @@ Do **not** clone, branch, or merge on `github.com/li-langverse/*` except `.githu
 | Browse / clone source | https://gitlab.lilangverse.xyz/li-langverse |
 | Issues / MRs | GitLab group |
 | Container images | `docker pull ghcr.io/li-langverse/<image>:<tag>` |
+| Benchmark dashboard | https://benchmarks.lilangverse.xyz/ (GitLab Pages; not GitHub) |
 | Development overview | https://progress.lilangverse.xyz/development-overview/ (GitLab Pages; not GitHub) |
 
 ## Cleanup tooling
