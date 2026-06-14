@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-06-14T09:33Z",
+  "generated_at": "2026-06-14T09:35Z",
   "pages_url": "https://progress.lilangverse.xyz/",
   "vcs_source": "gitlab",
   "metrics": {
-    "ready_to_merge": 12,
+    "ready_to_merge": 13,
     "open_prs": 39,
     "open_mrs": 39,
     "blocked": 0,
@@ -11,7 +11,7 @@
     "repos_total": 14
   },
   "ecosystem": {
-    "generated_at": "2026-06-14T09:33Z",
+    "generated_at": "2026-06-14T09:35Z",
     "org": "li-langverse",
     "vcs_primary": "gitlab",
     "gitlab_host": "gitlab.lilangverse.xyz",
@@ -134,7 +134,7 @@
     {
       "repo": "li-browser",
       "number": 1,
-      "title": "feat(ph-br-3): BR3-2 GPU + BR3-3 live sandbox fuzz seams",
+      "title": "feat(ph-br-3): BR3-4 multi-renderer site isolation seam",
       "url": "https://gitlab.lilangverse.xyz/li-langverse/li-browser/-/merge_requests/1",
       "base": "main",
       "draft": false,
@@ -259,8 +259,8 @@
       "url": "https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/304",
       "base": "main",
       "draft": false,
-      "ci": "none",
-      "ready": false,
+      "ci": "pass",
+      "ready": true,
       "source": "gitlab"
     },
     {
@@ -565,7 +565,7 @@
     {
       "repo": "li-browser",
       "number": 1,
-      "title": "feat(ph-br-3): BR3-2 GPU + BR3-3 live sandbox fuzz seams",
+      "title": "feat(ph-br-3): BR3-4 multi-renderer site isolation seam",
       "url": "https://gitlab.lilangverse.xyz/li-langverse/li-browser/-/merge_requests/1",
       "base": "main",
       "draft": false,
@@ -690,8 +690,8 @@
       "url": "https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/304",
       "base": "main",
       "draft": false,
-      "ci": "none",
-      "ready": false,
+      "ci": "pass",
+      "ready": true,
       "source": "gitlab"
     },
     {
