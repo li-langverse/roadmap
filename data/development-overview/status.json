@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-14T10:23Z",
+  "generated_at": "2026-06-14T10:25Z",
   "pages_url": "https://progress.lilangverse.xyz/",
   "vcs_source": "gitlab",
   "metrics": {
@@ -11,7 +11,7 @@
     "repos_total": 14
   },
   "ecosystem": {
-    "generated_at": "2026-06-14T10:23Z",
+    "generated_at": "2026-06-14T10:25Z",
     "org": "li-langverse",
     "vcs_primary": "gitlab",
     "gitlab_host": "gitlab.lilangverse.xyz",
@@ -134,7 +134,7 @@
     {
       "repo": "li-browser",
       "number": 1,
-      "title": "feat(ph-br-9): live Playwright CDP target attach seam + PH-BR-0..9 gates",
+      "title": "feat(ph-br-10): CDP frame navigation seam + PH-BR-0..10 gates",
       "url": "https://gitlab.lilangverse.xyz/li-langverse/li-browser/-/merge_requests/1",
       "base": "main",
       "draft": false,
@@ -576,7 +576,7 @@
     {
       "repo": "li-browser",
       "number": 1,
-      "title": "feat(ph-br-9): live Playwright CDP target attach seam + PH-BR-0..9 gates",
+      "title": "feat(ph-br-10): CDP frame navigation seam + PH-BR-0..10 gates",
       "url": "https://gitlab.lilangverse.xyz/li-langverse/li-browser/-/merge_requests/1",
       "base": "main",
       "draft": false,
