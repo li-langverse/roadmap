@@ -1,17 +1,17 @@
 {
-  "generated_at": "2026-06-14T08:32Z",
+  "generated_at": "2026-06-14T08:34Z",
   "pages_url": "https://progress.lilangverse.xyz/",
   "vcs_source": "gitlab",
   "metrics": {
-    "ready_to_merge": 10,
-    "open_prs": 40,
-    "open_mrs": 40,
+    "ready_to_merge": 9,
+    "open_prs": 39,
+    "open_mrs": 39,
     "blocked": 0,
     "repos_with_live_docs": 2,
     "repos_total": 14
   },
   "ecosystem": {
-    "generated_at": "2026-06-14T08:32Z",
+    "generated_at": "2026-06-14T08:34Z",
     "org": "li-langverse",
     "vcs_primary": "gitlab",
     "gitlab_host": "gitlab.lilangverse.xyz",
@@ -30,10 +30,10 @@
     "issues_closed_gitlab": 179,
     "issues_total": 243,
     "mrs_source": "gitlab",
-    "mrs_open": 40,
+    "mrs_open": 39,
     "mrs_closed": 263,
     "prs_source": "gitlab",
-    "prs_open": 40,
+    "prs_open": 39,
     "prs_closed": 263,
     "github_prs_open": 913,
     "github_prs_closed": 1654,
@@ -270,8 +270,8 @@
       "url": "https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/304",
       "base": "main",
       "draft": false,
-      "ci": "pass",
-      "ready": true,
+      "ci": "none",
+      "ready": false,
       "source": "gitlab"
     },
     {
@@ -301,17 +301,6 @@
       "number": 320,
       "title": "proof(proof-explorer): phase16 \u2014 prove target catalog rows",
       "url": "https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/320",
-      "base": "main",
-      "draft": false,
-      "ci": "none",
-      "ready": false,
-      "source": "gitlab"
-    },
-    {
-      "repo": "lic",
-      "number": 321,
-      "title": "feat(libernetes): Wave 5 distributed_queue stub (LB-P15)",
-      "url": "https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/321",
       "base": "main",
       "draft": false,
       "ci": "none",
@@ -712,8 +701,8 @@
       "url": "https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/304",
       "base": "main",
       "draft": false,
-      "ci": "pass",
-      "ready": true,
+      "ci": "none",
+      "ready": false,
       "source": "gitlab"
     },
     {
@@ -743,17 +732,6 @@
       "number": 320,
       "title": "proof(proof-explorer): phase16 \u2014 prove target catalog rows",
       "url": "https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/320",
-      "base": "main",
-      "draft": false,
-      "ci": "none",
-      "ready": false,
-      "source": "gitlab"
-    },
-    {
-      "repo": "lic",
-      "number": 321,
-      "title": "feat(libernetes): Wave 5 distributed_queue stub (LB-P15)",
-      "url": "https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/321",
       "base": "main",
       "draft": false,
       "ci": "none",
