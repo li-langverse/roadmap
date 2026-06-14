@@ -3,15 +3,8 @@
 #
 # Variables: GITLAB_TOKEN (required), GH_TOKEN or GH_TOKEN_OVERVIEW_PAGE (optional GitHub fallback)
 #
-# overview-refresh may commit snapshot JSON to main with [skip ci] so Pages is not re-triggered.
-# pages is non-interruptible so a in-flight deploy is not canceled by the next schedule tick.
-
-workflow:
-  rules:
-    # Only skip the metrics bot commit — do not match [skip ci] mentioned in other commit bodies.
-    - if: $CI_COMMIT_TITLE =~ /^chore\(overview\): refresh GitLab metrics snapshot/
-      when: never
-    - when: always
+# overview-refresh commits with [skip ci] so Pages is not re-triggered.
+# pages is non-interruptible so an in-flight deploy is not canceled by the next schedule tick.
 
 stages:
   - test
