@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-06-14T10:02Z",
+  "generated_at": "2026-06-14T10:05Z",
   "pages_url": "https://progress.lilangverse.xyz/",
   "vcs_source": "gitlab",
   "metrics": {
-    "ready_to_merge": 14,
+    "ready_to_merge": 13,
     "open_prs": 41,
     "open_mrs": 41,
     "blocked": 0,
@@ -11,7 +11,7 @@
     "repos_total": 14
   },
   "ecosystem": {
-    "generated_at": "2026-06-14T10:02Z",
+    "generated_at": "2026-06-14T10:05Z",
     "org": "li-langverse",
     "vcs_primary": "gitlab",
     "gitlab_host": "gitlab.lilangverse.xyz",
@@ -134,7 +134,7 @@
     {
       "repo": "li-browser",
       "number": 1,
-      "title": "feat(ph-br-5): BR5-2 live CBOR wire encoder seam + PH-BR-0..5 gates",
+      "title": "feat(ph-br-6): BR6-2 live Playwright parity bench + PH-BR-0..6 gates",
       "url": "https://gitlab.lilangverse.xyz/li-langverse/li-browser/-/merge_requests/1",
       "base": "main",
       "draft": false,
@@ -387,7 +387,7 @@
     {
       "repo": "lic",
       "number": 343,
-      "title": "chore(libernetes): wire Wave 9 CRI metrics gate on licontainers track",
+      "title": "feat(libernetes/licontainers): Wave 9 CRI metrics stub (LB-C20\u2013C21)",
       "url": "https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/343",
       "base": "main",
       "draft": false,
@@ -402,8 +402,8 @@
       "url": "https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/344",
       "base": "main",
       "draft": false,
-      "ci": "pass",
-      "ready": true,
+      "ci": "none",
+      "ready": false,
       "source": "gitlab"
     },
     {
@@ -587,7 +587,7 @@
     {
       "repo": "li-browser",
       "number": 1,
-      "title": "feat(ph-br-5): BR5-2 live CBOR wire encoder seam + PH-BR-0..5 gates",
+      "title": "feat(ph-br-6): BR6-2 live Playwright parity bench + PH-BR-0..6 gates",
       "url": "https://gitlab.lilangverse.xyz/li-langverse/li-browser/-/merge_requests/1",
       "base": "main",
       "draft": false,
@@ -840,7 +840,7 @@
     {
       "repo": "lic",
       "number": 343,
-      "title": "chore(libernetes): wire Wave 9 CRI metrics gate on licontainers track",
+      "title": "feat(libernetes/licontainers): Wave 9 CRI metrics stub (LB-C20\u2013C21)",
       "url": "https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/343",
       "base": "main",
       "draft": false,
@@ -855,8 +855,8 @@
       "url": "https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/344",
       "base": "main",
       "draft": false,
-      "ci": "pass",
-      "ready": true,
+      "ci": "none",
+      "ready": false,
       "source": "gitlab"
     },
     {
