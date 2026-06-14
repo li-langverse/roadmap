@@ -15,7 +15,7 @@ Do **not** clone, branch, or merge on `github.com/li-langverse/*` except `.githu
 | Browse / clone source | https://gitlab.lilangverse.xyz/li-langverse |
 | Issues / MRs | GitLab group |
 | Container images | `docker pull ghcr.io/li-langverse/<image>:<tag>` |
-| Development overview | https://progress.lilangverse.xyz/roadmap/development-overview/ |
+| Development overview | https://progress.lilangverse.xyz/development-overview/ (GitLab Pages; not GitHub) |
 
 ## Cleanup tooling
 
