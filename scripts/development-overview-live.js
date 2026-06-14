@@ -20,6 +20,11 @@ const SEARCH_URL = `https://api.github.com/search/issues?q=org:${ORG}+is:open+is
 const ECO_STATS_URL = "./ecosystem-stats.json";
 const STATUS_JSON_URL = "./status.json";
 
+function cacheBustUrl(url) {
+  const sep = url.includes("?") ? "&" : "?";
+  return `${url}${sep}t=${Date.now()}`;
+}
+
 const GITHUB_SEARCH = (q) =>
   `https://github.com/search?q=${encodeURIComponent(q)}&type=issues`;
 
@@ -327,7 +332,7 @@ async function searchCountsSequential(queries) {
 
 async function loadEcosystemSnapshot() {
   try {
-    const res = await fetch(ECO_STATS_URL, { cache: "no-store" });
+    const res = await fetch(cacheBustUrl(ECO_STATS_URL), { cache: "no-store" });
     if (res.ok) ecosystemSnapshot = await res.json();
   } catch {
     /* static HTML fallback */
@@ -343,7 +348,7 @@ async function loadEcosystemSnapshot() {
 
 async function refreshIssueCounts() {
   try {
-    const res = await fetch(ECO_STATS_URL, { cache: "no-store" });
+    const res = await fetch(cacheBustUrl(ECO_STATS_URL), { cache: "no-store" });
     if (!res.ok) throw new Error(`snapshot ${res.status}`);
     const eco = await res.json();
     ecosystemSnapshot = { ...ecosystemSnapshot, ...eco };
@@ -503,7 +508,7 @@ function mapStatusMr(row) {
 
 async function refreshFromStatusJson() {
   try {
-    const res = await fetch(STATUS_JSON_URL, { cache: "no-store" });
+    const res = await fetch(cacheBustUrl(STATUS_JSON_URL), { cache: "no-store" });
     if (!res.ok) throw new Error(`status.json ${res.status}`);
     statusSnapshot = await res.json();
     vcsPrimary = statusSnapshot.vcs_source || vcsPrimary;
@@ -604,6 +609,8 @@ async function refreshOneCi() {
 }
 
 loadEcosystemSnapshot().then(async () => {
+  const historyReady = window.DevelopmentOverviewHistory?.ready;
+  if (historyReady) await historyReady.catch(() => {});
   await refreshEcosystemLive(true);
   await refreshSearch();
 });
