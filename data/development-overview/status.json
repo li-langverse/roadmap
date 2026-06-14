@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-06-14T09:42Z",
+  "generated_at": "2026-06-14T09:44Z",
   "pages_url": "https://progress.lilangverse.xyz/",
   "vcs_source": "gitlab",
   "metrics": {
-    "ready_to_merge": 13,
+    "ready_to_merge": 11,
     "open_prs": 39,
     "open_mrs": 39,
     "blocked": 0,
@@ -11,7 +11,7 @@
     "repos_total": 14
   },
   "ecosystem": {
-    "generated_at": "2026-06-14T09:42Z",
+    "generated_at": "2026-06-14T09:44Z",
     "org": "li-langverse",
     "vcs_primary": "gitlab",
     "gitlab_host": "gitlab.lilangverse.xyz",
@@ -134,7 +134,7 @@
     {
       "repo": "li-browser",
       "number": 1,
-      "title": "feat(ph-br-4): BR4-2 browser process launch hook + PH-BR-2/3/4 gates",
+      "title": "feat(ph-br-4): BR4-3 renderer spawn seam + PH-BR-2/3/4 gates",
       "url": "https://gitlab.lilangverse.xyz/li-langverse/li-browser/-/merge_requests/1",
       "base": "main",
       "draft": false,
@@ -259,8 +259,8 @@
       "url": "https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/304",
       "base": "main",
       "draft": false,
-      "ci": "pass",
-      "ready": true,
+      "ci": "none",
+      "ready": false,
       "source": "gitlab"
     },
     {
@@ -375,31 +375,31 @@
     },
     {
       "repo": "lic",
-      "number": 340,
-      "title": "feat(libernetes/licontainers): Wave 8 volume persist across reboot (LB-C18\u2013C19)",
-      "url": "https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/340",
-      "base": "main",
-      "draft": false,
-      "ci": "pass",
-      "ready": true,
-      "source": "gitlab"
-    },
-    {
-      "repo": "lic",
-      "number": 341,
-      "title": "feat(libernetes/livm): Wave 8 disk persist across reboot",
-      "url": "https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/341",
-      "base": "main",
-      "draft": false,
-      "ci": "pass",
-      "ready": true,
-      "source": "gitlab"
-    },
-    {
-      "repo": "lic",
       "number": 342,
       "title": "docs(guide): extend getting-started CLI table for agent commands (lic#129)",
       "url": "https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/342",
+      "base": "main",
+      "draft": false,
+      "ci": "none",
+      "ready": false,
+      "source": "gitlab"
+    },
+    {
+      "repo": "lic",
+      "number": 343,
+      "title": "chore(libernetes): wire Wave 9 CRI metrics gate on licontainers track",
+      "url": "https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/343",
+      "base": "main",
+      "draft": false,
+      "ci": "pass",
+      "ready": true,
+      "source": "gitlab"
+    },
+    {
+      "repo": "lic",
+      "number": 344,
+      "title": "chore(libernetes): wire Wave 9 VM metrics gate on livm track",
+      "url": "https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/344",
       "base": "main",
       "draft": false,
       "ci": "pass",
@@ -565,7 +565,7 @@
     {
       "repo": "li-browser",
       "number": 1,
-      "title": "feat(ph-br-4): BR4-2 browser process launch hook + PH-BR-2/3/4 gates",
+      "title": "feat(ph-br-4): BR4-3 renderer spawn seam + PH-BR-2/3/4 gates",
       "url": "https://gitlab.lilangverse.xyz/li-langverse/li-browser/-/merge_requests/1",
       "base": "main",
       "draft": false,
@@ -690,8 +690,8 @@
       "url": "https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/304",
       "base": "main",
       "draft": false,
-      "ci": "pass",
-      "ready": true,
+      "ci": "none",
+      "ready": false,
       "source": "gitlab"
     },
     {
@@ -806,31 +806,31 @@
     },
     {
       "repo": "lic",
-      "number": 340,
-      "title": "feat(libernetes/licontainers): Wave 8 volume persist across reboot (LB-C18\u2013C19)",
-      "url": "https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/340",
-      "base": "main",
-      "draft": false,
-      "ci": "pass",
-      "ready": true,
-      "source": "gitlab"
-    },
-    {
-      "repo": "lic",
-      "number": 341,
-      "title": "feat(libernetes/livm): Wave 8 disk persist across reboot",
-      "url": "https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/341",
-      "base": "main",
-      "draft": false,
-      "ci": "pass",
-      "ready": true,
-      "source": "gitlab"
-    },
-    {
-      "repo": "lic",
       "number": 342,
       "title": "docs(guide): extend getting-started CLI table for agent commands (lic#129)",
       "url": "https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/342",
+      "base": "main",
+      "draft": false,
+      "ci": "none",
+      "ready": false,
+      "source": "gitlab"
+    },
+    {
+      "repo": "lic",
+      "number": 343,
+      "title": "chore(libernetes): wire Wave 9 CRI metrics gate on licontainers track",
+      "url": "https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/343",
+      "base": "main",
+      "draft": false,
+      "ci": "pass",
+      "ready": true,
+      "source": "gitlab"
+    },
+    {
+      "repo": "lic",
+      "number": 344,
+      "title": "chore(libernetes): wire Wave 9 VM metrics gate on livm track",
+      "url": "https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/344",
       "base": "main",
       "draft": false,
       "ci": "pass",
