@@ -104,7 +104,8 @@ def gitlab_group_issue_counts() -> tuple[int | None, int | None]:
     return open_n, closed_n
 
 
-def gitlab_group_mr_counts() -> tuple[int | None, int | None]:
+def gitlab_group_mr_counts() -> tuple[int | None, int | None, int | None]:
+    """Return (open, merged, closed) MR counts for the org group."""
     group = urllib.parse.quote(GITLAB_GROUP, safe="")
     open_n = gitlab_header_total(
         f"/api/v4/groups/{group}/merge_requests?state=opened&include_subgroups=true"
@@ -115,11 +116,7 @@ def gitlab_group_mr_counts() -> tuple[int | None, int | None]:
     merged_n = gitlab_header_total(
         f"/api/v4/groups/{group}/merge_requests?state=merged&include_subgroups=true"
     )
-    if closed_n is None and merged_n is not None:
-        closed_n = merged_n
-    elif closed_n is not None and merged_n is not None:
-        closed_n = max(closed_n, merged_n)
-    return open_n, closed_n
+    return open_n, merged_n, closed_n
 
 
 def _gitlab_get_anonymous(path: str) -> tuple[int, object, dict[str, str]]:

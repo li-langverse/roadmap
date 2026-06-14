@@ -104,12 +104,19 @@ def org_repos_val(e):
 
 def cumulative_closed_prs(e):
   gh = e.get("github_prs_closed")
-  if isinstance(gh, int):
-    return gh
+  gl = e.get("gitlab_mrs_merged")
+  if gl is None:
+    gl = e.get("mrs_merged")
+  if gl is None:
+    gl = e.get("mrs_closed")
   prs = e.get("prs_closed")
   if isinstance(prs, int):
     return prs
-  return e.get("mrs_closed")
+  if isinstance(gh, int) and isinstance(gl, int):
+    return gh + gl
+  if isinstance(gh, int):
+    return gh
+  return gl
 
 
 def cumulative_closed_issues(e):

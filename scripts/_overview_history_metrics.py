@@ -9,15 +9,20 @@ def cumulative_prs_closed(
     *,
     mrs_source: str,
     github_closed: int | None,
+    gitlab_merged: int | None = None,
     prs_closed: int | None = None,
     gitlab_closed: int | None = None,
 ) -> int | None:
-    """Lifetime closed PR/MR count. GitHub search retains full mirror history."""
-    if github_closed is not None:
-        return github_closed
+    """Lifetime closed PR/MR count across GitHub mirror history + GitLab-primary era."""
+    gl_merged = gitlab_merged if gitlab_merged is not None else gitlab_closed
+    if mrs_source == "gitlab" and github_closed is not None and gl_merged is not None:
+        # GitHub search is frozen post-migration; GitLab merges since cutover add on top.
+        return github_closed + gl_merged
     if prs_closed is not None:
         return prs_closed
-    return gitlab_closed
+    if github_closed is not None:
+        return github_closed
+    return gl_merged
 
 
 def cumulative_issues_closed(
@@ -44,6 +49,7 @@ def history_point_metrics(eco: dict) -> dict[str, int | None]:
         "prs_closed": cumulative_prs_closed(
             mrs_source=mrs_source,
             github_closed=eco.get("github_prs_closed"),
+            gitlab_merged=eco.get("gitlab_mrs_merged"),
             prs_closed=eco.get("prs_closed"),
             gitlab_closed=eco.get("mrs_closed"),
         ),

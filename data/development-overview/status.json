@@ -1,17 +1,17 @@
 {
-  "generated_at": "2026-06-14T13:38Z",
+  "generated_at": "2026-06-14T13:53Z",
   "pages_url": "https://progress.lilangverse.xyz/",
   "vcs_source": "gitlab",
   "metrics": {
-    "ready_to_merge": 10,
-    "open_prs": 43,
-    "open_mrs": 43,
+    "ready_to_merge": 13,
+    "open_prs": 44,
+    "open_mrs": 44,
     "blocked": 0,
     "repos_with_live_docs": 2,
     "repos_total": 14
   },
   "ecosystem": {
-    "generated_at": "2026-06-14T13:38Z",
+    "generated_at": "2026-06-14T13:52Z",
     "org": "li-langverse",
     "vcs_primary": "gitlab",
     "gitlab_host": "gitlab.lilangverse.xyz",
@@ -30,11 +30,13 @@
     "issues_closed_gitlab": 181,
     "issues_total": 271,
     "mrs_source": "gitlab",
-    "mrs_open": 43,
+    "mrs_open": 44,
+    "mrs_merged": 115,
     "mrs_closed": 263,
+    "gitlab_mrs_merged": 115,
     "prs_source": "gitlab",
-    "prs_open": 43,
-    "prs_closed": 263,
+    "prs_open": 44,
+    "prs_closed": 1769,
     "github_prs_open": 913,
     "github_prs_closed": 1654,
     "github_issues_open": 18,
@@ -154,10 +156,21 @@
       "source": "gitlab"
     },
     {
-      "repo": "li-os",
-      "number": 6,
-      "title": "feat(kernel): LiOS all-ms-real \u2014 14 phases without --stub (li-os)",
-      "url": "https://gitlab.lilangverse.xyz/li-langverse/li-os/-/merge_requests/6",
+      "repo": "li-httpd",
+      "number": 2,
+      "title": "docs: add handbook index (fixes #14)",
+      "url": "https://gitlab.lilangverse.xyz/li-langverse/li-httpd/-/merge_requests/2",
+      "base": "main",
+      "draft": false,
+      "ci": "pass",
+      "ready": true,
+      "source": "gitlab"
+    },
+    {
+      "repo": "li-httpd",
+      "number": 3,
+      "title": "docs: add handbook index for site link (fixes #14)",
+      "url": "https://gitlab.lilangverse.xyz/li-langverse/li-httpd/-/merge_requests/3",
       "base": "main",
       "draft": false,
       "ci": "pass",
@@ -391,8 +404,8 @@
       "url": "https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/347",
       "base": "main",
       "draft": false,
-      "ci": "none",
-      "ready": false,
+      "ci": "pass",
+      "ready": true,
       "source": "gitlab"
     },
     {
@@ -402,8 +415,8 @@
       "url": "https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/348",
       "base": "main",
       "draft": false,
-      "ci": "none",
-      "ready": false,
+      "ci": "pass",
+      "ready": true,
       "source": "gitlab"
     },
     {
@@ -629,10 +642,21 @@
       "source": "gitlab"
     },
     {
-      "repo": "li-os",
-      "number": 6,
-      "title": "feat(kernel): LiOS all-ms-real \u2014 14 phases without --stub (li-os)",
-      "url": "https://gitlab.lilangverse.xyz/li-langverse/li-os/-/merge_requests/6",
+      "repo": "li-httpd",
+      "number": 2,
+      "title": "docs: add handbook index (fixes #14)",
+      "url": "https://gitlab.lilangverse.xyz/li-langverse/li-httpd/-/merge_requests/2",
+      "base": "main",
+      "draft": false,
+      "ci": "pass",
+      "ready": true,
+      "source": "gitlab"
+    },
+    {
+      "repo": "li-httpd",
+      "number": 3,
+      "title": "docs: add handbook index for site link (fixes #14)",
+      "url": "https://gitlab.lilangverse.xyz/li-langverse/li-httpd/-/merge_requests/3",
       "base": "main",
       "draft": false,
       "ci": "pass",
@@ -866,8 +890,8 @@
       "url": "https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/347",
       "base": "main",
       "draft": false,
-      "ci": "none",
-      "ready": false,
+      "ci": "pass",
+      "ready": true,
       "source": "gitlab"
     },
     {
@@ -877,8 +901,8 @@
       "url": "https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/348",
       "base": "main",
       "draft": false,
-      "ci": "none",
-      "ready": false,
+      "ci": "pass",
+      "ready": true,
       "source": "gitlab"
     },
     {

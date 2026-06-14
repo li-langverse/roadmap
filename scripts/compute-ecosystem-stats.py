@@ -92,17 +92,17 @@ def issue_counts() -> tuple[int | None, int | None, str]:
     return open_n, closed_n, "github"
 
 
-def mr_counts() -> tuple[int | None, int | None, str]:
-    """(open, closed/merged, source) — GitLab primary when GITLAB_TOKEN is set."""
+def mr_counts() -> tuple[int | None, int | None, int | None, str]:
+    """(open, merged, closed, source) — GitLab primary when GITLAB_TOKEN is set."""
     provider = os.environ.get("LI_VCS_PROVIDER", "gitlab").strip().lower()
     use_gitlab = provider != "github" and gitlab_token() is not None
     if use_gitlab:
-        open_n, closed_n = gitlab_group_mr_counts()
-        if open_n is not None or closed_n is not None:
-            return open_n, closed_n, "gitlab"
+        open_n, merged_n, closed_n = gitlab_group_mr_counts()
+        if open_n is not None or merged_n is not None or closed_n is not None:
+            return open_n, merged_n, closed_n, "gitlab"
     open_n = search_total_count(f"org:{ORG}+is:pr+is:open")
     closed_n = search_total_count(f"org:{ORG}+is:pr+is:closed")
-    return open_n, closed_n, "github"
+    return open_n, closed_n, closed_n, "github"
 
 
 def list_github_repo_names() -> list[str] | None:
@@ -345,7 +345,7 @@ def main() -> int:
 
     org_repositories = gitlab_projects
     open_issues, closed_issues, issues_source = issue_counts()
-    open_mrs, closed_mrs, mrs_source = mr_counts()
+    open_mrs, merged_mrs, closed_mrs, mrs_source = mr_counts()
 
     gh_open_prs = search_total_count(f"org:{ORG}+is:pr+is:open")
     gh_closed_prs = search_total_count(f"org:{ORG}+is:pr+is:closed")
@@ -355,6 +355,7 @@ def main() -> int:
     cumulative_closed_prs = cumulative_prs_closed(
         mrs_source=mrs_source,
         github_closed=gh_closed_prs,
+        gitlab_merged=merged_mrs,
         gitlab_closed=closed_mrs,
     )
     cumulative_closed_issues = cumulative_issues_closed(
@@ -384,7 +385,9 @@ def main() -> int:
         else None,
         "mrs_source": mrs_source,
         "mrs_open": open_mrs,
+        "mrs_merged": merged_mrs,
         "mrs_closed": closed_mrs,
+        "gitlab_mrs_merged": merged_mrs,
         "prs_source": mrs_source,
         "prs_open": open_mrs if mrs_source == "gitlab" else gh_open_prs,
         "prs_closed": cumulative_closed_prs,

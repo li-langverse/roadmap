@@ -38,9 +38,13 @@ function gitlabPrimary(snap) {
 
 /** Lifetime closed PR/MR count spanning GitHub mirror history + GitLab-primary era. */
 function cumulativeClosedPrs(snap) {
-  if (typeof snap?.github_prs_closed === "number") return snap.github_prs_closed;
   if (typeof snap?.prs_closed === "number") return snap.prs_closed;
-  return snap?.mrs_closed;
+  const gh = snap?.github_prs_closed;
+  const gl = snap?.gitlab_mrs_merged ?? snap?.mrs_merged ?? snap?.mrs_closed;
+  if (typeof gh === "number" && typeof gl === "number") return gh + gl;
+  if (typeof gh === "number") return gh;
+  if (typeof gl === "number") return gl;
+  return undefined;
 }
 
 /** Lifetime closed issue count — monotonic across GitHub freeze + GitLab-primary era. */
@@ -247,6 +251,12 @@ function renderEcosystemMetrics(live = {}) {
   const repoLabel = gl ? "GitLab projects" : "Org repositories";
   const openQueueLabel = gl ? "Open MRs" : "Open PRs";
   const closedQueueLabel = gl ? "Closed MRs" : "Closed PRs";
+  const closedHint =
+    gl && snap.github_prs_closed != null && (snap.gitlab_mrs_merged ?? snap.mrs_merged) != null
+      ? `GitHub mirror ${fmtNum(snap.github_prs_closed)} + GitLab merged ${fmtNum(snap.gitlab_mrs_merged ?? snap.mrs_merged)}`
+      : gl
+        ? "GitLab group lifetime"
+        : "";
 
   return [
     ["Lines of Li", fmtNum(loc), null, locHint],
@@ -254,7 +264,7 @@ function renderEcosystemMetrics(live = {}) {
     ["Open issues", fmtNum(issues), links["Open issues"], gl ? "GitLab group" : ""],
     ["Closed issues", fmtNum(closedIssues), links["Closed issues"], gl ? "GitLab group" : ""],
     [openQueueLabel, fmtNum(openMrs), links[openQueueLabel]],
-    [closedQueueLabel, fmtNum(closedMrs), links[closedQueueLabel]],
+    [closedQueueLabel, fmtNum(closedMrs), links[closedQueueLabel], closedHint],
   ]
     .map(([label, value, href, hint]) => metricCard(label, value, href, hint))
     .join("");

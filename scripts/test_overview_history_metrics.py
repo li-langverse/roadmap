@@ -23,9 +23,9 @@ class OverviewHistoryMetricsTests(unittest.TestCase):
             cumulative_prs_closed(
                 mrs_source="gitlab",
                 github_closed=1653,
-                gitlab_closed=6,
+                gitlab_merged=114,
             ),
-            1653,
+            1767,
         )
 
     def test_cumulative_prs_prefers_prs_closed_over_gitlab_only(self) -> None:
@@ -34,7 +34,17 @@ class OverviewHistoryMetricsTests(unittest.TestCase):
                 mrs_source="gitlab",
                 github_closed=None,
                 prs_closed=1653,
-                gitlab_closed=6,
+                gitlab_merged=6,
+            ),
+            1653,
+        )
+
+    def test_cumulative_prs_github_only_when_not_gitlab_primary(self) -> None:
+        self.assertEqual(
+            cumulative_prs_closed(
+                mrs_source="github",
+                github_closed=1653,
+                gitlab_merged=114,
             ),
             1653,
         )
@@ -62,13 +72,14 @@ class OverviewHistoryMetricsTests(unittest.TestCase):
             "issues_source": "gitlab",
             "mrs_source": "gitlab",
             "issues_closed": 168,
-            "mrs_closed": 6,
+            "mrs_closed": 263,
+            "gitlab_mrs_merged": 114,
             "prs_closed": 6,
             "github_prs_closed": 1653,
             "github_issues_closed": 30,
         }
         metrics = history_point_metrics(eco)
-        self.assertEqual(metrics["prs_closed"], 1653)
+        self.assertEqual(metrics["prs_closed"], 1767)
         self.assertEqual(metrics["issues_closed"], 168)
 
     def test_apply_history_migration_offsets_repairs_cliff(self) -> None:
