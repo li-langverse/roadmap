@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-06-14T13:31Z",
+  "generated_at": "2026-06-14T13:38Z",
   "pages_url": "https://progress.lilangverse.xyz/",
   "vcs_source": "gitlab",
   "metrics": {
-    "ready_to_merge": 13,
+    "ready_to_merge": 10,
     "open_prs": 43,
     "open_mrs": 43,
     "blocked": 0,
@@ -11,7 +11,7 @@
     "repos_total": 14
   },
   "ecosystem": {
-    "generated_at": "2026-06-14T13:31Z",
+    "generated_at": "2026-06-14T13:38Z",
     "org": "li-langverse",
     "vcs_primary": "gitlab",
     "gitlab_host": "gitlab.lilangverse.xyz",
@@ -270,8 +270,8 @@
       "url": "https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/304",
       "base": "main",
       "draft": false,
-      "ci": "pass",
-      "ready": true,
+      "ci": "none",
+      "ready": false,
       "source": "gitlab"
     },
     {
@@ -386,17 +386,6 @@
     },
     {
       "repo": "lic",
-      "number": 344,
-      "title": "chore(libernetes): wire Wave 9 VM metrics gate on livm track",
-      "url": "https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/344",
-      "base": "main",
-      "draft": false,
-      "ci": "none",
-      "ready": false,
-      "source": "gitlab"
-    },
-    {
-      "repo": "lic",
       "number": 347,
       "title": "feat(libernetes/control): Wave 9 cluster ops docs + dashboard (LB-K26\u2013K27)",
       "url": "https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/347",
@@ -413,8 +402,8 @@
       "url": "https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/348",
       "base": "main",
       "draft": false,
-      "ci": "pass",
-      "ready": true,
+      "ci": "none",
+      "ready": false,
       "source": "gitlab"
     },
     {
@@ -424,8 +413,19 @@
       "url": "https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/349",
       "base": "main",
       "draft": false,
-      "ci": "pass",
-      "ready": true,
+      "ci": "none",
+      "ready": false,
+      "source": "gitlab"
+    },
+    {
+      "repo": "lik",
+      "number": 7,
+      "title": "feat(kernel): LiOS all-ms-real \u2014 14 phases without --stub (lik)",
+      "url": "https://gitlab.lilangverse.xyz/li-langverse/lik/-/merge_requests/7",
+      "base": "main",
+      "draft": false,
+      "ci": "none",
+      "ready": false,
       "source": "gitlab"
     },
     {
@@ -745,8 +745,8 @@
       "url": "https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/304",
       "base": "main",
       "draft": false,
-      "ci": "pass",
-      "ready": true,
+      "ci": "none",
+      "ready": false,
       "source": "gitlab"
     },
     {
@@ -861,17 +861,6 @@
     },
     {
       "repo": "lic",
-      "number": 344,
-      "title": "chore(libernetes): wire Wave 9 VM metrics gate on livm track",
-      "url": "https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/344",
-      "base": "main",
-      "draft": false,
-      "ci": "none",
-      "ready": false,
-      "source": "gitlab"
-    },
-    {
-      "repo": "lic",
       "number": 347,
       "title": "feat(libernetes/control): Wave 9 cluster ops docs + dashboard (LB-K26\u2013K27)",
       "url": "https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/347",
@@ -888,8 +877,8 @@
       "url": "https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/348",
       "base": "main",
       "draft": false,
-      "ci": "pass",
-      "ready": true,
+      "ci": "none",
+      "ready": false,
       "source": "gitlab"
     },
     {
@@ -899,8 +888,19 @@
       "url": "https://gitlab.lilangverse.xyz/li-langverse/lic/-/merge_requests/349",
       "base": "main",
       "draft": false,
-      "ci": "pass",
-      "ready": true,
+      "ci": "none",
+      "ready": false,
+      "source": "gitlab"
+    },
+    {
+      "repo": "lik",
+      "number": 7,
+      "title": "feat(kernel): LiOS all-ms-real \u2014 14 phases without --stub (lik)",
+      "url": "https://gitlab.lilangverse.xyz/li-langverse/lik/-/merge_requests/7",
+      "base": "main",
+      "draft": false,
+      "ci": "none",
+      "ready": false,
       "source": "gitlab"
     },
     {
