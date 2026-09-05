@@ -217,6 +217,18 @@
       "vcs_source": "gitlab",
       "open_mrs": 43,
       "mrs_closed": 263
+    },
+    {
+      "at": "2026-09-05",
+      "open_prs": 127,
+      "open_mrs": null,
+      "ready_to_merge": 116,
+      "prs_closed": 1658,
+      "mrs_closed": 1658,
+      "issues_open": 18,
+      "issues_closed": 164,
+      "source": "github",
+      "vcs_source": "github"
     }
   ]
 }
